@@ -73,37 +73,40 @@ class DefaultDecoder(DecodedDataInterface):
         # return self.bioAssembly[0]
 
     def getGroupTypeIndices(self):
-        pass
+        return self.groupList
 
     def getxCoords(self):
-        pass
+        return self.cartnX
 
     def getNumChains(self):
-        pass
+        sum = 0
+        for x in self.chainsPerModel:
+            sum+=x
+        return x
 
     def getNumTransInBioassembly(self, bioassemblyIndex):
         pass
 
     def getChainIds(self):
-        pass
+        return self.chainList
 
     def getDepositionDate(self):
-        pass
+        return self.depositionDate
 
     def getTitle(self):
-        pass
+        return self.title
 
     def getNumModels(self):
-        pass
+        return len(self.chainsPerModel)
 
     def getSecStructList(self):
-        pass
+        return self.secStructInfo
 
     def getGroupChemCompType(self, groupInd):
         return self.groupList[groupInd]["chemComp"]
 
     def getMmtfVersion(self):
-        pass
+        return self.mmtfVersion
 
     def getGroupBondIndices(self, groupInd):
         return self.groupList[groupInd]["bondIndices"]
@@ -112,10 +115,10 @@ class DefaultDecoder(DecodedDataInterface):
         pass
 
     def getChainNames(self):
-        pass
+        return self.publicChainIds
 
     def getExperimentalMethods(self):
-        pass
+        return self.experimentalMethods
 
     def getGroupSingleLetterCode(self, groupInd):
         return self.groupList[groupInd]["singleLetterCode"]

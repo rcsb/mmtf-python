@@ -76,7 +76,7 @@ class ConvrterTests(unittest.TestCase):
         newDecoder = DefaultDecoder()
         # Check that none of the getters are null
         newDecoder.decode_data(msgpack.unpackb(open("testdatastore/4CUP.mmtf").read()))
-
+        print newDecoder.getxCoords()
 
 if __name__ == '__main__':
     unittest.main()
