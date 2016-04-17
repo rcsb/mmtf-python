@@ -9,17 +9,17 @@ import decoder_utils
 
 def addAtomData(self, data_setters, atom_names, element_names, atom_charges, atom_counter, group_atom_ind):
 
-    atomName = atom_names[group_atom_ind];
-    element = element_names[group_atom_ind];
-    charge = atom_charges[group_atom_ind];
-    alternativeLocationId = self.getAltLocIds()[self.atom_counter];
-    serialNumber = self.getAtomIds()[self.atom_counter];
-    x = self.getxCoords()[self.atom_counter];
-    z = self.getzCoords()[self.atom_counter];
-    y = self.getyCoords()[self.atom_counter];
-    occupancy = self.getOccupancies()[self.atom_counter];
-    temperatureFactor = self.getbFactors()[self.atom_counter];
-    data_setters.setAtomInfo(atomName, serialNumber, alternativeLocationId, x, y, z, occupancy, temperatureFactor, element, charge);
+    atomName = atom_names[group_atom_ind]
+    element = element_names[group_atom_ind]
+    charge = atom_charges[group_atom_ind]
+    alternativeLocationId = self.getAltLocIds()[self.atom_counter]
+    serialNumber = self.getAtomIds()[self.atom_counter]
+    x = self.getxCoords()[self.atom_counter]
+    z = self.getzCoords()[self.atom_counter]
+    y = self.getyCoords()[self.atom_counter]
+    occupancy = self.getOccupancies()[self.atom_counter]
+    temperatureFactor = self.getbFactors()[self.atom_counter]
+    data_setters.setAtomInfo(atomName, serialNumber, alternativeLocationId, x, y, z, occupancy, temperatureFactor, element, charge)
 
 
 def addGroupBonds(data_setters, bond_indices, bond_orders):
@@ -38,10 +38,10 @@ def add_group(self, data_setters, group_ind):
     insertionCode = self.getInsCodes()[group_ind]
     data_setters.setGroupInfo(self.getGroupName(group_type_ind), currentGroupNumber, insertionCode, self.getGroupChemCompType(group_type_ind), atomCount, self.getNumBonds(), self.getGroupSingleLetterCode(group_type_ind), self.getGroupSequenceIndices()[group_ind], self.getSecStructList()[group_ind])
     for group_atom_ind in range(atomCount):
-        addAtomData(self, data_setters, self.getGroupAtomNames(group_type_ind), self.getGroupElementNames(group_type_ind), self.getGroupAtomCharges(group_type_ind), self.atom_counter, group_atom_ind);
+        addAtomData(self, data_setters, self.getGroupAtomNames(group_type_ind), self.getGroupElementNames(group_type_ind), self.getGroupAtomCharges(group_type_ind), self.atom_counter, group_atom_ind)
         self.atom_counter +=1
-    addGroupBonds(data_setters, self.getGroupBondIndices(group_type_ind), self.getGroupBondOrders(group_type_ind));
-    return atomCount;
+    addGroupBonds(data_setters, self.getGroupBondIndices(group_type_ind), self.getGroupBondOrders(group_type_ind))
+    return atomCount
 
 def addOrUpdateChainInfo(self, data_setters, chain_index):
     chain_id = self.getChainIds()[chain_index]
@@ -61,11 +61,11 @@ def addOrUpdateChainInfo(self, data_setters, chain_index):
 def addAtomicInformation(self, data_setters):
     for model_chains in self.getChainsPerModel():
         data_setters.setModelInfo(self.model_counter, model_chains)
-        totChainsThisModel = self.chain_counter + model_chains;
-        lastChainCounter = self.chainCounter;
+        totChainsThisModel = self.chain_counter + model_chains
+        lastChainCounter = self.chainCounter
         for chain_index in range(lastChainCounter,totChainsThisModel):
-            addOrUpdateChainInfo(self, data_setters, chain_index);
-        self.model_counter+=1;
+            addOrUpdateChainInfo(self, data_setters, chain_index)
+        self.model_counter+=1
 
 
 
@@ -124,7 +124,7 @@ class DefaultDecoder(DecodedDataInterface):
         num_bonds = len(self.interGroupBondOrders)
         for in_int in self.groupList:
             num_bonds += len(self.groupMap[in_int]["bondOrders"])
-        return num_bonds;
+        return num_bonds
 
     def getGroupsPerChain(self):
         return self.groupsPerChain
