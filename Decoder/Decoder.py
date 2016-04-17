@@ -7,47 +7,48 @@ from Common.Utils import *
 import decoder_utils
 
 
-def addAtomData(self, data_setters, atom_names, element_names, atom_charges, atom_counter, group_atom_ind):
+def add_atom_data(self, data_setters, atom_names, element_names, atom_charges, atom_counter, group_atom_ind):
 
-    atomName = atom_names[group_atom_ind]
+    atom_name = atom_names[group_atom_ind]
     element = element_names[group_atom_ind]
     charge = atom_charges[group_atom_ind]
-    alternativeLocationId = self.getAltLocIds()[self.atom_counter]
-    serialNumber = self.getAtomIds()[self.atom_counter]
-    x = self.getxCoords()[self.atom_counter]
-    z = self.getzCoords()[self.atom_counter]
-    y = self.getyCoords()[self.atom_counter]
-    occupancy = self.getOccupancies()[self.atom_counter]
-    temperatureFactor = self.getbFactors()[self.atom_counter]
-    data_setters.setAtomInfo(atomName, serialNumber, alternativeLocationId, x, y, z, occupancy, temperatureFactor, element, charge)
+    alternative_location_id = self.get_alt_loc_ids()[self.atom_counter]
+    serial_number = self.get_atom_ids()[self.atom_counter]
+    x = self.get_x_coords()[self.atom_counter]
+    z = self.get_z_coords()[self.atom_counter]
+    y = self.get_y_coords()[self.atom_counter]
+    occupancy = self.get_occupancies()[self.atom_counter]
+    temperature_factor = self.get_b_factors()[self.atom_counter]
+    data_setters.set_atom_info(atom_name, serial_number, alternative_location_id, x, y, z, occupancy, temperature_factor, element, charge)
 
 
-def addGroupBonds(data_setters, bond_indices, bond_orders):
+def add_group_bonds(data_setters, bond_indices, bond_orders):
     for bond_index in range(len(bond_orders)):
-        data_setters.setGroupBond(bond_indices[bond_index*2],bond_indices[bond_index*2+1],bond_orders[bond_index])
+        data_setters.set_group_bond(bond_indices[bond_index*2],bond_indices[bond_index*2+1],bond_orders[bond_index])
 
 
 def add_group(self, data_setters, group_ind):
 
-    group_type_ind = self.getGroupTypeIndices()[group_ind]
+    group_type_ind = self.get_group_type_indices()[group_ind]
 
-    atomCount = self.getNumAtomsInGroup(group_type_ind)
+    atom_count = self.get_num_atoms_in_group(group_type_ind)
 
-    currentGroupNumber = self.getGroupIds()[group_ind]
+    current_group_number = self.get_group_ids()[group_ind]
     #
-    insertionCode = self.getInsCodes()[group_ind]
-    data_setters.setGroupInfo(self.getGroupName(group_type_ind), currentGroupNumber, insertionCode, self.getGroupChemCompType(group_type_ind), atomCount, self.getNumBonds(), self.getGroupSingleLetterCode(group_type_ind), self.getGroupSequenceIndices()[group_ind], self.getSecStructList()[group_ind])
-    for group_atom_ind in range(atomCount):
-        addAtomData(self, data_setters, self.getGroupAtomNames(group_type_ind), self.getGroupElementNames(group_type_ind), self.getGroupAtomCharges(group_type_ind), self.atom_counter, group_atom_ind)
+    insertion_code = self.get_ins_codes()[group_ind]
+    data_setters.set_group_info(self.get_group_name(group_type_ind), current_group_number, insertion_code, self.get_group_chem_comp_type(group_type_ind), atom_count, self.get_num_bonds(), self.get_group_single_letter_code(group_type_ind), self.get_group_sequence_indices()[group_ind], self.get_sec_struct_list()[group_ind])
+    for group_atom_ind in range(atom_count):
+        add_atom_data(self, data_setters, self.get_group_atom_names(group_type_ind), self.get_group_element_names(group_type_ind), self.get_group_atom_charges(group_type_ind), self.atom_counter, group_atom_ind)
         self.atom_counter +=1
-    addGroupBonds(data_setters, self.getGroupBondIndices(group_type_ind), self.getGroupBondOrders(group_type_ind))
-    return atomCount
+    add_group_bonds(data_setters, self.get_group_bond_indices(group_type_ind), self.get_group_bond_orders(group_type_ind))
+    return atom_count
 
-def addOrUpdateChainInfo(self, data_setters, chain_index):
-    chain_id = self.getChainIds()[chain_index]
-    chain_name = self.getChainNames()[chain_index]
-    num_groups = self.getGroupsPerChain()[chain_index]
-    data_setters.setChainInfo(chain_id, chain_name, num_groups)
+
+def add_chain_info(self, data_setters, chain_index):
+    chain_id = self.get_chain_ids()[chain_index]
+    chain_name = self.get_chain_names()[chain_index]
+    num_groups = self.get_groups_per_chain()[chain_index]
+    data_setters.set_chain_info(chain_id, chain_name, num_groups)
     next_ind = self.group_counter + num_groups
     last_ind = self.group_counter
     for group_ind in range(last_ind, next_ind):
@@ -58,13 +59,13 @@ def addOrUpdateChainInfo(self, data_setters, chain_index):
     self.chain_counter+=1
 
 
-def addAtomicInformation(self, data_setters):
-    for model_chains in self.getChainsPerModel():
-        data_setters.setModelInfo(self.model_counter, model_chains)
-        totChainsThisModel = self.chain_counter + model_chains
-        lastChainCounter = self.chainCounter
-        for chain_index in range(lastChainCounter,totChainsThisModel):
-            addOrUpdateChainInfo(self, data_setters, chain_index)
+def add_atomic_information(self, data_setters):
+    for model_chains in self.get_chains_per_model():
+        data_setters.set_model_info(self.model_counter, model_chains)
+        tot_chains_this_model = self.chain_counter + model_chains
+        last_chain_counter = self.chain_counter
+        for chain_index in range(last_chain_counter,tot_chains_this_model):
+            add_chain_info(self, data_setters, chain_index)
         self.model_counter+=1
 
 
@@ -78,244 +79,244 @@ class DefaultDecoder(DecodedDataInterface):
 
 
     """The default decoder class"""
-    def getRwork(self):
-        return self.rWork
+    def get_rwork(self):
+        return self.r_work
 
-    def getNumAtoms(self):
+    def get_num_atoms(self):
         return len(self.cartnX)
 
-    def getGroupAtomCharges(self, groupInd):
-        return self.groupList[groupInd]["atomCharges"]
+    def get_group_atom_charges(self, group_ind):
+        return self.group_list[group_ind]["atom_charges"]
 
-    def getAtomIds(self):
-        return self.atomId
+    def get_atom_ids(self):
+        return self.atom_id
 
-    def getbFactors(self):
-        return self.bFactor
+    def get_b_factors(self):
+        return self.b_factor
 
-    def getNumEntities(self):
-        return len(self.entityList)
+    def get_num_entities(self):
+        return len(self.entity_list)
 
-    def getReleaseDate(self):
-        return self.releaseDate
+    def get_release_date(self):
+        return self.release_date
 
-    def getStructureId(self):
-        return self.pdbId
+    def get_structure_id(self):
+        return self.pdb_id
 
-    def getResolution(self):
+    def get_resolution(self):
         return self.resolution
 
-    def getSpaceGroup(self):
-        return self.spaceGroup
+    def get_space_group(self):
+        return self.space_group
 
-    def getGroupAtomNames(self, groupInd):
-        return self.groupMap[groupInd]["atomNames"]
+    def get_group_atom_names(self, group_ind):
+        return self.group_map[group_ind]["atom_names"]
 
-    def getMmtfProducer(self):
-        return self.mmtfProducer
+    def get_mmtf_producer(self):
+        return self.mmtf_producer
 
-    def getNumAtomsInGroup(self, groupInd):
-        return len(self.groupMap[groupInd]["atomNames"])
+    def get_num_atoms_in_group(self, group_ind):
+        return len(self.group_map[group_ind]["atom_names"])
 
-    def getGroupBondOrders(self, groupInd):
-        return self.groupMap[groupInd]["bondOrders"]
+    def get_group_bond_orders(self, group_ind):
+        return self.group_map[group_ind]["bond_orders"]
 
-    def getNumBonds(self):
-        num_bonds = len(self.interGroupBondOrders)
-        for in_int in self.groupList:
-            num_bonds += len(self.groupMap[in_int]["bondOrders"])
+    def get_num_bonds(self):
+        num_bonds = len(self.inter_group_bond_orders)
+        for in_int in self.group_list:
+            num_bonds += len(self.group_map[in_int]["bond_orders"])
         return num_bonds
 
-    def getGroupsPerChain(self):
-        return self.groupsPerChain
+    def get_groups_per_chain(self):
+        return self.groups_per_chain
 
-    def getGroupSequenceIndices(self):
-        return self.seqResGroupList
+    def get_group_sequence_indices(self):
+        return self.seq_res_group_list
 
-    def getInsCodes(self):
-        return self.insertionCodeList
+    def get_ins_codes(self):
+        return self.insertion_code_list
 
-    def getAltLocIds(self):
-        return self.altId
+    def get_alt_loc_ids(self):
+        return self.alt_id
 
-    def getGroupIds(self):
-        return self.groupNum
+    def get_group_ids(self):
+        return self.group_num
 
-    def getInterGroupBondIndices(self):
-        return self.interGroupBondIndices
+    def get_inter_group_bond_indices(self):
+        return self.inter_group_bond_indices
 
-    def getGroupTypeIndices(self):
-        return self.groupList
+    def get_group_type_indices(self):
+        return self.group_list
 
-    def getxCoords(self):
+    def get_x_coords(self):
         return self.cartnX
 
-    def getNumChains(self):
+    def get_num_chains(self):
         sum = 0
-        for x in self.chainsPerModel:
+        for x in self.chains_per_model:
             sum+=x
         return x
 
-    def getChainIds(self):
-        return self.chainList
+    def get_chain_ids(self):
+        return self.chain_list
 
-    def getDepositionDate(self):
-        return self.depositionDate
+    def get_deposition_date(self):
+        return self.deposition_date
 
-    def getTitle(self):
+    def get_title(self):
         return self.title
 
-    def getNumModels(self):
-        return len(self.chainsPerModel)
+    def get_num_models(self):
+        return len(self.chains_per_model)
 
-    def getSecStructList(self):
-        return self.secStructInfo
+    def get_sec_struct_list(self):
+        return self.sec_struct_info
 
-    def getGroupChemCompType(self, groupInd):
-        return self.groupMap[groupInd]["chemComp"]
+    def get_group_chem_comp_type(self, group_ind):
+        return self.group_map[group_ind]["chem_comp"]
 
-    def getMmtfVersion(self):
-        return self.mmtfVersion
+    def get_mmtf_version(self):
+        return self.mmtf_version
 
-    def getGroupBondIndices(self, groupInd):
-        return self.groupMap[groupInd]["bondIndices"]
+    def get_group_bond_indices(self, group_ind):
+        return self.group_map[group_ind]["bond_indices"]
 
-    def getChainNames(self):
-        return self.publicChainIds
+    def get_chain_names(self):
+        return self.public_chain_ids
 
-    def getExperimentalMethods(self):
-        return self.experimentalMethods
+    def get_experimental_methods(self):
+        return self.experimental_methods
 
-    def getGroupSingleLetterCode(self, groupInd):
-        return self.groupMap[groupInd]["singleLetterCode"]
+    def get_group_single_letter_code(self, group_ind):
+        return self.group_map[group_ind]["single_letter_code"]
 
-    def getzCoords(self):
+    def get_z_coords(self):
         return self.cartnZ
 
 
-    def getGroupName(self, groupInd):
-        return self.groupMap[groupInd]["groupName"]
+    def get_group_name(self, group_ind):
+        return self.group_map[group_ind]["group_name"]
 
-    def getRfree(self):
-        return self.rFree
+    def get_rfree(self):
+        return self.r_free
 
-    def getChainsPerModel(self):
-        return self.chainsPerModel
+    def get_chains_per_model(self):
+        return self.chains_per_model
 
-    def getInterGroupBondOrders(self):
-        return self.interGroupBondOrders
+    def get_inter_group_bond_orders(self):
+        return self.inter_group_bond_orders
 
-    def getNumBioassemblies(self):
-        return len(self.bioAssembly)
+    def get_num_bioassemblies(self):
+        return len(self.bio_assembly)
 
-    def getNumGroups(self):
-        return len(self.groupList)
+    def get_num_groups(self):
+        return len(self.group_list)
 
-    def getyCoords(self):
+    def get_y_coords(self):
         return self.cartnY
 
-    def getGroupElementNames(self, groupInd):
-        return self.groupMap[groupInd]["elementNames"]
+    def get_group_element_names(self, group_ind):
+        return self.group_map[group_ind]["element_names"]
 
-    def getOccupancies(self):
+    def get_occupancies(self):
         self.occupancy
 
-    def getUnitCell(self):
-        self.unitCell
+    def get_unit_cell(self):
+        self.unit_cell
 
-    def getChainIndexListForTransform(self, bioassemblyIndex, transformationIndex):
-        return self.bioAssembly[bioassemblyIndex][transformationIndex]["chainIndexList"]
+    def get_chain_index_list_for_transform(self, bioassembly_index, transformation_index):
+        return self.bio_assembly[bioassembly_index][transformation_index]["chain_index_list"]
 
-    def getMatrixForTransform(self, bioassemblyIndex, transformationIndex):
-        return self.bioAssembly[bioassemblyIndex][transformationIndex]["matrix"]
+    def get_matrix_for_transform(self, bioassembly_index, transformation_index):
+        return self.bio_assembly[bioassembly_index][transformation_index]["matrix"]
 
-    def getNumTransInBioassembly(self, bioassemblyIndex):
-        return len(self.bioAssembly[bioassemblyIndex])
+    def get_num_trans_in_bioassembly(self, bioassembly_index):
+        return len(self.bio_assembly[bioassembly_index])
 
-    def getEntityDescription(self, entityInd):
-        return self.entityList[entityInd]["description"]
+    def get_entity_description(self, entity_ind):
+        return self.entity_list[entity_ind]["description"]
 
-    def getEntityChainIndexList(self, entityInd):
-        return self.entityList[entityInd]["chainIndexList"]
+    def get_entity_chain_index_list(self, entity_ind):
+        return self.entity_list[entity_ind]["chain_index_list"]
 
-    def getEntityType(self, entityInd):
-        return self.entityList[entityInd]["type"]
+    def get_entity_type(self, entity_ind):
+        return self.entity_list[entity_ind]["type"]
 
-    def getEntitySequence(self, entityInd):
-        return self.entityList[entityInd]["sequence"]
+    def get_entity_sequence(self, entity_ind):
+        return self.entity_list[entity_ind]["sequence"]
 
-    def decode_data(self, inputData):
-        self.groupList = array_converters.convert_bytes_to_ints(inputData["groupTypeList"],4)
+    def decode_data(self, input_data):
+        self.group_list = array_converters.convert_bytes_to_ints(input_data["group_type_list"],4)
         # Decode the coordinate  and B-factor arrays.
-        self.cartnX = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(inputData["xCoordSmall"],2),array_converters.convert_bytes_to_ints(inputData["xCoordBig"],4))),COORD_DIVIDER )
-        self.cartnY = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(inputData["yCoordSmall"],2),array_converters.convert_bytes_to_ints(inputData["yCoordBig"],4))),COORD_DIVIDER )
-        self.cartnZ = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(inputData["zCoordSmall"],2),array_converters.convert_bytes_to_ints(inputData["zCoordBig"],4))),COORD_DIVIDER)
-        self.bFactor = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(inputData["bFactorSmall"],2),array_converters.convert_bytes_to_ints(inputData["bFactorBig"],4))),OCC_B_FACTOR_DIVIDER)
+        self.cartnX = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["x_coord_small"],2),array_converters.convert_bytes_to_ints(input_data["x_coord_big"],4))),COORD_DIVIDER )
+        self.cartnY = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["y_coord_small"],2),array_converters.convert_bytes_to_ints(input_data["y_coord_big"],4))),COORD_DIVIDER )
+        self.cartnZ = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["z_coord_small"],2),array_converters.convert_bytes_to_ints(input_data["z_coord_big"],4))),COORD_DIVIDER)
+        self.b_factor = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["b_factor_small"],2),array_converters.convert_bytes_to_ints(input_data["b_factor_big"],4))),OCC_B_FACTOR_DIVIDER)
         # Run length decode the occupancy array
-        self.occupancy = array_converters.convert_ints_to_floats(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(inputData["occupancyList"],4)),OCC_B_FACTOR_DIVIDER)
+        self.occupancy = array_converters.convert_ints_to_floats(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["occupancy_list"],4)),OCC_B_FACTOR_DIVIDER)
         # Run length and delta
-        self.atomId = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(inputData["atomIdList"],4)))
+        self.atom_id = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["atom_id_list"],4)))
         # Run length encoded
-        self.altId = array_converters.convert_ints_to_chars(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(inputData["altLocList"],4)))
-        self.insertionCodeList = array_converters.convert_ints_to_chars(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(inputData["insCodeList"],4)))
-        # Get the groupNumber
-        self.groupNum = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(inputData["groupIdList"],4)))
+        self.alt_id = array_converters.convert_ints_to_chars(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["alt_loc_list"],4)))
+        self.insertion_code_list = array_converters.convert_ints_to_chars(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["ins_code_list"],4)))
+        # Get the group_number
+        self.group_num = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["group_id_list"],4)))
         # Get the group map (all the unique groups in the structure).
-        self.groupMap = inputData["groupList"]
-        # Get the seqRes groups
-        self.seqResGroupList = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(inputData["sequenceIndexList"],4)))
+        self.group_map = input_data["group_list"]
+        # Get the seq_res groups
+        self.seq_res_group_list = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["sequence_index_list"],4)))
         # Get the number of chains per model
-        self.chainsPerModel = inputData["chainsPerModel"]
-        self.groupsPerChain = inputData["groupsPerChain"]
+        self.chains_per_model = input_data["chains_per_model"]
+        self.groups_per_chain = input_data["groups_per_chain"]
         # Get the internal and public facing chain ids
-        self.publicChainIds = array_converters.decode_chain_list(inputData["chainNameList"])
-        self.chainList = array_converters.decode_chain_list(inputData["chainIdList"])
-        self.spaceGroup = inputData["spaceGroup"]
-        self.unitCell = inputData["unitCell"]
-        self.bioAssembly  = inputData["bioAssemblyList"]
-        self.interGroupBondIndices = array_converters.convert_bytes_to_ints(inputData["bondAtomList"],4)
-        self.interGroupBondOrders = array_converters.convert_bytes_to_ints(inputData["bondOrderList"],1)
-        self.mmtfVersion = inputData["mmtfVersion"]
-        self.mmtfProducer = inputData["mmtfProducer"]
-        self.entityList = inputData["entityList"]
-        self.pdbId = inputData["structureId"]
+        self.public_chain_ids = array_converters.decode_chain_list(input_data["chain_name_list"])
+        self.chain_list = array_converters.decode_chain_list(input_data["chain_id_list"])
+        self.space_group = input_data["space_group"]
+        self.unit_cell = input_data["unit_cell"]
+        self.bio_assembly  = input_data["bio_assembly_list"]
+        self.inter_group_bond_indices = array_converters.convert_bytes_to_ints(input_data["bond_atom_list"],4)
+        self.inter_group_bond_orders = array_converters.convert_bytes_to_ints(input_data["bond_order_list"],1)
+        self.mmtf_version = input_data["mmtf_version"]
+        self.mmtf_producer = input_data["mmtf_producer"]
+        self.entity_list = input_data["entity_list"]
+        self.pdb_id = input_data["structure_id"]
         # Now get the header data
-        self.rFree = inputData["rFree"]
+        self.r_free = input_data["r_free"]
         # Optional fields
-        if "rWork" in inputData:
-            self.rWork = inputData["rWork"]
+        if "r_work" in input_data:
+            self.r_work = input_data["r_work"]
         else:
-            self.rWork = None
-        if "resolution" in inputData:
-            self.resolution = inputData["resolution"]
-        if "title" in inputData:
-            self.title = inputData["title"]
-        self.experimentalMethods = inputData["experimentalMethods"]
+            self.r_work = None
+        if "resolution" in input_data:
+            self.resolution = input_data["resolution"]
+        if "title" in input_data:
+            self.title = input_data["title"]
+        self.experimental_methods = input_data["experimental_methods"]
         # Now get the relase information
-        self.depositionDate = inputData["depositionDate"]
-        if "releaseDate" in inputData:
-            self.releaseDate = inputData["releaseDate"]
-        self.secStructInfo = array_converters.convert_bytes_to_ints(inputData["secStructList"],1)
+        self.deposition_date = input_data["deposition_date"]
+        if "release_date" in input_data:
+            self.release_date = input_data["release_date"]
+        self.sec_struct_info = array_converters.convert_bytes_to_ints(input_data["sec_struct_list"],1)
 
     def pass_data_on(self, data_setters):
         """Write the data from the getters to the setters
         :type data_setters: DataTransferInterface
         """
         # First initialise the structure
-        data_setters.initStructure(self.getNumBonds(), self.getNumAtoms(), self.getNumGroups(),
-                                   self.getNumChains(), self.getNumModels(), self.getStructureId())
+        data_setters.init_structure(self.get_num_bonds(), self.get_num_atoms(), self.get_num_groups(),
+                                   self.get_num_chains(), self.get_num_models(), self.get_structure_id())
 
         # First add the atomic data
-        addAtomicInformation(self,data_setters)
+        add_atomic_information(self,data_setters)
         # Set the header info
-        decoder_utils.addHeaderInfo(self, data_setters)
+        decoder_utils.add_header_info(self, data_setters)
         # Set the xtalographic info
-        decoder_utils.addXtalographicInfo(self, data_setters)
+        decoder_utils.add_xtalographic_info(self, data_setters)
         # Set the bioassembly info
-        decoder_utils.generateBioAssembly(self, data_setters)
+        decoder_utils.generate_bio_assembly(self, data_setters)
         # Set the intergroup bonds
-        decoder_utils.addInterGroupBonds(self, data_setters)
+        decoder_utils.add_inter_group_bonds(self, data_setters)
         # Set the entity information
-        decoder_utils.addEntityInfo(self, data_setters)
+        decoder_utils.add_entity_info(self, data_setters)
         # Finally call the finalize function
-        data_setters.finalizeStructure()
+        data_setters.finalize_structure()

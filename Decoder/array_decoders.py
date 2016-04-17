@@ -1,25 +1,25 @@
 
 
-def run_length_decode(inArray):
+def run_length_decode(in_array):
     """A function to run length decode an int array"""
     switch=False
-    outArray=[]
-    for item in inArray:
+    out_array=[]
+    for item in in_array:
         if switch==False:
-            thisItem = item
+            this_item = item
             switch=True
         else:
             switch=False
-            outArray.extend([thisItem]*int(item))
-    return outArray
+            out_array.extend([this_item]*int(item))
+    return out_array
 
-def delta_decode(inArray):
+def delta_decode(in_array):
     """A function to delta decode an int array"""
-    if len(inArray)==0:
+    if len(in_array)==0:
         return []
-    thisAns=inArray[0]
-    outArray = [thisAns]
-    for i in range(1,len(inArray)):
-        thisAns+=inArray[i]
-        outArray.append(thisAns)
-    return outArray
+    this_ans=in_array[0]
+    out_array = [this_ans]
+    for i in range(1,len(in_array)):
+        this_ans+=in_array[i]
+        out_array.append(this_ans)
+    return out_array
