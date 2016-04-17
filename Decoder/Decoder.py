@@ -179,7 +179,7 @@ class DefaultDecoder(DecodedDataInterface):
         return self.mmtf_version
 
     def get_group_bond_indices(self, group_ind):
-        return self.group_map[group_ind]["bond_indices"]
+        return self.group_map[group_ind]["bondIndices"]
 
     def get_chain_names(self):
         return self.public_chain_ids
@@ -188,14 +188,14 @@ class DefaultDecoder(DecodedDataInterface):
         return self.experimental_methods
 
     def get_group_single_letter_code(self, group_ind):
-        return self.group_map[group_ind]["single_letter_code"]
+        return self.group_map[group_ind]["singleLetterCode"]
 
     def get_z_coords(self):
         return self.cartnZ
 
 
     def get_group_name(self, group_ind):
-        return self.group_map[group_ind]["group_name"]
+        return self.group_map[group_ind]["groupName"]
 
     def get_rfree(self):
         return self.r_free
@@ -216,7 +216,7 @@ class DefaultDecoder(DecodedDataInterface):
         return self.cartnY
 
     def get_group_element_names(self, group_ind):
-        return self.group_map[group_ind]["element_names"]
+        return self.group_map[group_ind]["elementNames"]
 
     def get_occupancies(self):
         self.occupancy
@@ -225,7 +225,7 @@ class DefaultDecoder(DecodedDataInterface):
         self.unit_cell
 
     def get_chain_index_list_for_transform(self, bioassembly_index, transformation_index):
-        return self.bio_assembly[bioassembly_index][transformation_index]["chain_index_list"]
+        return self.bio_assembly[bioassembly_index][transformation_index]["chainIndexList"]
 
     def get_matrix_for_transform(self, bioassembly_index, transformation_index):
         return self.bio_assembly[bioassembly_index][transformation_index]["matrix"]
@@ -237,7 +237,7 @@ class DefaultDecoder(DecodedDataInterface):
         return self.entity_list[entity_ind]["description"]
 
     def get_entity_chain_index_list(self, entity_ind):
-        return self.entity_list[entity_ind]["chain_index_list"]
+        return self.entity_list[entity_ind]["chainIndexList"]
 
     def get_entity_type(self, entity_ind):
         return self.entity_list[entity_ind]["type"]
@@ -246,57 +246,57 @@ class DefaultDecoder(DecodedDataInterface):
         return self.entity_list[entity_ind]["sequence"]
 
     def decode_data(self, input_data):
-        self.group_list = array_converters.convert_bytes_to_ints(input_data["group_type_list"],4)
+        self.group_list = array_converters.convert_bytes_to_ints(input_data["groupTypeList"],4)
         # Decode the coordinate  and B-factor arrays.
-        self.cartnX = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["x_coord_small"],2),array_converters.convert_bytes_to_ints(input_data["x_coord_big"],4))),COORD_DIVIDER )
-        self.cartnY = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["y_coord_small"],2),array_converters.convert_bytes_to_ints(input_data["y_coord_big"],4))),COORD_DIVIDER )
-        self.cartnZ = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["z_coord_small"],2),array_converters.convert_bytes_to_ints(input_data["z_coord_big"],4))),COORD_DIVIDER)
-        self.b_factor = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["b_factor_small"],2),array_converters.convert_bytes_to_ints(input_data["b_factor_big"],4))),OCC_B_FACTOR_DIVIDER)
+        self.cartnX = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["xCoordSmall"],2),array_converters.convert_bytes_to_ints(input_data["xCoordBig"],4))),COORD_DIVIDER )
+        self.cartnY = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["yCoordSmall"],2),array_converters.convert_bytes_to_ints(input_data["yCoordBig"],4))),COORD_DIVIDER )
+        self.cartnZ = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["zCoordSmall"],2),array_converters.convert_bytes_to_ints(input_data["zCoordBig"],4))),COORD_DIVIDER)
+        self.b_factor = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["bFactorSmall"],2),array_converters.convert_bytes_to_ints(input_data["bFactorBig"],4))),OCC_B_FACTOR_DIVIDER)
         # Run length decode the occupancy array
-        self.occupancy = array_converters.convert_ints_to_floats(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["occupancy_list"],4)),OCC_B_FACTOR_DIVIDER)
+        self.occupancy = array_converters.convert_ints_to_floats(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["occupancyList"],4)),OCC_B_FACTOR_DIVIDER)
         # Run length and delta
-        self.atom_id = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["atom_id_list"],4)))
+        self.atom_id = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["atomIdList"],4)))
         # Run length encoded
-        self.alt_id = array_converters.convert_ints_to_chars(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["alt_loc_list"],4)))
-        self.insertion_code_list = array_converters.convert_ints_to_chars(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["ins_code_list"],4)))
+        self.alt_id = array_converters.convert_ints_to_chars(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["altLocList"],4)))
+        self.insertion_code_list = array_converters.convert_ints_to_chars(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["insCodeList"],4)))
         # Get the group_number
-        self.group_num = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["group_id_list"],4)))
+        self.group_num = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["groupIdList"],4)))
         # Get the group map (all the unique groups in the structure).
-        self.group_map = input_data["group_list"]
+        self.group_map = input_data["groupList"]
         # Get the seq_res groups
-        self.seq_res_group_list = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["sequence_index_list"],4)))
+        self.seq_res_group_list = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["sequenceIndexList"],4)))
         # Get the number of chains per model
-        self.chains_per_model = input_data["chains_per_model"]
-        self.groups_per_chain = input_data["groups_per_chain"]
+        self.chains_per_model = input_data["chainsPerModel"]
+        self.groups_per_chain = input_data["groupsPerChain"]
         # Get the internal and public facing chain ids
-        self.public_chain_ids = array_converters.decode_chain_list(input_data["chain_name_list"])
-        self.chain_list = array_converters.decode_chain_list(input_data["chain_id_list"])
-        self.space_group = input_data["space_group"]
-        self.unit_cell = input_data["unit_cell"]
-        self.bio_assembly  = input_data["bio_assembly_list"]
-        self.inter_group_bond_indices = array_converters.convert_bytes_to_ints(input_data["bond_atom_list"],4)
-        self.inter_group_bond_orders = array_converters.convert_bytes_to_ints(input_data["bond_order_list"],1)
-        self.mmtf_version = input_data["mmtf_version"]
-        self.mmtf_producer = input_data["mmtf_producer"]
-        self.entity_list = input_data["entity_list"]
-        self.pdb_id = input_data["structure_id"]
+        self.public_chain_ids = array_converters.decode_chain_list(input_data["chainNameList"])
+        self.chain_list = array_converters.decode_chain_list(input_data["chainIdList"])
+        self.space_group = input_data["spaceGroup"]
+        self.unit_cell = input_data["unitCell"]
+        self.bio_assembly  = input_data["bioAssemblyList"]
+        self.inter_group_bond_indices = array_converters.convert_bytes_to_ints(input_data["bondAtomList"],4)
+        self.inter_group_bond_orders = array_converters.convert_bytes_to_ints(input_data["bondOrderList"],1)
+        self.mmtf_version = input_data["mmtfVersion"]
+        self.mmtf_producer = input_data["mmtfProducer"]
+        self.entity_list = input_data["entityList"]
+        self.pdb_id = input_data["structureId"]
         # Now get the header data
-        self.r_free = input_data["r_free"]
+        self.r_free = input_data["rFree"]
         # Optional fields
-        if "r_work" in input_data:
-            self.r_work = input_data["r_work"]
+        if "rWork" in input_data:
+            self.r_work = input_data["rWork"]
         else:
             self.r_work = None
         if "resolution" in input_data:
             self.resolution = input_data["resolution"]
         if "title" in input_data:
             self.title = input_data["title"]
-        self.experimental_methods = input_data["experimental_methods"]
+        self.experimental_methods = input_data["experimentalMethods"]
         # Now get the relase information
-        self.deposition_date = input_data["deposition_date"]
-        if "release_date" in input_data:
-            self.release_date = input_data["release_date"]
-        self.sec_struct_info = array_converters.convert_bytes_to_ints(input_data["sec_struct_list"],1)
+        self.deposition_date = input_data["depositionDate"]
+        if "releaseDate" in input_data:
+            self.release_date = input_data["releaseDate"]
+        self.sec_struct_info = array_converters.convert_bytes_to_ints(input_data["secStructList"],1)
 
     def pass_data_on(self, data_setters):
         """Write the data from the getters to the setters

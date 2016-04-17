@@ -15,8 +15,6 @@ def combine_integers(small_array, big_array):
     return out_array
 
 
-
-
 def convert_bytes_to_ints(in_bytes, num):
     out_arr = []
     for i in range(len(in_bytes)/num):

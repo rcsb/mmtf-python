@@ -1,5 +1,5 @@
 import unittest
-import msgpack,gzip
+import msgpack
 import Decoder.array_decoders as ad
 import Decoder.array_converters as ac
 from Decoder.Decoder import DefaultDecoder
@@ -75,6 +75,8 @@ class ConvrterTests(unittest.TestCase):
     def test_decoder(self):
         newDecoder = DefaultDecoder()
         # Check that none of the getters are null
-        newDecoder.decode_data(msgpack.unpackb(open("testdatastore/4CUP.mmtf").read()))
+        newDecoder.decode_data(msgpack.unpackb(open("Decoder/tests/testdatastore/4CUP.mmtf").read()))
+
+
 if __name__ == '__main__':
     unittest.main()
