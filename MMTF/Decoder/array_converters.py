@@ -1,6 +1,5 @@
 import struct
-
-_NUM_DICT = {1:'b',2:'>h',4:'>i',8:'>q'}
+from MMTF.Common import Utils
 
 def combine_integers(small_array, big_array):
     tot_count = len(big_array)/2
@@ -18,17 +17,16 @@ def combine_integers(small_array, big_array):
 def convert_bytes_to_ints(in_bytes, num):
     out_arr = []
     for i in range(len(in_bytes)/num):
-        out_arr.append(struct.unpack(_NUM_DICT[num],in_bytes[i*num:i*num+num])[0])
+        out_arr.append(struct.unpack(Utils.NUM_DICT[num],in_bytes[i*num:i*num+num])[0])
     return out_arr
 
 def decode_chain_list(in_bytes):
-    tot_strings = len(in_bytes)/4
+    tot_strings = len(in_bytes)/Utils.CHAIN_LEN
     out_strings = []
     for i in range(tot_strings):
-        out_s = in_bytes[i*4:i*4+4].strip('\x00')
+        out_s = in_bytes[i*Utils.CHAIN_LEN:i*Utils.CHAIN_LEN+Utils.CHAIN_LEN].strip(Utils.NULL_BYTE)
         out_strings.append(out_s)
     return out_strings
-
 
 def convert_ints_to_floats(in_ints, divider):
     out_floats = []

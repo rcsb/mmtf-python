@@ -71,14 +71,10 @@ def add_atomic_information(self, data_setters):
 
 
 class DefaultDecoder(DecodedDataInterface):
-
     model_counter = 0
     chain_counter = 0
     group_counter = 0
     atom_counter = 0
-
-
-    """The default decoder class"""
     def get_rwork(self):
         return self.r_work
 
@@ -86,7 +82,7 @@ class DefaultDecoder(DecodedDataInterface):
         return len(self.cartnX)
 
     def get_group_atom_charges(self, group_ind):
-        return self.group_list[group_ind]["atom_charges"]
+        return self.group_map[group_ind]["atomChargeList"]
 
     def get_atom_ids(self):
         return self.atom_id
@@ -110,21 +106,21 @@ class DefaultDecoder(DecodedDataInterface):
         return self.space_group
 
     def get_group_atom_names(self, group_ind):
-        return self.group_map[group_ind]["atom_names"]
+        return self.group_map[group_ind]["atomNameList"]
 
     def get_mmtf_producer(self):
         return self.mmtf_producer
 
     def get_num_atoms_in_group(self, group_ind):
-        return len(self.group_map[group_ind]["atom_names"])
+        return len(self.group_map[group_ind]["atomNameList"])
 
     def get_group_bond_orders(self, group_ind):
-        return self.group_map[group_ind]["bond_orders"]
+        return self.group_map[group_ind]["bondOrderList"]
 
     def get_num_bonds(self):
         num_bonds = len(self.inter_group_bond_orders)
         for in_int in self.group_list:
-            num_bonds += len(self.group_map[in_int]["bond_orders"])
+            num_bonds += len(self.group_map[in_int]["bondOrderList"])
         return num_bonds
 
     def get_groups_per_chain(self):
@@ -173,13 +169,13 @@ class DefaultDecoder(DecodedDataInterface):
         return self.sec_struct_info
 
     def get_group_chem_comp_type(self, group_ind):
-        return self.group_map[group_ind]["chem_comp"]
+        return self.group_map[group_ind]["chemCompType"]
 
     def get_mmtf_version(self):
         return self.mmtf_version
 
     def get_group_bond_indices(self, group_ind):
-        return self.group_map[group_ind]["bondIndices"]
+        return self.group_map[group_ind]["bondAtomList"]
 
     def get_chain_names(self):
         return self.public_chain_ids
@@ -216,22 +212,22 @@ class DefaultDecoder(DecodedDataInterface):
         return self.cartnY
 
     def get_group_element_names(self, group_ind):
-        return self.group_map[group_ind]["elementNames"]
+        return self.group_map[group_ind]["elementList"]
 
     def get_occupancies(self):
-        self.occupancy
+        return self.occupancy
 
     def get_unit_cell(self):
-        self.unit_cell
+        return self.unit_cell
 
     def get_chain_index_list_for_transform(self, bioassembly_index, transformation_index):
-        return self.bio_assembly[bioassembly_index][transformation_index]["chainIndexList"]
+        return self.bio_assembly[bioassembly_index]["transformList"][transformation_index]["chainIndexList"]
 
     def get_matrix_for_transform(self, bioassembly_index, transformation_index):
-        return self.bio_assembly[bioassembly_index][transformation_index]["matrix"]
+        return self.bio_assembly[bioassembly_index]["transformList"][transformation_index]["matrix"]
 
     def get_num_trans_in_bioassembly(self, bioassembly_index):
-        return len(self.bio_assembly[bioassembly_index])
+        return len(self.bio_assembly[bioassembly_index]["transformList"])
 
     def get_entity_description(self, entity_ind):
         return self.entity_list[entity_ind]["description"]
@@ -296,6 +292,8 @@ class DefaultDecoder(DecodedDataInterface):
         self.deposition_date = input_data["depositionDate"]
         if "releaseDate" in input_data:
             self.release_date = input_data["releaseDate"]
+        else:
+            self.release_date = None
         self.sec_struct_info = array_converters.convert_bytes_to_ints(input_data["secStructList"],1)
 
     def pass_data_on(self, data_setters):
@@ -306,6 +304,8 @@ class DefaultDecoder(DecodedDataInterface):
         data_setters.init_structure(self.get_num_bonds(), self.get_num_atoms(), self.get_num_groups(),
                                    self.get_num_chains(), self.get_num_models(), self.get_structure_id())
 
+        # Set the entity information
+        decoder_utils.add_entity_info(self, data_setters)
         # First add the atomic data
         add_atomic_information(self,data_setters)
         # Set the header info
@@ -316,7 +316,6 @@ class DefaultDecoder(DecodedDataInterface):
         decoder_utils.generate_bio_assembly(self, data_setters)
         # Set the intergroup bonds
         decoder_utils.add_inter_group_bonds(self, data_setters)
-        # Set the entity information
-        decoder_utils.add_entity_info(self, data_setters)
+
         # Finally call the finalize function
         data_setters.finalize_structure()
