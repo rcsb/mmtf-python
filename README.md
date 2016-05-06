@@ -8,6 +8,12 @@
 
 
 # Try it out:
+
+First install using pip:
+```
+pip install mmtf-python
+```
+
 ``` #python
  from MMTF.Decoder.reader_utils import get_decoded_data_from_url
  # Get the data for 4CUP
