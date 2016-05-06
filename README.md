@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/rcsb/mmtf-python.svg?branch=master)](https://travis-ci.org/rcsb/mmtf-python)
 [![Code Health](https://landscape.io/github/rcsb/mmtf-python/master/landscape.svg?style=flat)](https://landscape.io/github/rcsb/mmtf-python/master)
 [![Status](http://img.shields.io/badge/status-experimental-red.svg?style=flat)](https://github.com/rcsb/mmtf-python/)
+[![Version](http://img.shields.io/badge/version-0.0.5-blue.svg?style=flat)](https://github.com/rcsb/mmtf-python/) [![License](http://img.shields.io/badge/license-Apache 2.0-blue.svg?style=flat)](https://github.com/rcsb/mmtf-python/blob/master/LICENSE.txt)
+
 
 The **m**acro**m**olecular **t**ransmission **f**ormat (MMTF) is a binary encoding of biological structures.
 
