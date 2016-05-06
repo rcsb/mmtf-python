@@ -2,9 +2,7 @@
 [![Code Health](https://landscape.io/github/rcsb/mmtf-python/master/landscape.svg?style=flat)](https://landscape.io/github/rcsb/mmtf-python/master)
 [![Status](http://img.shields.io/badge/status-experimental-red.svg?style=flat)](https://github.com/rcsb/mmtf-python/)
 
-# mmtf-python
-
-The macromolecular transmission format (MMTF) is a binary encoding of biological structures.
+The **m**acro**m**olecular **t**ransmission **f**ormat (MMTF) is a binary encoding of biological structures.
 
 This repository holds the Python API, encoding and decoding libraries. 
 
