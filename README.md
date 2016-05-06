@@ -29,5 +29,5 @@ Quick getting started.
 ```
 3) Show how many bioassemblies it has:
 ```
-print "PDB Code: "+decoded_data.get_structure_id()+" has "+decoded_data.get_num_bioassemblies()+" bioassemblies");
+print "PDB Code: "+decoded_data.get_structure_id()+" has "+str(decoded_data.get_num_bioassemblies())+" bioassemblies"
 ```
