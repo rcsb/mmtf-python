@@ -3,8 +3,7 @@ from MMTF.Decoder.Decoder import DefaultDecoder
 import urllib2,msgpack
 
 from StringIO import StringIO
-import gzip
-
+import gzip,time
 
 def get_data_from_url(pdb_id):
     """" Get the msgpack unpacked data given a PDB id.
@@ -18,13 +17,15 @@ def get_data_from_url(pdb_id):
         buf = StringIO(response.read())
         f = gzip.GzipFile(fileobj=buf)
         data = f.read()
-    return msgpack.unpackb(data)
+    out_data = msgpack.unpackb(data)
+    return out_data
 
 def get_decoded_data_from_url(pdb_id):
     """Return a decoded API to the data from a PDB id
     :param the input PDB id
     :return an API to decoded data """
-    get_data_from_url(pdb_id)
+    timeOne = time.time()
     decoder = DefaultDecoder()
     decoder.decode_data(get_data_from_url(pdb_id))
+    print time.time()-timeOne
     return decoder

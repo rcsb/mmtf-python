@@ -1,4 +1,5 @@
-
+import numpy
+from array import array
 
 def run_length_decode(in_array):
     """A function to run length decode an int array
@@ -21,7 +22,7 @@ def delta_decode(in_array):
     :return the decoded array"""
     if len(in_array)==0:
         return []
-    this_ans=in_array[0]
+    this_ans = in_array[0]
     out_array = [this_ans]
     for i in range(1,len(in_array)):
         this_ans+=in_array[i]

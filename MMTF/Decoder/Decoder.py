@@ -246,38 +246,67 @@ class DefaultDecoder(DecodedDataInterface):
         self.cartnX = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["xCoordSmall"],2),array_converters.convert_bytes_to_ints(input_data["xCoordBig"],4))),COORD_DIVIDER )
         self.cartnY = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["yCoordSmall"],2),array_converters.convert_bytes_to_ints(input_data["yCoordBig"],4))),COORD_DIVIDER )
         self.cartnZ = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["zCoordSmall"],2),array_converters.convert_bytes_to_ints(input_data["zCoordBig"],4))),COORD_DIVIDER)
-        self.b_factor = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["bFactorSmall"],2),array_converters.convert_bytes_to_ints(input_data["bFactorBig"],4))),OCC_B_FACTOR_DIVIDER)
         # Run length decode the occupancy array
-        self.occupancy = array_converters.convert_ints_to_floats(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["occupancyList"],4)),OCC_B_FACTOR_DIVIDER)
+        if "bFactorSmall" in input_data and "bFactorBig" in input_data:
+            self.b_factor = array_converters.convert_ints_to_floats(array_decoders.delta_decode(array_converters.combine_integers(array_converters.convert_bytes_to_ints(input_data["bFactorSmall"],2),array_converters.convert_bytes_to_ints(input_data["bFactorBig"],4))),OCC_B_FACTOR_DIVIDER)
+        else:
+            self.b_factor = []
+        if "occupancyList" in input_data:
+            self.occupancy = array_converters.convert_ints_to_floats(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["occupancyList"],4)),OCC_B_FACTOR_DIVIDER)
+        else:
+            self.occupancy = []
         # Run length and delta
-        self.atom_id = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["atomIdList"],4)))
+        if "atomIdList" in input_data:
+            self.atom_id = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["atomIdList"],4)))
+        else:
+            self.atom_id = []
         # Run length encoded
-        self.alt_id = array_converters.convert_ints_to_chars(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["altLocList"],4)))
-        self.insertion_code_list = array_converters.convert_ints_to_chars(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["insCodeList"],4)))
+        if "altLocList" in input_data:
+            self.alt_id = array_converters.convert_ints_to_chars(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["altLocList"],4)))
+        else:
+            self.alt_id = []
+        if "insCodeList" in input_data:
+            self.insertion_code_list = array_converters.convert_ints_to_chars(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["insCodeList"],4)))
+        else:
+            self.insertion_code_list = []
         # Get the group_number
         self.group_num = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["groupIdList"],4)))
         # Get the group map (all the unique groups in the structure).
         self.group_map = input_data["groupList"]
         # Get the seq_res groups
-        self.seq_res_group_list = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["sequenceIndexList"],4)))
+        if "sequenceIndexList" in input_data:
+            self.seq_res_group_list = array_decoders.delta_decode(array_decoders.run_length_decode(array_converters.convert_bytes_to_ints(input_data["sequenceIndexList"],4)))
+        else:
+            self.seq_res_group_list = []
         # Get the number of chains per model
         self.chains_per_model = input_data["chainsPerModel"]
         self.groups_per_chain = input_data["groupsPerChain"]
         # Get the internal and public facing chain ids
-        self.public_chain_ids = array_converters.decode_chain_list(input_data["chainNameList"])
+        if "chainNameList" in input_data:
+            self.public_chain_ids = array_converters.decode_chain_list(input_data["chainNameList"])
+        else:
+            self.public_chain_ids = []
         self.chain_list = array_converters.decode_chain_list(input_data["chainIdList"])
         self.space_group = input_data["spaceGroup"]
-        self.unit_cell = input_data["unitCell"]
-        self.bio_assembly  = input_data["bioAssemblyList"]
         self.inter_group_bond_indices = array_converters.convert_bytes_to_ints(input_data["bondAtomList"],4)
         self.inter_group_bond_orders = array_converters.convert_bytes_to_ints(input_data["bondOrderList"],1)
         self.mmtf_version = input_data["mmtfVersion"]
         self.mmtf_producer = input_data["mmtfProducer"]
-        self.entity_list = input_data["entityList"]
         self.pdb_id = input_data["structureId"]
         # Now get the header data
-        self.r_free = input_data["rFree"]
         # Optional fields
+        if "entityList" in input_data:
+            self.entity_list = input_data["entityList"]
+        else:
+            self.entity_list = []
+        if "bioAssemblyList" in input_data:
+            self.bio_assembly = input_data["bioAssemblyList"]
+        else:
+            self.bio_assembly = []
+        if "rFree" in input_data:
+            self.r_free = input_data["rFree"]
+        else:
+            self.r_free = None
         if "rWork" in input_data:
             self.r_work = input_data["rWork"]
         else:
@@ -286,13 +315,24 @@ class DefaultDecoder(DecodedDataInterface):
             self.resolution = input_data["resolution"]
         if "title" in input_data:
             self.title = input_data["title"]
-        self.experimental_methods = input_data["experimentalMethods"]
+        if "experimentalMethods" in input_data:
+            self.experimental_methods = input_data["experimentalMethods"]
+        else:
+            self.experimental_methods = None
         # Now get the relase information
-        self.deposition_date = input_data["depositionDate"]
+        if "depositionData" in input_data:
+            self.deposition_date = input_data["depositionDate"]
+        else:
+            self.deposition_date = None
         if "releaseDate" in input_data:
             self.release_date = input_data["releaseDate"]
         else:
             self.release_date = None
+        if "unitCell" in input_data:
+            self.unit_cell = input_data["unitCell"]
+        else:
+            self.unit_cell = None
+
         self.sec_struct_info = array_converters.convert_bytes_to_ints(input_data["secStructList"],1)
 
     def pass_data_on(self, data_setters):
