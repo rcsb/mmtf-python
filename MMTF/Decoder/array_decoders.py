@@ -1,7 +1,9 @@
 
 
 def run_length_decode(in_array):
-    """A function to run length decode an int array"""
+    """A function to run length decode an int array
+    :param the input array of integers
+    :return the decoded array"""
     switch=False
     out_array=[]
     for item in in_array:
@@ -14,7 +16,9 @@ def run_length_decode(in_array):
     return out_array
 
 def delta_decode(in_array):
-    """A function to delta decode an int array"""
+    """A function to delta decode an int array
+    :param the input array of integers
+    :return the decoded array"""
     if len(in_array)==0:
         return []
     this_ans=in_array[0]

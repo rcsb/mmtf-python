@@ -8,7 +8,8 @@ import decoder_utils
 
 
 def add_atom_data(self, data_setters, atom_names, element_names, atom_charges, atom_counter, group_atom_ind):
-
+    """Add the atomic data to the DataTransferInterface.
+    :param """
     atom_name = atom_names[group_atom_ind]
     element = element_names[group_atom_ind]
     charge = atom_charges[group_atom_ind]
@@ -34,7 +35,7 @@ def add_group(self, data_setters, group_ind):
     atom_count = self.get_num_atoms_in_group(group_type_ind)
 
     current_group_number = self.get_group_ids()[group_ind]
-    #
+
     insertion_code = self.get_ins_codes()[group_ind]
     data_setters.set_group_info(self.get_group_name(group_type_ind), current_group_number, insertion_code, self.get_group_chem_comp_type(group_type_ind), atom_count, self.get_num_bonds(), self.get_group_single_letter_code(group_type_ind), self.get_group_sequence_indices()[group_ind], self.get_sec_struct_list()[group_ind])
     for group_atom_ind in range(atom_count):
