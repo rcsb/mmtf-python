@@ -20,7 +20,7 @@ Quick getting started.
  from MMTF.Decoder.reader_utils import get_decoded_data_from_url
  # Get the data for 4CUP
  decoded_data = get_decoded_data_from_url("4CUP")
- print "PDB Code: "+decoded_data.get_structure_id()+" has "+decoded_data.get_num_chains()+" chains"
+ print "PDB Code: "+decoded_data.get_structure_id()+" has "+str(decoded_data.get_num_chains())+" chains"
 ```
 2) Show the charge information for the first group:
 ```
