@@ -8,8 +8,8 @@
 
 
 # Try it out:
-` #python
+``` #python
  from MMTF.Decoder.reader_utils import get_decoded_data_from_url
  # Get the data for 4CUP
  decoded_data = get_decoded_data_from_url("4CUP")
-`
+```
