@@ -300,8 +300,11 @@ class DefaultDecoder(DecodedDataInterface):
         :type data_setters: DataTransferInterface
         """
         # First initialise the structure
-        data_setters.init_structure(self.get_num_bonds(), self.get_num_atoms(), self.get_num_groups(),
-                                   self.get_num_chains(), self.get_num_models(), self.get_structure_id())
+        num_bonds = len(self.inter_group_bond_orders)
+        for in_int in self.group_list:
+            num_bonds += len(self.group_map[in_int]["bondOrderList"])
+        data_setters.init_structure(num_bonds, len(self.cartnX), len(self.group_list),
+                                   len(self.chain_list), len(self.chains_per_model), self.get_structure_id())
 
         # Set the entity information
         decoder_utils.add_entity_info(self, data_setters)

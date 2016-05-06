@@ -15,7 +15,7 @@ a hierarchy.
 
 Please refer to the full MMTF specification available at
 <a href="http://mmtf.rcsb.org">http://mmtf.rcsb.org</a>.
-Further reference can be found in the <a href="http://mmcif.wwpdb.org/">mm_c_i_f dictionary</a>.
+Further reference can be found in the <a href="http://mmcif.wwpdb.org/">mmCIF dictionary</a>.
 
 :author Anthony Bradley
 :author Jose Duarte"""

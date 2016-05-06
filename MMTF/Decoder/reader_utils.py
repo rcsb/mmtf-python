@@ -26,5 +26,5 @@ def get_decoded_data_from_url(pdb_id):
     :return an API to decoded data """
     get_data_from_url(pdb_id)
     decoder = DefaultDecoder()
-    decoder.decode_data(get_data_from_url("4cup"))
+    decoder.decode_data(get_data_from_url(pdb_id))
     return decoder
