@@ -1,9 +1,7 @@
-from IPython.core.tests.test_inputtransformer import transform_and_reset
-
-from API.interfaces import DecodedDataInterface,DataTransferInterface
+from MMTF.API.interfaces import DecodedDataInterface,DataTransferInterface
+from MMTF.Common.Utils import *
 import array_converters
 import array_decoders
-from Common.Utils import *
 import decoder_utils
 
 
