@@ -24,7 +24,7 @@ Quick getting started.
 ```
 2) Show the charge information for the first group:
 ```
-print "Group name: "+decoded_data.get_group_name(0)+" has the following atomic charges: "+decoded_data.get_group_atom_charges(0))
+ print "Group name: "+decoded_data.get_group_name(0)+" has the following atomic charges: "+",".join([str(x) for x in decoded_data.get_group_atom_charges(0)])
 
 ```
 3) Show how many bioassemblies it has:
