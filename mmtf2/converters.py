@@ -1,4 +1,5 @@
-import struct,mmtf
+import struct
+import mmtf
 
 def combine_integers(small_array, big_array):
     """Combine integer arrays.  The first is an array purely of integers to be added.
