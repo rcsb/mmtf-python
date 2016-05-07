@@ -1,8 +1,10 @@
 import unittest
+
 import msgpack
-import MMTF.Decoder.array_decoders as ad
-import MMTF.Decoder.array_converters as ac
-from MMTF.Decoder import MMTFDecoder
+
+import mmtf.converters as ac
+import mmtf.decoders as ad
+from mmtf import MMTFDecoder
 
 
 class DecoderTests(unittest.TestCase):
@@ -71,11 +73,11 @@ class ConvrterTests(unittest.TestCase):
         combined_array_test = [10002,1,2,5,4,1002,50,0]
         self.assertEqual(combined_array_test, ac.combine_integers(two_byte_int_arr, four_byte_int_arr))
 
-
     def test_decoder(self):
         newDecoder = MMTFDecoder()
         # Check that none of the getters are null
-        newDecoder.decode_data(msgpack.unpackb(open("MMTF/Decoder/tests/testdatastore/4CUP.mmtf").read()))
+        newDecoder.decode_data(msgpack.unpackb(
+            open("mmtf/tests/testdatastore/4CUP.mmtf").read()))
 
 
 if __name__ == '__main__':
