@@ -1,8 +1,8 @@
 import unittest
 import msgpack
-import Decoder.array_decoders as ad
-import Decoder.array_converters as ac
-from Decoder.Decoder import DefaultDecoder
+import MMTF.Decoder.array_decoders as ad
+import MMTF.Decoder.array_converters as ac
+from MMTF.Decoder import MMTFDecoder
 
 
 class DecoderTests(unittest.TestCase):
@@ -73,7 +73,7 @@ class ConvrterTests(unittest.TestCase):
 
 
     def test_decoder(self):
-        newDecoder = DefaultDecoder()
+        newDecoder = MMTFDecoder
         # Check that none of the getters are null
         newDecoder.decode_data(msgpack.unpackb(open("MMTF/Decoder/tests/testdatastore/4CUP.mmtf").read()))
 

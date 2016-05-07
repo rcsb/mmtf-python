@@ -1,5 +1,5 @@
 from MMTF.Common import Utils
-from MMTF.Decoder.Decoder import DefaultDecoder
+from MMTF.Decoder import MMTFDecoder
 import urllib2,msgpack
 
 from StringIO import StringIO
