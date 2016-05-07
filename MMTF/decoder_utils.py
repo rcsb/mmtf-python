@@ -1,4 +1,3 @@
-
 def add_atom_data(data_api, data_setters, atom_names, element_names, atom_charges, atom_counter, group_atom_ind):
     """Add the atomic data to the DataTransferInterface.
     :param """
@@ -22,20 +21,9 @@ def add_group_bonds(data_setters, bond_indices, bond_orders):
 
 
 def add_group(data_api, data_setters, group_ind):
-
     group_type_ind = data_api.group_list[group_ind]
-
     atom_count = len(data_api.group_map[group_type_ind]["atomNameList"])
-
-
-    def get_mmtf_producer(data_api):
-        return data_api.mmtf_producer
-
-    def get_group_bond_orders(data_api, group_ind):
-        return data_api.group_map[group_ind]["bondOrderList"]
-
     current_group_number = data_api.group_list[group_ind]
-
     insertion_code = data_api.insertion_code_list[group_ind]
     data_setters.set_group_info(data_api.group_map[group_type_ind]["groupName"],
                                 current_group_number, insertion_code,
@@ -79,6 +67,7 @@ def add_atomic_information(data_api, data_setters):
             add_chain_info(data_api, data_setters, chain_index)
         data_api.model_counter+=1
 
+
 def generate_bio_assembly(data_api, struct_inflator):
     """Generate the bioassembly data.
     :param data_api the interface to the decoded data
@@ -90,9 +79,6 @@ def generate_bio_assembly(data_api, struct_inflator):
             struct_inflator.set_bio_assembly_trans(bioassembly_count,
                                                    transform["chainIndexList"],
                                                    transform["matrix"])
-
-
-
 
 def add_inter_group_bonds(data_api, struct_inflator):
     """	 Generate inter group bonds.

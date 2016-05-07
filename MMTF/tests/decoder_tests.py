@@ -2,8 +2,8 @@ import unittest
 
 import msgpack
 
-import mmtf.array_converters as ac
-import mmtf.array_decoders as ad
+import mmtf.converters as ac
+import mmtf.decoders as ad
 from mmtf import MMTFDecoder
 
 

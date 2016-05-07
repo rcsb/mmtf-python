@@ -1,7 +1,4 @@
-import struct
-
-from mmtf import Utils
-
+import struct,mmtf
 
 def combine_integers(small_array, big_array):
     """Combine integer arrays.  The first is an array purely of integers to be added.
@@ -33,18 +30,18 @@ def convert_bytes_to_ints(in_bytes, num):
     :return the integer array"""
     out_arr = []
     for i in range(len(in_bytes)/num):
-        out_arr.append(struct.unpack(Utils.NUM_DICT[num], in_bytes[i * num:i * num + num])[0])
+        out_arr.append(struct.unpack(mmtf.NUM_DICT[num], in_bytes[i * num:i * num + num])[0])
     return out_arr
 
 def decode_chain_list(in_bytes):
     """Convert a list of bytes to a list of strings. Each string is of length
-    Utils.CHAIN_LEN
+    mmtf.CHAIN_LEN
     :param the input bytes
     :return the decoded list of strings"""
-    tot_strings = len(in_bytes) / Utils.CHAIN_LEN
+    tot_strings = len(in_bytes) / mmtf.CHAIN_LEN
     out_strings = []
     for i in range(tot_strings):
-        out_s = in_bytes[i * Utils.CHAIN_LEN:i * Utils.CHAIN_LEN + Utils.CHAIN_LEN].strip(Utils.NULL_BYTE)
+        out_s = in_bytes[i * mmtf.CHAIN_LEN:i * mmtf.CHAIN_LEN + mmtf.CHAIN_LEN].strip(mmtf.NULL_BYTE)
         out_strings.append(out_s)
     return out_strings
 
@@ -75,7 +72,7 @@ def split_integers(int_array):
     big_array.append(int_array[0])
     counter = 0
     for in_int in int_array[1:]:
-        if in_int >= Utils.MAX_SHORT:
+        if in_int >= mmtf.MAX_SHORT:
             big_array.append(in_int)
             big_array.append(counter)
         else:
@@ -86,7 +83,7 @@ def split_integers(int_array):
 def convert_ints_to_bytes(in_ints, num):
     out_str = ""
     for in_int in in_ints:
-        out_str+=struct.pack(Utils.NUM_DICT[num], in_int)
+        out_str+=struct.pack(mmtf.NUM_DICT[num], in_int)
     return out_str
 
 
@@ -94,8 +91,8 @@ def encode_chain_list(in_chains):
     out_s = ""
     for chain in in_chains:
         out_s += chain
-        for i in range(Utils.CHAIN_LEN-len(chain)):
-            out_s+= Utils.NULL_BYTE
+        for i in range(mmtf.CHAIN_LEN-len(chain)):
+            out_s+= mmtf.NULL_BYTE
     return out_s
 
 
