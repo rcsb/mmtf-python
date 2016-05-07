@@ -63,7 +63,7 @@ class MMTFDecoder():
         self.inter_group_bond_orders = array_converters.convert_bytes_to_ints(input_data["bondOrderList"],1)
         self.mmtf_version = input_data["mmtfVersion"]
         self.mmtf_producer = input_data["mmtfProducer"]
-        self.pdb_id = input_data["structureId"]
+        self.structure_id = input_data["structureId"]
         # Now get the header data
         # Optional fields
         if "entityList" in input_data:
@@ -115,7 +115,7 @@ class MMTFDecoder():
         :type data_setters: DataTransferInterface
         """
         data_setters.init_structure(self.num_bonds, len(self.cartnX), len(self.group_list),
-                                   len(self.chain_list), len(self.chains_per_model), self.get_structure_id())
+                                   len(self.chain_list), len(self.chains_per_model), self.structure_id)
 
         # Set the entity information
         decoder_utils.add_entity_info(self, data_setters)
