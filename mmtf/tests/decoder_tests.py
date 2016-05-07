@@ -77,7 +77,7 @@ class ConvrterTests(unittest.TestCase):
         newDecoder = MMTFDecoder()
         # Check that none of the getters are null
         newDecoder.decode_data(msgpack.unpackb(
-            open("mmtf/Decoder/tests/testdatastore/4CUP.mmtf").read()))
+            open("mmtf/tests/testdatastore/4CUP.mmtf").read()))
 
 
 if __name__ == '__main__':
