@@ -17,9 +17,9 @@ Quick getting started.
 
 1) Get the data for a PDB structure and print the number of chains:
 ``` #python
-from MMTF.Decoder.reader_utils import get_decoded_data_from_url
+from mmtf import fetch
 # Get the data for 4CUP
-decoded_data = get_decoded_data_from_url("4CUP")
+decoded_data = fetch("4CUP")
 print "PDB Code: "+decoded_data.structure_id+" has "+str(decoded_data.num_chains)+" chains"
 ```
 2) Show the charge information for the first group:

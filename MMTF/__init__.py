@@ -186,7 +186,7 @@ class MMTFDecoder():
         data_setters.finalize_structure()
 
 
-def get_data_from_url(pdb_id):
+def get_raw_data_from_url(pdb_id):
     """" Get the msgpack unpacked data given a PDB id.
     :param the input PDB id
     :return the unpacked data (a dict) """
@@ -202,12 +202,11 @@ def get_data_from_url(pdb_id):
     return out_data
 
 
-def get_decoded_data_from_url(pdb_id):
+def fetch(pdb_id):
     """Return a decoded API to the data from a PDB id
     :param the input PDB id
     :return an API to decoded data """
     timeOne = time.time()
     decoder = MMTFDecoder()
-    decoder.decode_data(get_data_from_url(pdb_id))
-    print time.time()-timeOne
+    decoder.decode_data(get_raw_data_from_url(pdb_id))
     return decoder
