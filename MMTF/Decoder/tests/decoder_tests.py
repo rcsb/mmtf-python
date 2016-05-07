@@ -73,7 +73,7 @@ class ConvrterTests(unittest.TestCase):
 
 
     def test_decoder(self):
-        newDecoder = MMTFDecoder
+        newDecoder = MMTFDecoder()
         # Check that none of the getters are null
         newDecoder.decode_data(msgpack.unpackb(open("MMTF/Decoder/tests/testdatastore/4CUP.mmtf").read()))
 
