@@ -1,15 +1,16 @@
-from MMTF.Common import Utils
-from MMTF.Decoder import MMTFDecoder
-import urllib2,msgpack
-
+import gzip
+import msgpack
+import time
+import urllib2
 from StringIO import StringIO
-import gzip,time
+
+from mmtf import Utils, MMTFDecoder
 
 def get_data_from_url(pdb_id):
     """" Get the msgpack unpacked data given a PDB id.
     :param the input PDB id
     :return the unpacked data (a dict) """
-    url = Utils.BASE_URL+pdb_id
+    url = Utils.BASE_URL + pdb_id
     request = urllib2.Request(url)
     request.add_header('Accept-encoding', 'gzip')
     response = urllib2.urlopen(request)

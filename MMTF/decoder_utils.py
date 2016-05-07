@@ -12,7 +12,8 @@ def add_atom_data(data_api, data_setters, atom_names, element_names, atom_charge
     z = data_api.cartnZ[data_api.atom_counter]
     occupancy = data_api.occupancy[data_api.atom_counter]
     temperature_factor = data_api.b_factor[data_api.atom_counter]
-    data_setters.set_atom_info(atom_name, serial_number, alternative_location_id, x, y, z, occupancy, temperature_factor, element, charge)
+    data_setters.set_atom_info(atom_name, serial_number, alternative_location_id,
+                               x, y, z, occupancy, temperature_factor, element, charge)
 
 
 def add_group_bonds(data_setters, bond_indices, bond_orders):
