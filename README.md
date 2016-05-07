@@ -29,5 +29,5 @@ print "Group name: "+decoded_data.group_map[0]["groupName"]+" has the following 
 ```
 3) Show how many bioassemblies it has:
 ```
-print "PDB Code: "+decoded_data.structure_id+" has "+str(len(data_api.bio_assembly))+" bioassemblies"
+print "PDB Code: "+decoded_data.structure_id+" has "+str(len(decoded_data.bio_assembly))+" bioassemblies"
 ```

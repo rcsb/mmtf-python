@@ -110,6 +110,11 @@ class MMTFDecoder():
         for in_int in self.group_list:
             self.num_bonds += len(self.group_map[in_int]["bondOrderList"])
 
+        self.num_chains = len(self.chain_list)
+        self.num_models = len(self.chains_per_model)
+        self.num_atoms = len(self.cartnY)
+        self.num_groups = len(self.group_list)
+
     def pass_data_on(self, data_setters):
         """Write the data from the getters to the setters
         :type data_setters: DataTransferInterface
