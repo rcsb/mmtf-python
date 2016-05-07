@@ -25,7 +25,7 @@ def get_decoded_data_from_url(pdb_id):
     :param the input PDB id
     :return an API to decoded data """
     timeOne = time.time()
-    decoder = DefaultDecoder()
+    decoder = MMTFDecoder()
     decoder.decode_data(get_data_from_url(pdb_id))
     print time.time()-timeOne
     return decoder

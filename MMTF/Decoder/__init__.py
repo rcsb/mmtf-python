@@ -1,180 +1,15 @@
 import decoder_utils
 from MMTF.Common.Utils import  *
-from MMTF.API.interfaces import DecodedDataInterface
 import array_converters
 import array_decoders
 
 
-class MMTFDecoder(DecodedDataInterface):
+class MMTFDecoder():
+
     model_counter = 0
     chain_counter = 0
     group_counter = 0
     atom_counter = 0
-    def get_rwork(self):
-        return self.r_work
-
-    def get_num_atoms(self):
-        return len(self.cartnX)
-
-    def get_group_atom_charges(self, group_ind):
-        return self.group_map[group_ind]["atomChargeList"]
-
-    def get_atom_ids(self):
-        return self.atom_id
-
-    def get_b_factors(self):
-        return self.b_factor
-
-    def get_num_entities(self):
-        return len(self.entity_list)
-
-    def get_release_date(self):
-        return self.release_date
-
-    def get_structure_id(self):
-        return self.pdb_id
-
-    def get_resolution(self):
-        return self.resolution
-
-    def get_space_group(self):
-        return self.space_group
-
-    def get_group_atom_names(self, group_ind):
-        return self.group_map[group_ind]["atomNameList"]
-
-    def get_mmtf_producer(self):
-        return self.mmtf_producer
-
-    def get_num_atoms_in_group(self, group_ind):
-        return len(self.group_map[group_ind]["atomNameList"])
-
-    def get_group_bond_orders(self, group_ind):
-        return self.group_map[group_ind]["bondOrderList"]
-
-    def get_num_bonds(self):
-        num_bonds = len(self.inter_group_bond_orders)
-        for in_int in self.group_list:
-            num_bonds += len(self.group_map[in_int]["bondOrderList"])
-        return num_bonds
-
-    def get_groups_per_chain(self):
-        return self.groups_per_chain
-
-    def get_group_sequence_indices(self):
-        return self.seq_res_group_list
-
-    def get_ins_codes(self):
-        return self.insertion_code_list
-
-    def get_alt_loc_ids(self):
-        return self.alt_id
-
-    def get_group_ids(self):
-        return self.group_num
-
-    def get_inter_group_bond_indices(self):
-        return self.inter_group_bond_indices
-
-    def get_group_type_indices(self):
-        return self.group_list
-
-    def get_x_coords(self):
-        return self.cartnX
-
-    def get_num_chains(self):
-        sum = 0
-        for x in self.chains_per_model:
-            sum+=x
-        return x
-
-    def get_chain_ids(self):
-        return self.chain_list
-
-    def get_deposition_date(self):
-        return self.deposition_date
-
-    def get_title(self):
-        return self.title
-
-    def get_num_models(self):
-        return len(self.chains_per_model)
-
-    def get_sec_struct_list(self):
-        return self.sec_struct_info
-
-    def get_group_chem_comp_type(self, group_ind):
-        return self.group_map[group_ind]["chemCompType"]
-
-    def get_mmtf_version(self):
-        return self.mmtf_version
-
-    def get_group_bond_indices(self, group_ind):
-        return self.group_map[group_ind]["bondAtomList"]
-
-    def get_chain_names(self):
-        return self.public_chain_ids
-
-    def get_experimental_methods(self):
-        return self.experimental_methods
-
-    def get_group_single_letter_code(self, group_ind):
-        return self.group_map[group_ind]["singleLetterCode"]
-
-    def get_z_coords(self):
-        return self.cartnZ
-
-
-    def get_group_name(self, group_ind):
-        return self.group_map[group_ind]["groupName"]
-
-    def get_rfree(self):
-        return self.r_free
-
-    def get_chains_per_model(self):
-        return self.chains_per_model
-
-    def get_inter_group_bond_orders(self):
-        return self.inter_group_bond_orders
-
-    def get_num_bioassemblies(self):
-        return len(self.bio_assembly)
-
-    def get_num_groups(self):
-        return len(self.group_list)
-
-    def get_y_coords(self):
-        return self.cartnY
-
-    def get_group_element_names(self, group_ind):
-        return self.group_map[group_ind]["elementList"]
-
-    def get_occupancies(self):
-        return self.occupancy
-
-    def get_unit_cell(self):
-        return self.unit_cell
-
-    def get_chain_index_list_for_transform(self, bioassembly_index, transformation_index):
-        return self.bio_assembly[bioassembly_index]["transformList"][transformation_index]["chainIndexList"]
-
-    def get_matrix_for_transform(self, bioassembly_index, transformation_index):
-        return self.bio_assembly[bioassembly_index]["transformList"][transformation_index]["matrix"]
-
-    def get_num_trans_in_bioassembly(self, bioassembly_index):
-        return len(self.bio_assembly[bioassembly_index]["transformList"])
-
-    def get_entity_description(self, entity_ind):
-        return self.entity_list[entity_ind]["description"]
-
-    def get_entity_chain_index_list(self, entity_ind):
-        return self.entity_list[entity_ind]["chainIndexList"]
-
-    def get_entity_type(self, entity_ind):
-        return self.entity_list[entity_ind]["type"]
-
-    def get_entity_sequence(self, entity_ind):
-        return self.entity_list[entity_ind]["sequence"]
 
     def decode_data(self, input_data):
         self.group_list = array_converters.convert_bytes_to_ints(input_data["groupTypeList"],4)
@@ -271,15 +106,15 @@ class MMTFDecoder(DecodedDataInterface):
 
         self.sec_struct_info = array_converters.convert_bytes_to_ints(input_data["secStructList"],1)
 
+        self.num_bonds = len(self.inter_group_bond_orders)
+        for in_int in self.group_list:
+            self.num_bonds += len(self.group_map[in_int]["bondOrderList"])
+
     def pass_data_on(self, data_setters):
         """Write the data from the getters to the setters
         :type data_setters: DataTransferInterface
         """
-        # First initialise the structure
-        num_bonds = len(self.inter_group_bond_orders)
-        for in_int in self.group_list:
-            num_bonds += len(self.group_map[in_int]["bondOrderList"])
-        data_setters.init_structure(num_bonds, len(self.cartnX), len(self.group_list),
+        data_setters.init_structure(self.num_bonds, len(self.cartnX), len(self.group_list),
                                    len(self.chain_list), len(self.chains_per_model), self.get_structure_id())
 
         # Set the entity information
