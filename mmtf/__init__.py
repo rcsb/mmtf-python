@@ -2,11 +2,8 @@ import gzip
 import time
 import urllib2
 from StringIO import StringIO
-from abc import ABCMeta, abstractmethod
-
 import msgpack
-
-import converters, decoders, decoder_utils
+from mmtf import converters, decoders, decoder_utils
 
 COORD_DIVIDER = 1000.0
 OCC_B_FACTOR_DIVIDER = 100.0
