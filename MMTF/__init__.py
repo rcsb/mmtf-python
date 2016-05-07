@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from mmtf import array_converters, array_decoders, COORD_DIVIDER, OCC_B_FACTOR_DIVIDER, decoder_utils
+from mmtf import array_converters, array_decoders, decoder_utils
 from mmtf.Utils import COORD_DIVIDER, OCC_B_FACTOR_DIVIDER
 
 
