@@ -6,7 +6,7 @@ from abc import ABCMeta, abstractmethod
 
 import msgpack
 
-from mmtf import converters, decoders, decoder_utils
+import converters, decoders, decoder_utils
 
 COORD_DIVIDER = 1000.0
 OCC_B_FACTOR_DIVIDER = 100.0
