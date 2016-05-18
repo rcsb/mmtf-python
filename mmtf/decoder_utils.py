@@ -22,26 +22,26 @@ def add_group_bonds(data_setters, bond_indices, bond_orders):
 
 def add_group(data_api, data_setters, group_ind):
     group_type_ind = data_api.group_list[group_ind]
-    atom_count = len(data_api.group_map[group_type_ind]["atomNameList"])
+    atom_count = len(data_api.group_map[group_type_ind][b"atomNameList"])
     current_group_number = data_api.group_list[group_ind]
     insertion_code = data_api.insertion_code_list[group_ind]
-    data_setters.set_group_info(data_api.group_map[group_type_ind]["groupName"],
+    data_setters.set_group_info(data_api.group_map[group_type_ind][b"groupName"],
                                 current_group_number, insertion_code,
-                                data_api.group_map[group_type_ind]["chemCompType"],
+                                data_api.group_map[group_type_ind][b"chemCompType"],
                                 atom_count, data_api.num_bonds,
-                                data_api.group_map[group_type_ind]["singleLetterCode"],
+                                data_api.group_map[group_type_ind][b"singleLetterCode"],
                                 data_api.seq_res_group_list[group_ind],
                                 data_api.sec_struct_info[group_ind])
     for group_atom_ind in range(atom_count):
         add_atom_data(data_api, data_setters,
-                      data_api.group_map[group_type_ind]["atomNameList"],
-                      data_api.group_map[group_type_ind]["elementList"],
-                      data_api.group_map[group_type_ind]["atomChargeList"],
+                      data_api.group_map[group_type_ind][b"atomNameList"],
+                      data_api.group_map[group_type_ind][b"elementList"],
+                      data_api.group_map[group_type_ind][b"atomChargeList"],
                       data_api.atom_counter, group_atom_ind)
         data_api.atom_counter +=1
     add_group_bonds(data_setters,
-                    data_api.group_map[group_type_ind]["bondAtomList"],
-                    data_api.group_map[group_type_ind]["bondOrderList"])
+                    data_api.group_map[group_type_ind][b"bondAtomList"],
+                    data_api.group_map[group_type_ind][b"bondOrderList"])
     return atom_count
 
 
@@ -75,10 +75,10 @@ def generate_bio_assembly(data_api, struct_inflator):
     bioassembly_count = 0
     for bioassembly in data_api.bio_assembly:
         bioassembly_count += 1
-        for transform in bioassembly["transformList"]:
+        for transform in bioassembly[b"transformList"]:
             struct_inflator.set_bio_assembly_trans(bioassembly_count,
-                                                   transform["chainIndexList"],
-                                                   transform["matrix"])
+                                                   transform[b"chainIndexList"],
+                                                   transform[b"matrix"])
 
 def add_inter_group_bonds(data_api, struct_inflator):
     """	 Generate inter group bonds.
@@ -123,7 +123,7 @@ def add_entity_info( data_api, struct_inflator):
     :param struct_inflator the interface to put the data into the client object
     """
     for entity in data_api.entity_list:
-        struct_inflator.set_entity_info(entity["chainIndexList"],
-                                        entity["sequence"],
-                                        entity["description"],
-                                        entity["type"])
+        struct_inflator.set_entity_info(entity[b"chainIndexList"],
+                                        entity[b"sequence"],
+                                        entity[b"description"],
+                                        entity[b"type"])

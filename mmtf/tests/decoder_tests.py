@@ -36,7 +36,7 @@ class DecoderTests(unittest.TestCase):
 class ConverterTests(unittest.TestCase):
 
     def test_convert_chain_list(self):
-        in_bytes = 'A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00'
+        in_bytes = b'A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00'
         out_strings_test =  ["A", "A","A","A","A","A"]
         self.assertEqual(out_strings_test, ac.decode_chain_list(in_bytes))
 
@@ -47,18 +47,18 @@ class ConverterTests(unittest.TestCase):
 
 
     def test_convert_one_byte_int(self):
-        in_bytes = '\x07\x06\x06\x07\x07'
+        in_bytes = b'\x07\x06\x06\x07\x07'
         out_array_test = [7,6,6,7,7]
         self.assertEqual(out_array_test, ac.convert_bytes_to_ints(in_bytes,1))
 
 
     def test_convert_two_byte_int(self):
-        in_bytes = '\x00\x00\x00\x01\x00\x02\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02'
+        in_bytes = b'\x00\x00\x00\x01\x00\x02\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02'
         out_array_test = [0,1,2,1,0,0,0,2]
         self.assertEqual(out_array_test, ac.convert_bytes_to_ints(in_bytes,2))
 
     def test_convert_four_byte_int(self):
-        in_bytes = '\x00\x00\x00\x01\x00\x02\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02'
+        in_bytes = b'\x00\x00\x00\x01\x00\x02\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02'
         out_array_test = [1, 131073, 0, 2]
         self.assertEqual(out_array_test, ac.convert_bytes_to_ints(in_bytes,4))
 

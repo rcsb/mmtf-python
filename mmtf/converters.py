@@ -33,7 +33,9 @@ def convert_bytes_to_ints(in_bytes, num):
     :return the integer array"""
     out_arr = []
     for i in range(len(in_bytes)//num):
-        out_arr.append(struct.unpack(mmtf.NUM_DICT[num], in_bytes[i * num:i * num + num])[0])
+        val = in_bytes[i * num:i * num + num]
+        unpacked = struct.unpack(mmtf.NUM_DICT[num], val)
+        out_arr.append(unpacked[0])
     return out_arr
 
 def decode_chain_list(in_bytes):
@@ -44,8 +46,8 @@ def decode_chain_list(in_bytes):
     tot_strings = len(in_bytes) // mmtf.CHAIN_LEN
     out_strings = []
     for i in range(tot_strings):
-        out_s = in_bytes[i * mmtf.CHAIN_LEN:i * mmtf.CHAIN_LEN + mmtf.CHAIN_LEN].strip(mmtf.NULL_BYTE)
-        out_strings.append(out_s)
+        out_s = in_bytes[i * mmtf.CHAIN_LEN:i * mmtf.CHAIN_LEN + mmtf.CHAIN_LEN]
+        out_strings.append(out_s.decode("utf-8").strip(mmtf.NULL_BYTE))
     return out_strings
 
 def convert_ints_to_floats(in_ints, divider):

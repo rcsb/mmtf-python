@@ -27,35 +27,35 @@ class MMTFDecoder():
     atom_counter = 0
 
     def decode_data(self, input_data):
-        self.group_list = converters.convert_bytes_to_ints(input_data["groupTypeList"], 4)
+        self.group_list = converters.convert_bytes_to_ints(input_data[b"groupTypeList"], 4)
         # Decode the coordinate  and B-factor arrays.
         self.cartnX = converters.convert_ints_to_floats(
             decoders.delta_decode(
                 converters.combine_integers(
-                    converters.convert_bytes_to_ints(input_data["xCoordSmall"], 2),
-                    converters.convert_bytes_to_ints(input_data["xCoordBig"], 4))),
+                    converters.convert_bytes_to_ints(input_data[b"xCoordSmall"], 2),
+                    converters.convert_bytes_to_ints(input_data[b"xCoordBig"], 4))),
             COORD_DIVIDER )
         self.cartnY = converters.convert_ints_to_floats(
             decoders.delta_decode(
                 converters.combine_integers(
                     converters.convert_bytes_to_ints(
-                        input_data["yCoordSmall"],2),
-                    converters.convert_bytes_to_ints(input_data["yCoordBig"], 4))),
+                        input_data[b"yCoordSmall"],2),
+                    converters.convert_bytes_to_ints(input_data[b"yCoordBig"], 4))),
             COORD_DIVIDER )
         self.cartnZ = converters.convert_ints_to_floats(
             decoders.delta_decode(
                 converters.combine_integers(
                     converters.convert_bytes_to_ints(
-                        input_data["zCoordSmall"],2),
-                    converters.convert_bytes_to_ints(input_data["zCoordBig"], 4))),
+                        input_data[b"zCoordSmall"],2),
+                    converters.convert_bytes_to_ints(input_data[b"zCoordBig"], 4))),
             COORD_DIVIDER)
         # Run length decode the occupancy array
         if "bFactorSmall" in input_data and "bFactorBig" in input_data:
             self.b_factor = converters.convert_ints_to_floats(
                 decoders.delta_decode(
                     converters.combine_integers(
-                        converters.convert_bytes_to_ints(input_data["bFactorSmall"], 2),
-                        converters.convert_bytes_to_ints(input_data["bFactorBig"], 4))),
+                        converters.convert_bytes_to_ints(input_data[b"bFactorSmall"], 2),
+                        converters.convert_bytes_to_ints(input_data[b"bFactorBig"], 4))),
                 OCC_B_FACTOR_DIVIDER)
         else:
             self.b_factor = []
@@ -63,7 +63,7 @@ class MMTFDecoder():
             self.occupancy = converters.convert_ints_to_floats(
                 decoders.run_length_decode(
                     converters.convert_bytes_to_ints(
-                        input_data["occupancyList"],4)),
+                        input_data[b"occupancyList"],4)),
                 OCC_B_FACTOR_DIVIDER)
         else:
             self.occupancy = []
@@ -71,95 +71,95 @@ class MMTFDecoder():
         if "atomIdList" in input_data:
             self.atom_id = decoders.delta_decode(
                 decoders.run_length_decode(
-                    converters.convert_bytes_to_ints(input_data["atomIdList"], 4)))
+                    converters.convert_bytes_to_ints(input_data[b"atomIdList"], 4)))
         else:
             self.atom_id = []
         # Run length encoded
         if "altLocList" in input_data:
             self.alt_id = converters.convert_ints_to_chars(
                 decoders.run_length_decode(
-                    converters.convert_bytes_to_ints(input_data["altLocList"], 4)))
+                    converters.convert_bytes_to_ints(input_data[b"altLocList"], 4)))
         else:
             self.alt_id = []
         if "insCodeList" in input_data:
             self.insertion_code_list = converters.convert_ints_to_chars(
                 decoders.run_length_decode(
-                    converters.convert_bytes_to_ints(input_data["insCodeList"], 4)))
+                    converters.convert_bytes_to_ints(input_data[b"insCodeList"], 4)))
         else:
             self.insertion_code_list = []
         # Get the group_number
         self.group_num = decoders.delta_decode(
             decoders.run_length_decode(
-                converters.convert_bytes_to_ints(input_data["groupIdList"], 4)))
+                converters.convert_bytes_to_ints(input_data[b"groupIdList"], 4)))
         # Get the group map (all the unique groups in the structure).
-        self.group_map = input_data["groupList"]
+        self.group_map = input_data[b"groupList"]
         # Get the seq_res groups
         if "sequenceIndexList" in input_data:
             self.seq_res_group_list = decoders.delta_decode(
                 decoders.run_length_decode(
-                    converters.convert_bytes_to_ints(input_data["sequenceIndexList"], 4)))
+                    converters.convert_bytes_to_ints(input_data[b"sequenceIndexList"], 4)))
         else:
             self.seq_res_group_list = []
         # Get the number of chains per model
-        self.chains_per_model = input_data["chainsPerModel"]
-        self.groups_per_chain = input_data["groupsPerChain"]
+        self.chains_per_model = input_data[b"chainsPerModel"]
+        self.groups_per_chain = input_data[b"groupsPerChain"]
         # Get the internal and public facing chain ids
         if "chainNameList" in input_data:
-            self.public_chain_ids = converters.decode_chain_list(input_data["chainNameList"])
+            self.public_chain_ids = converters.decode_chain_list(input_data[b"chainNameList"])
         else:
             self.public_chain_ids = []
-        self.chain_list = converters.decode_chain_list(input_data["chainIdList"])
-        self.space_group = input_data["spaceGroup"]
-        self.inter_group_bond_indices = converters.convert_bytes_to_ints(input_data["bondAtomList"], 4)
-        self.inter_group_bond_orders = converters.convert_bytes_to_ints(input_data["bondOrderList"], 1)
-        self.mmtf_version = input_data["mmtfVersion"]
-        self.mmtf_producer = input_data["mmtfProducer"]
-        self.structure_id = input_data["structureId"]
+        self.chain_list = converters.decode_chain_list(input_data[b"chainIdList"])
+        self.space_group = input_data[b"spaceGroup"]
+        self.inter_group_bond_indices = converters.convert_bytes_to_ints(input_data[b"bondAtomList"], 4)
+        self.inter_group_bond_orders = converters.convert_bytes_to_ints(input_data[b"bondOrderList"], 1)
+        self.mmtf_version = input_data[b"mmtfVersion"]
+        self.mmtf_producer = input_data[b"mmtfProducer"]
+        self.structure_id = input_data[b"structureId"]
         # Now get the header data
         # Optional fields
         if "entityList" in input_data:
-            self.entity_list = input_data["entityList"]
+            self.entity_list = input_data[b"entityList"]
         else:
             self.entity_list = []
         if "bioAssemblyList" in input_data:
-            self.bio_assembly = input_data["bioAssemblyList"]
+            self.bio_assembly = input_data[b"bioAssemblyList"]
         else:
             self.bio_assembly = []
         if "rFree" in input_data:
-            self.r_free = input_data["rFree"]
+            self.r_free = input_data[b"rFree"]
         else:
             self.r_free = None
         if "rWork" in input_data:
-            self.r_work = input_data["rWork"]
+            self.r_work = input_data[b"rWork"]
         else:
             self.r_work = None
         if "resolution" in input_data:
-            self.resolution = input_data["resolution"]
+            self.resolution = input_data[b"resolution"]
         if "title" in input_data:
-            self.title = input_data["title"]
+            self.title = input_data[b"title"]
         if "experimentalMethods" in input_data:
-            self.experimental_methods = input_data["experimentalMethods"]
+            self.experimental_methods = input_data[b"experimentalMethods"]
         else:
             self.experimental_methods = None
         # Now get the relase information
         if "depositionData" in input_data:
-            self.deposition_date = input_data["depositionDate"]
+            self.deposition_date = input_data[b"depositionDate"]
         else:
             self.deposition_date = None
         if "releaseDate" in input_data:
-            self.release_date = input_data["releaseDate"]
+            self.release_date = input_data[b"releaseDate"]
         else:
             self.release_date = None
         if "unitCell" in input_data:
-            self.unit_cell = input_data["unitCell"]
+            self.unit_cell = input_data[b"unitCell"]
         else:
             self.unit_cell = None
 
-        self.sec_struct_info = converters.convert_bytes_to_ints(input_data["secStructList"], 1)
+        self.sec_struct_info = converters.convert_bytes_to_ints(input_data[b"secStructList"], 1)
 
         self.num_bonds = len(self.inter_group_bond_orders)
         for in_int in self.group_list:
-            self.num_bonds += len(self.group_map[in_int]["bondOrderList"])
+            self.num_bonds += len(self.group_map[in_int][b"bondOrderList"])
 
         self.num_chains = len(self.chain_list)
         self.num_models = len(self.chains_per_model)
