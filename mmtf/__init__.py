@@ -1,7 +1,12 @@
 import gzip
 import time
-import urllib2
-from StringIO import StringIO
+try:
+    import urllib2
+    from StringIO import StringIO
+except:
+    import urllib.request as urllib2
+    from io import StringIO
+
 import msgpack
 from mmtf import converters, decoders, decoder_utils
 
