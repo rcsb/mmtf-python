@@ -5,7 +5,7 @@ try:
     from StringIO import StringIO
 except:
     import urllib.request as urllib2
-    from io import StringIO
+    from io import BytesIO as StringIO
 
 import msgpack
 from mmtf import converters, decoders, decoder_utils
