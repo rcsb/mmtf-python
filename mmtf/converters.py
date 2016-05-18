@@ -98,6 +98,7 @@ def encode_chain_list(in_chains):
 
 
 def convert_floats_to_ints(in_ints, multiplier):
+    ### THIS CAN BE OPTIMISED BY USING A GENERATOR AND NOT AN ITERATOR????
     out_floats = []
     for in_int in in_ints:
         out_floats.append(int(in_int * multiplier))

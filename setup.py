@@ -25,7 +25,7 @@ setup(
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/abradle/python-parser.git',
+    url='https://github.com/rcsb/mmtf-python.git',
 
     # Author details
     author='Anthony Bradley',
