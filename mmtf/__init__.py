@@ -197,9 +197,7 @@ def get_raw_data_from_url(pdb_id):
     request.add_header('Accept-encoding', 'gzip')
     response = urllib2.urlopen(request)
     if response.info().get('Content-Encoding') == 'gzip':
-        buf = StringIO(response.read())
-        f = gzip.GzipFile(fileobj=buf)
-        data = f.read()
+        data = ungzip_data(response.read())
     out_data = msgpack.unpackb(data)
     return out_data
 
@@ -212,3 +210,10 @@ def fetch(pdb_id):
     decoder = MMTFDecoder()
     decoder.decode_data(get_raw_data_from_url(pdb_id))
     return decoder
+
+
+def ungzip_data(input_data):
+    buf = StringIO(input_data)
+    f = gzip.GzipFile(fileobj=buf)
+    data = f.read()
+    return data

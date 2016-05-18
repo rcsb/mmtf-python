@@ -79,6 +79,10 @@ class ConverterTests(unittest.TestCase):
         newDecoder.decode_data(msgpack.unpackb(
             open("mmtf/tests/testdatastore/4CUP.mmtf","rb").read()))
 
+    def test_gzip_open(self):
+        from mmtf import ungzip_data
+        ungzip_data(open("mmtf/tests/testdatastore/4CUP.mmtf.gz","rb").read())
+
 
 if __name__ == '__main__':
     unittest.main()
