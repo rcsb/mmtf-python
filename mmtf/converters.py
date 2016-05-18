@@ -1,5 +1,7 @@
 import struct
 import mmtf
+from __future__ import division
+
 
 def combine_integers(small_array, big_array):
     """Combine integer arrays.  The first is an array purely of integers to be added.
@@ -10,7 +12,7 @@ def combine_integers(small_array, big_array):
 	 is to be added to the output array. The second in the pair is the number of
 	 integers to read from the first array.
 	 :return the integer array output """
-    tot_count = len(big_array)/2
+    tot_count = len(big_array)//2
     start = 0
     out_array = []
     
@@ -30,7 +32,7 @@ def convert_bytes_to_ints(in_bytes, num):
     :param the number of bytes per int
     :return the integer array"""
     out_arr = []
-    for i in range(len(in_bytes)/num):
+    for i in range(len(in_bytes)//num):
         out_arr.append(struct.unpack(mmtf.NUM_DICT[num], in_bytes[i * num:i * num + num])[0])
     return out_arr
 
@@ -39,7 +41,7 @@ def decode_chain_list(in_bytes):
     mmtf.CHAIN_LEN
     :param the input bytes
     :return the decoded list of strings"""
-    tot_strings = len(in_bytes) / mmtf.CHAIN_LEN
+    tot_strings = len(in_bytes) // mmtf.CHAIN_LEN
     out_strings = []
     for i in range(tot_strings):
         out_s = in_bytes[i * mmtf.CHAIN_LEN:i * mmtf.CHAIN_LEN + mmtf.CHAIN_LEN].strip(mmtf.NULL_BYTE)

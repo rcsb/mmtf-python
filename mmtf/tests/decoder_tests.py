@@ -33,7 +33,7 @@ class DecoderTests(unittest.TestCase):
         output_data = ad.delta_decode(input_data)
         self.assertEqual(output_data, output_data_test)
 
-class ConvrterTests(unittest.TestCase):
+class ConverterTests(unittest.TestCase):
 
     def test_convert_chain_list(self):
         in_bytes = 'A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00'
@@ -77,7 +77,7 @@ class ConvrterTests(unittest.TestCase):
         newDecoder = MMTFDecoder()
         # Check that none of the getters are null
         newDecoder.decode_data(msgpack.unpackb(
-            open("mmtf/tests/testdatastore/4CUP.mmtf").read()))
+            open("mmtf/tests/testdatastore/4CUP.mmtf","rb").read()))
 
 
 if __name__ == '__main__':
