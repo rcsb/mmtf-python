@@ -1,6 +1,6 @@
+from __future__ import division
 import struct
 import mmtf
-from __future__ import division
 
 
 def combine_integers(small_array, big_array):
