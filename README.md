@@ -6,7 +6,7 @@
 
 The **m**acro**m**olecular **t**ransmission **f**ormat (MMTF) is a binary encoding of biological structures.
 
-This repository holds the Python API, encoding and decoding libraries. 
+This repository holds the Python 2 and 3 compatible API, encoding and decoding libraries. 
 
 The alpha release is available from pip:
 ```
