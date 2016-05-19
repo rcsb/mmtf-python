@@ -117,40 +117,40 @@ class MMTFDecoder():
         self.structure_id = input_data[b"structureId"]
         # Now get the header data
         # Optional fields
-        if "entityList" in input_data:
+        if b"entityList" in input_data:
             self.entity_list = input_data[b"entityList"]
         else:
             self.entity_list = []
-        if "bioAssemblyList" in input_data:
+        if b"bioAssemblyList" in input_data:
             self.bio_assembly = input_data[b"bioAssemblyList"]
         else:
             self.bio_assembly = []
-        if "rFree" in input_data:
+        if b"rFree" in input_data:
             self.r_free = input_data[b"rFree"]
         else:
             self.r_free = None
-        if "rWork" in input_data:
+        if b"rWork" in input_data:
             self.r_work = input_data[b"rWork"]
         else:
             self.r_work = None
-        if "resolution" in input_data:
+        if b"resolution" in input_data:
             self.resolution = input_data[b"resolution"]
-        if "title" in input_data:
+        if b"title" in input_data:
             self.title = input_data[b"title"]
-        if "experimentalMethods" in input_data:
+        if b"experimentalMethods" in input_data:
             self.experimental_methods = input_data[b"experimentalMethods"]
         else:
             self.experimental_methods = None
         # Now get the relase information
-        if "depositionData" in input_data:
+        if b"depositionData" in input_data:
             self.deposition_date = input_data[b"depositionDate"]
         else:
             self.deposition_date = None
-        if "releaseDate" in input_data:
+        if b"releaseDate" in input_data:
             self.release_date = input_data[b"releaseDate"]
         else:
             self.release_date = None
-        if "unitCell" in input_data:
+        if b"unitCell" in input_data:
             self.unit_cell = input_data[b"unitCell"]
         else:
             self.unit_cell = None
