@@ -1,7 +1,7 @@
 from __future__ import division
 import struct
 import mmtf
-
+import math
 
 def combine_integers(small_array, big_array):
     """Combine integer arrays.  The first is an array purely of integers to be added.
@@ -84,6 +84,37 @@ def split_integers(int_array):
             small_array.append(in_int)
             counter+=1
 
+def recursive_index_encode(int_array, max=32767, min=-32768):
+    """Pack an integer array using recursive indexing"""
+    out_arr = []
+    for curr in int_array:
+        if curr >= 0 :
+            while curr >= max:
+                out_arr.append(max)
+                curr -=  max
+        else:
+            while curr <= min:
+                out_arr.append(min)
+                curr += math.fabs(min)
+        out_arr.append(curr)
+    return out_arr
+
+
+def recursive_index_decode(int_array, max=32767, min=-32768):
+    """Unpack an array of integers using recursive indexing"""
+    out_arr = []
+    encoded_ind = 0
+    while encoded_ind < len(int_array):
+        decoded_val = 0
+        while int_array[encoded_ind]==max or int_array[encoded_ind]==min:
+            decoded_val += int_array[encoded_ind]
+            encoded_ind+=1
+            if int_array[encoded_ind]==0:
+                break
+        decoded_val += int_array[encoded_ind]
+        encoded_ind+=1
+        out_arr.append(decoded_val)
+    return out_arr
 
 def convert_ints_to_bytes(in_ints, num):
     out_str = ""
@@ -102,7 +133,7 @@ def encode_chain_list(in_chains):
 
 
 def convert_floats_to_ints(in_ints, multiplier):
-    ### THIS CAN BE OPTIMISED BY USING A GENERATOR AND NOT AN ITERATOR????
+    """Convert floating points to integers using a multiplier"""
     out_floats = []
     for in_int in in_ints:
         out_floats.append(int(in_int * multiplier))

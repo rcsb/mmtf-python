@@ -51,6 +51,19 @@ class ConverterTests(unittest.TestCase):
         out_array_test = [7,6,6,7,7]
         self.assertEqual(out_array_test, ac.convert_bytes_to_ints(in_bytes,1))
 
+    def test_recursive_enc(self):
+        in_arr = [1,420,32767,120,-32768,34767]
+        out_array_test = [1,420,32767,0,120,-32768,0,32767,2000]
+        self.assertEqual(out_array_test, ac.recursive_index_encode(in_arr))
+
+    def test_recursive_dec(self):
+        in_arr = [1,420,32767,0,120,-32768,0,32767,2000]
+        out_array_test = [1,420,32767,120,-32768,34767]
+        self.assertEqual(out_array_test, ac.recursive_index_decode(in_arr))
+
+    def test_recursive_round(self):
+        in_arr = [1,420,32767,120,-32768,34767]
+        self.assertEqual(in_arr, ac.recursive_index_decode(ac.recursive_index_encode(in_arr)))
 
     def test_convert_two_byte_int(self):
         in_bytes = b'\x00\x00\x00\x01\x00\x02\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02'
