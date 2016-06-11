@@ -61,5 +61,4 @@ decoder_dict = {10: DeltaRecursiveFloat,
 
 def decode_array(input_array):
     codec,length,param,input_array = parse_header(input_array)
-    print codec
     return decoder_dict[codec].decode(input_array,param)
