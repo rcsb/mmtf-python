@@ -7,6 +7,49 @@ import mmtf.decoders as ad
 from mmtf import codecs
 from mmtf import MMTFDecoder
 
+# 10: DeltaRecursiveFloat,
+# 9: RunLengthFloat,
+# 8: RunLengthDeltaInt,
+# 6: RunLengthChar,
+# 5: EncodeString,
+# 4: ByteToInt,
+# 2: FourByteToInt}
+
+class CodecDecoderTest(unittest.TestCase):
+    def test_delt_rec_float(self):
+        test_data = b'\x7f\xffD\xab\x01\x8f\xff\xca'
+        output_data = [50.346, 50.745, 50.691]
+        self.assertEqual(codecs.decoder_dict[10].decode(test_data,1000),output_data)
+
+    def test_run_len_float(self):
+        test_data = b'\x00\x00\x00d\x00\x00\x00\x03'
+        output_data = [1.00,1.00,1.00]
+        self.assertEqual(codecs.decoder_dict[9].decode(test_data,100),output_data)
+
+    def test_run_len_delta_int(self):
+        test_data = b'\x00\x00\x00\x01\x00\x00\x00\x07'
+        output_data = [1,2,3,4,5,6,7]
+        self.assertEqual(codecs.decoder_dict[8].decode(test_data,0),output_data)
+
+    def test_run_len_char(self):
+        test_data = b'\x00\x00\x00\x41\x00\x00\x00\x04'
+        output_data = ["A","A","A","A"]
+        self.assertEqual(codecs.decoder_dict[6].decode(test_data,0),output_data)
+
+    def test_enc_str(self):
+        test_data = b'B\x00\x00\x00A\x00\x00\x00C\x00\x00\x00A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00'
+        output_data =  ["B","A","C","A","A","A"]
+        self.assertEqual(codecs.decoder_dict[5].decode(test_data,0),output_data)
+
+    def test_byte_to_int(self):
+        test_data =  b'\x07\x06\x06\x07\x07'
+        output_data = [7,6,6,7,7]
+        self.assertEqual(codecs.decoder_dict[4].decode(test_data,1),output_data)
+
+    def test_four_byte_int(self):
+        test_data = b'\x00\x00\x00\x01\x00\x02\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02'
+        output_data = [1, 131073, 0, 2]
+        self.assertEqual(codecs.decoder_dict[2].decode(test_data,4),output_data)
 
 class DecoderTests(unittest.TestCase):
     def test_run_length_decode(self):

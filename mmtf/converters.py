@@ -44,7 +44,7 @@ def convert_ints_to_chars(in_ints):
     :return the character array converted"""
     out_chars = []
     for in_int in in_ints:
-        out_chars.append(chr(in_int))
+        out_chars.append(str(chr(in_int)))
     return out_chars
 
 def recursive_index_encode(int_array, max=32767, min=-32768):

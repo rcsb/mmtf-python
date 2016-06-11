@@ -41,9 +41,13 @@ class RunLengthChar():
     four byte integers in a byte array."""
     @staticmethod
     def decode(in_array, param):
-        return converters.convert_ints_to_chars(
-                decoders.run_length_decode(
-                    converters.convert_bytes_to_ints(in_array, 4)))
+        ints = converters.convert_bytes_to_ints(in_array, 4)
+        print(ints)
+        rlInts = decoders.run_length_decode(ints)
+        print(rlInts)
+        decoded = converters.convert_ints_to_chars(rlInts)
+        print(rlInts)
+        return decoded
 
 class EncodeString():
     """Convert strings to set length byte arrays (in this case four). If
