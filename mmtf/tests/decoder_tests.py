@@ -4,6 +4,7 @@ import msgpack
 
 import mmtf.converters as ac
 import mmtf.decoders as ad
+from mmtf import codecs
 from mmtf import MMTFDecoder
 
 
@@ -74,6 +75,14 @@ class ConverterTests(unittest.TestCase):
         in_bytes = b'\x00\x00\x00\x01\x00\x02\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02'
         out_array_test = [1, 131073, 0, 2]
         self.assertEqual(out_array_test, ac.convert_bytes_to_ints(in_bytes,4))
+
+    def test_parse_header(self):
+        in_bytes = b'\x00\x00\x00\x01\x00\x02\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02'
+        codec,length,param, bytearray = codecs.parse_header(in_bytes)
+        self.assertEqual(length,131073)
+        self.assertEqual(param,0)
+        self.assertEqual(len(bytearray),4)
+
 
     def test_convert_int_to_char(self):
         int_array =  [66,63,67]
