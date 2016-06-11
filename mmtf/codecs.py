@@ -11,18 +11,14 @@ def parse_header(input_array):
 class DeltaRecursiveFloat():
     @staticmethod
     def decode(in_array, param):
-        return converters.convert_ints_to_floats(
-            decoders.delta_decode(
-                converters.recursive_index_decode(in_array)), param)
-
+        return converters.convert_ints_to_floats(decoders.delta_decode(converters.recursive_index_decode(converters.convert_bytes_to_ints(in_array,2))),
+                                                 param)
 
 class RunLengthFloat():
     @staticmethod
     def decode(in_array, param):
         return converters.convert_ints_to_floats(
-                decoders.run_length_decode(
-                    converters.convert_bytes_to_ints(
-                       in_array,4)),param)
+                decoders.run_length_decode(converters.convert_bytes_to_ints(in_array,4)),param)
 
 class RunLengthDeltaInt():
     @staticmethod
@@ -31,7 +27,7 @@ class RunLengthDeltaInt():
             decoders.run_length_decode(
                 converters.convert_bytes_to_ints(in_array, 4)))
 
-def RunLengthChar():
+class RunLengthChar():
     @staticmethod
     def decode(in_array, param):
         return converters.convert_ints_to_chars(
@@ -65,4 +61,5 @@ decoder_dict = {10: DeltaRecursiveFloat,
 
 def decode_array(input_array):
     codec,length,param,input_array = parse_header(input_array)
+    print codec
     return decoder_dict[codec].decode(input_array,param)

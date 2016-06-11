@@ -98,8 +98,7 @@ class ConverterTests(unittest.TestCase):
     def test_decoder(self):
         newDecoder = MMTFDecoder()
         # Check that none of the getters are null
-        newDecoder.decode_data(msgpack.unpackb(
-            open("mmtf/tests/testdatastore/4CUP.mmtf","rb").read()))
+        newDecoder.decode_data(msgpack.unpackb(open("mmtf/tests/testdatastore/4CUP.mmtf","rb").read()))
 
     def test_gzip_open(self):
         from mmtf import ungzip_data
