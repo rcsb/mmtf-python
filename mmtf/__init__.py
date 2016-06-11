@@ -171,13 +171,15 @@ def fetch(pdb_id):
     """Return a decoded API to the data from a PDB id
     :param the input PDB id
     :return an API to decoded data """
-    timeOne = time.time()
     decoder = MMTFDecoder()
     decoder.decode_data(get_raw_data_from_url(pdb_id))
     return decoder
 
 
 def ungzip_data(input_data):
+    """Retrun a string of data after gzip decoding
+    :param the input GZIPed data
+    :return  the GZIP decoded data"""
     buf = StringIO(input_data)
     f = gzip.GzipFile(fileobj=buf)
     data = f.read()
