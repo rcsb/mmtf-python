@@ -74,7 +74,7 @@ decoder_dict = {10: DeltaRecursiveFloat,
                 2: FourByteToInt}
 
 def decode_array(input_array):
-    """Parse the header of an input byte array and then decode using the input array
-    , the codec and the appropirate parameter"""
+    """Parse the header of an input byte array and then decode using the input array,
+    the codec and the appropirate parameter"""
     codec,length,param,input_array = parse_header(input_array)
     return decoder_dict[codec].decode(input_array,param)

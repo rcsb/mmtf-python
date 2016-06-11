@@ -15,7 +15,7 @@ def run_length_encode(in_array):
     return out_array
 
 def delta_encode(in_array):
-    """A function to delta decode an int array"""
+    """A function to delta decode an int array."""
     curr_ans = in_array[0]
     out_array = [curr_ans]
     for in_int in in_array:

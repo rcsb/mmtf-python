@@ -89,11 +89,6 @@ class ConverterTests(unittest.TestCase):
         out_array_test = ["B", "?","C"]
         self.assertEqual(out_array_test, ac.convert_ints_to_chars(int_array))
 
-    def test_combine_integers(self):
-        two_byte_int_arr = [1,2,5,4,50,0]
-        four_byte_int_arr = [10002,4,1002,2]
-        combined_array_test = [10002,1,2,5,4,1002,50,0]
-        self.assertEqual(combined_array_test, ac.combine_integers(two_byte_int_arr, four_byte_int_arr))
 
     def test_decoder(self):
         newDecoder = MMTFDecoder()
