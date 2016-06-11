@@ -24,7 +24,7 @@ print("PDB Code: "+str(decoded_data.structure_id)+" has "+str(decoded_data.num_c
 ```
 2) Show the charge information for the first group:
 ```
-print("Group name: "+str(decoded_data.group_map[0][b"groupName"])+" has the following atomic charges: "+",".join([str(x) for x in decoded_data.group_map[0][b"atomChargeList"]]))
+print("Group name: "+str(decoded_data.group_map[0][b"groupName"])+" has the following atomic charges: "+",".join([str(x) for x in decoded_data.group_map[0][b"formalChargeList"]]))
 
 ```
 3) Show how many bioassemblies it has:
