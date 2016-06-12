@@ -64,8 +64,8 @@ class MMTFDecoder():
         else:
             self.seq_res_group_list = []
         # Get the number of chains per model
-        self.chains_per_model = int(input_data[b"chainsPerModel"])
-        self.groups_per_chain = int(input_data[b"groupsPerChain"])
+        self.chains_per_model = input_data[b"chainsPerModel"]
+        self.groups_per_chain = input_data[b"groupsPerChain"]
         # Get the internal and public facing chain ids
         if b"chainNameList" in input_data:
             self.public_chain_ids = decode_array(input_data[b"chainNameList"])
