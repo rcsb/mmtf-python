@@ -4,7 +4,7 @@ import mmtf
 import math
 
 def convert_bytes_to_ints(in_bytes, num):
-    """Convert a byte array into an integer arrays. The number of bytes forming an integer
+    """Convert a byte array into an integer array. The number of bytes forming an integer
     is defined by num
     :param the input bytes
     :param the number of bytes per int
@@ -16,6 +16,17 @@ def convert_bytes_to_ints(in_bytes, num):
         out_arr.append(unpacked[0])
     return out_arr
 
+def convert_ints_to_bytes(in_ints, num):
+    """Convert an integer array into a byte arrays. The number of bytes forming an integer
+    is defined by num
+    :param the input integers
+    :param the number of bytes per int
+    :return the integer array"""
+    out_bytes= b""
+    for val in in_ints:
+        out_bytes+=struct.pack(mmtf.NUM_DICT[num],val)
+    return out_bytes
+
 def decode_chain_list(in_bytes):
     """Convert a list of bytes to a list of strings. Each string is of length
     mmtf.CHAIN_LEN
@@ -25,8 +36,20 @@ def decode_chain_list(in_bytes):
     out_strings = []
     for i in range(tot_strings):
         out_s = in_bytes[i * mmtf.CHAIN_LEN:i * mmtf.CHAIN_LEN + mmtf.CHAIN_LEN]
-        out_strings.append(out_s.decode("utf-8").strip(mmtf.NULL_BYTE))
+        out_strings.append(out_s.decode("ascii").strip(mmtf.NULL_BYTE))
     return out_strings
+
+def encode_chain_list(in_strings):
+    """Convert a list of strings to a list of byte arrays.
+    :param the input strings
+    :return the encoded list of byte arrays"""
+    out_bytes = b""
+    for in_s in in_strings:
+        out_bytes+=in_s.encode('ascii')
+        for i in range(mmtf.CHAIN_LEN-len(in_s)):
+            out_bytes+=mmtf.NULL_BYTE.encode('ascii')
+    return out_bytes
+
 
 def convert_ints_to_floats(in_ints, divider):
     """Conver integers to floats by division.
@@ -62,7 +85,7 @@ def recursive_index_encode(int_array, max=32767, min=-32768):
         else:
             while curr <= min:
                 out_arr.append(min)
-                curr += math.fabs(min)
+                curr += int(math.fabs(min))
         out_arr.append(curr)
     return out_arr
 
@@ -87,30 +110,6 @@ def recursive_index_decode(int_array, max=32767, min=-32768):
         out_arr.append(decoded_val)
     return out_arr
 
-def convert_ints_to_bytes(in_ints, num):
-    """Convert an array of integers to a byte array using the num parameter
-    to specify the number of bytes per int.
-    :param in_ints the input array of integers
-    :param num the number of bytes per integer
-    :return the encoded array"""
-    out_str = ""
-    for in_int in in_ints:
-        out_str+=struct.pack(mmtf.NUM_DICT[num], in_int)
-    return out_str
-
-
-def encode_chain_list(in_chains):
-    """Convert a list of strings to bytes of a set length.
-    :param in_chains the input list of strings
-    :return the byte array of the encoded string"""
-    out_s = ""
-    for chain in in_chains:
-        out_s += chain
-        for i in range(mmtf.CHAIN_LEN-len(chain)):
-            out_s+= mmtf.NULL_BYTE
-    return out_s
-
-
 def convert_floats_to_ints(in_floats, multiplier):
     """Convert floating points to integers using a multiplier.
     :param in_floats the input floats
@@ -128,5 +127,5 @@ def convert_chars_to_ints(in_chars):
     :return the array of integers"""
     out_ints = []
     for in_char in in_chars:
-        out_ints.append(int(in_char))
+        out_ints.append(ord(in_char))
     return out_ints

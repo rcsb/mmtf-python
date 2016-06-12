@@ -8,7 +8,7 @@ except:
     from io import BytesIO as StringIO
 
 import msgpack
-from mmtf.codecs import decode_array
+from mmtf.codecs import decode_array,encode_array
 from mmtf import decoder_utils
 COORD_DIVIDER = 1000.0
 OCC_B_FACTOR_DIVIDER = 100.0
@@ -26,7 +26,6 @@ class MMTFDecoder():
     chain_counter = 0
     group_counter = 0
     atom_counter = 0
-
     def decode_data(self, input_data):
         self.group_list = decode_array(input_data[b"groupTypeList"])
         # Decode the coordinate  and B-factor arrays.
@@ -121,15 +120,74 @@ class MMTFDecoder():
             self.unit_cell = None
 
         self.sec_struct_info = decode_array(input_data[b"secStructList"])
+        self.num_bonds = input_data[b"numBonds"]
+        self.num_chains = input_data[b"numChains"]
+        self.num_models = input_data[b"numModels"]
+        self.num_atoms = input_data[b"numAtoms"]
+        self.num_groups = input_data[b"numGroups"]
+    #
+    # {10: DeltaRecursiveFloat,
+    #  9: RunLengthFloat,
+    #  8: RunLengthDeltaInt,
+    #  6: RunLengthChar,
+    #  5: EncodeString,
+    #  4: ByteToInt,
+    #  2: FourByteToInt}
+    def encode_data(self):
+        output_data = {}
+        output_data[b"groupTypeList"] = encode_array(self.group_list,2,0)
+        # Decode the coordinate  and B-factor arrays.
+        output_data[b"xCoordList"] = encode_array(self.cartnX,10,1000)
+        output_data[b"yCoordList"] = encode_array(self.cartnY, 10, 1000)
+        output_data[b"zCoordList"] = encode_array(self.cartnZ, 10, 1000)
+        # Run length decode the occupancy array
+        output_data[b"bFactorList"] = encode_array(self.b_factor, 10, 100)
+        # Run length float
+        output_data[b"occupancyList"] = encode_array(self.occupancy,9,100)
+        # Run length delta
+        output_data[b"atomIdList"] = encode_array(self.atom_id,8,0)
+        # Run length encoded
+        output_data[b"altLocList"] = encode_array(self.alt_id,6,0)
+        output_data[b"insCodeList"] = encode_array(self.insertion_code_list,6,0)
+        # Get the group_number
+        output_data[b"groupIdList"] = encode_array(self.group_num,4,0)
+        # Get the group map (all the unique groups in the structure).
+        output_data[b"groupList"] = self.group_map
+        # Get the seq_res groups
+        output_data[b"sequenceIndexList"] = encode_array(self.seq_res_group_list,8,0)
+        # Get the internal and public facing chain ids
+        output_data[b"chainNameList"] = encode_array(self.public_chain_ids,5,0)
+        output_data[b"chainIdList"] = encode_array(self.chain_list,5,0)
+        output_data[b"bondAtomList"] = encode_array(self.inter_group_bond_indices,4,0)
+        output_data[b"bondOrderList"] =  encode_array(self.inter_group_bond_orders,2,0)
+        output_data[b"secStructList"] = encode_array(self.sec_struct_info,2,0)
+        # Get the number of chains per model
+        output_data[b"chainsPerModel"] = self.chains_per_model
+        output_data[b"groupsPerChain"] = self.groups_per_chain
+        output_data[b"spaceGroup"] = self.space_group
+        output_data[b"mmtfVersion"] = self.mmtf_version
+        output_data[b"mmtfProducer"] = self.mmtf_producer
+        output_data[b"structureId"] = self.structure_id
+        # Now get the header data
+        # Optional fields
+        output_data[b"entityList"] = self.entity_list
+        output_data[b"bioAssemblyList"] = self.bio_assembly
+        output_data[b"rFree"] = self.r_free
+        output_data[b"rWork"] = self.r_work
+        output_data[b"resolution"] = self.resolution
+        output_data[b"title"] = self.title
+        output_data[b"experimentalMethods"] = self.experimental_methods
+        # Now get the relase information
+        output_data[b"depositionDate"] = self.deposition_date
+        output_data[b"releaseDate"] = self.release_date
+        output_data[b"unitCell"] = self.unit_cell
+        output_data[b"numBonds"] = self.num_bonds
+        output_data[b"numChains"] = self.num_chains
+        output_data[b"numModels"] = self.num_models
+        output_data[b"numAtoms"] = self.num_atoms
+        output_data[b"numGroups"]= self.num_groups
+        return output_data
 
-        self.num_bonds = len(self.inter_group_bond_orders)
-        for in_int in self.group_list:
-            self.num_bonds += len(self.group_map[in_int][b"bondOrderList"])
-
-        self.num_chains = len(self.chain_list)
-        self.num_models = len(self.chains_per_model)
-        self.num_atoms = len(self.cartnY)
-        self.num_groups = len(self.group_list)
 
     def pass_data_on(self, data_setters):
         """Write the data from the getters to the setters
@@ -151,6 +209,12 @@ class MMTFDecoder():
         decoder_utils.add_inter_group_bonds(self, data_setters)
         # Finally call the finalize function
         data_setters.finalize_structure()
+
+
+    def get_msgpack(self):
+        """Get the msgpack of the encoded data"""
+        return msgpack.packb(self.encode_data())
+
 
 
 def get_raw_data_from_url(pdb_id):
