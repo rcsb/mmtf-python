@@ -83,10 +83,39 @@ class MMTFDecoder():
             self.mmtf_version = input_data[b"mmtfVersion"].decode('ascii')
             self.mmtf_producer = input_data[b"mmtfProducer"].decode('ascii')
             self.structure_id = input_data[b"structureId"].decode('ascii')
+
+        if b"title" in input_data:
+            if sys.version_info[0] < 3:
+                self.title = input_data[b"title"]
+            else:
+                self.title = input_data[b"title"].decode('ascii')
+        if b"experimentalMethods" in input_data:
+            if sys.version_info[0] < 3:
+                self.experimental_methods = [x.decode('ascii') for x in input_data[b"experimentalMethods"]]
+            else:
+                self.experimental_methods = input_data[b"experimentalMethods"]
+        else:
+            self.experimental_methods = None
+        # Now get the relase information
+        if b"depositionDate" in input_data:
+            if sys.version_info[0] < 3:
+                self.deposition_date = input_data[b"depositionDate"]
+            else:
+                self.deposition_date = input_data[b"depositionDate"].decode('ascii')
+        else:
+            self.deposition_date = None
+        if b"releaseDate" in input_data:
+            if sys.version_info[0] < 3:
+                self.release_date = input_data[b"releaseDate"]
+            else:
+                self.release_date = input_data[b"releaseDate"].decode('ascii')
+        else:
+            self.release_date = None
+
         # Now get the header data
         # Optional fields
         if b"entityList" in input_data:
-            self.entity_list = input_data[b"entityList"]
+            self.entity_list = decoder_utils.decode_entity_list(input_data[b"entityList"])
         else:
             self.entity_list = []
         if b"bioAssemblyList" in input_data:
@@ -103,21 +132,6 @@ class MMTFDecoder():
             self.r_work = None
         if b"resolution" in input_data:
             self.resolution = input_data[b"resolution"]
-        if b"title" in input_data:
-            self.title = input_data[b"title"]
-        if b"experimentalMethods" in input_data:
-            self.experimental_methods = input_data[b"experimentalMethods"]
-        else:
-            self.experimental_methods = None
-        # Now get the relase information
-        if b"depositionData" in input_data:
-            self.deposition_date = input_data[b"depositionDate"]
-        else:
-            self.deposition_date = None
-        if b"releaseDate" in input_data:
-            self.release_date = input_data[b"releaseDate"]
-        else:
-            self.release_date = None
         if b"unitCell" in input_data:
             self.unit_cell = input_data[b"unitCell"]
         else:
