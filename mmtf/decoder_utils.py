@@ -1,3 +1,4 @@
+import sys
 def add_atom_data(data_api, data_setters, atom_names, element_names, atom_charges, atom_counter, group_atom_ind):
     """Add the atomic data to the DataTransferInterface.
     :param """
@@ -22,26 +23,26 @@ def add_group_bonds(data_setters, bond_indices, bond_orders):
 
 def add_group(data_api, data_setters, group_ind):
     group_type_ind = data_api.group_list[group_ind]
-    atom_count = len(data_api.group_map[group_type_ind][b"atomNameList"])
+    atom_count = len(data_api.group_map[group_type_ind]["atomNameList"])
     current_group_number = data_api.group_list[group_ind]
     insertion_code = data_api.insertion_code_list[group_ind]
-    data_setters.set_group_info(data_api.group_map[group_type_ind][b"groupName"],
-                                current_group_number, insertion_code,
-                                data_api.group_map[group_type_ind][b"chemCompType"],
+    data_setters.set_group_info(data_api.group_map[group_type_ind]["groupName"],
+                                data_api.group_num[group_ind], insertion_code,
+                                data_api.group_map[group_type_ind]["chemCompType"],
                                 atom_count, data_api.num_bonds,
-                                data_api.group_map[group_type_ind][b"singleLetterCode"],
+                                data_api.group_map[group_type_ind]["singleLetterCode"],
                                 data_api.seq_res_group_list[group_ind],
                                 data_api.sec_struct_info[group_ind])
     for group_atom_ind in range(atom_count):
         add_atom_data(data_api, data_setters,
-                      data_api.group_map[group_type_ind][b"atomNameList"],
-                      data_api.group_map[group_type_ind][b"elementList"],
-                      data_api.group_map[group_type_ind][b"atomChargeList"],
+                      data_api.group_map[group_type_ind]["atomNameList"],
+                      data_api.group_map[group_type_ind]["elementList"],
+                      data_api.group_map[group_type_ind]["formalChargeList"],
                       data_api.atom_counter, group_atom_ind)
         data_api.atom_counter +=1
     add_group_bonds(data_setters,
-                    data_api.group_map[group_type_ind][b"bondAtomList"],
-                    data_api.group_map[group_type_ind][b"bondOrderList"])
+                    data_api.group_map[group_type_ind]["bondAtomList"],
+                    data_api.group_map[group_type_ind]["bondOrderList"])
     return atom_count
 
 
@@ -127,3 +128,28 @@ def add_entity_info( data_api, struct_inflator):
                                         entity[b"sequence"],
                                         entity[b"description"],
                                         entity[b"type"])
+
+def decode_group_map(input_data):
+    """Convert byte strings to strings in the group map.
+    :param input_data the list of groups
+    :return the decoded group list"""
+    if sys.version_info[0] < 3:
+        return input_data
+    out_data = []
+    for entry in input_data:
+        out_data.append(convert_group(entry))
+    return out_data
+
+def convert_group(input_group):
+    """Convert an individual group from byte strings to regula strings.
+    :param input_group the input group
+    :return the decoded group"""
+    output_group = {}
+    for key in input_group:
+        if key in [b'elementList',b'atomNameList',]:
+            output_group[key.decode('ascii')] = [x.decode('ascii') for x in input_group[key]]
+        elif key in [b'chemCompType',b'groupName',b'singleLetterCode']:
+            output_group[key.decode('ascii')] = input_group[key].decode('ascii')
+        else:
+            output_group[key.decode('ascii')] = input_group[key]
+    return output_group

@@ -46,20 +46,20 @@ class MMTFDecoder():
         else:
             self.atom_id = []
         # Run length encoded
-        if "altLocList" in input_data:
+        if b"altLocList" in input_data:
             self.alt_id = decode_array(input_data[b"altLocList"])
         else:
             self.alt_id = []
-        if "insCodeList" in input_data:
+        if b"insCodeList" in input_data:
             self.insertion_code_list = decode_array(input_data[b"insCodeList"])
         else:
             self.insertion_code_list = []
         # Get the group_number
         self.group_num = decode_array(input_data[b"groupIdList"])
         # Get the group map (all the unique groups in the structure).
-        self.group_map = input_data[b"groupList"]
+        self.group_map = decoder_utils.decode_group_map(input_data[b"groupList"])
         # Get the seq_res groups
-        if "sequenceIndexList" in input_data:
+        if b"sequenceIndexList" in input_data:
             self.seq_res_group_list = decode_array(input_data[b"sequenceIndexList"])
         else:
             self.seq_res_group_list = []
@@ -117,13 +117,12 @@ class MMTFDecoder():
             self.unit_cell = input_data[b"unitCell"]
         else:
             self.unit_cell = None
-
         self.sec_struct_info = decode_array(input_data[b"secStructList"])
-        self.num_bonds = input_data[b"numBonds"]
-        self.num_chains = input_data[b"numChains"]
-        self.num_models = input_data[b"numModels"]
-        self.num_atoms = input_data[b"numAtoms"]
-        self.num_groups = input_data[b"numGroups"]
+        self.num_bonds = int(input_data[b"numBonds"])
+        self.num_chains = int(input_data[b"numChains"])
+        self.num_models = int(input_data[b"numModels"])
+        self.num_atoms = int(input_data[b"numAtoms"])
+        self.num_groups = int(input_data[b"numGroups"])
 
     def encode_data(self):
         output_data = {}

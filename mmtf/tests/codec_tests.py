@@ -186,6 +186,10 @@ class ConverterTests(unittest.TestCase):
         from mmtf import ungzip_data
         ungzip_data(open("mmtf/tests/testdatastore/4CUP.mmtf.gz","rb").read())
 
+    def test_fetch(self):
+        from mmtf import fetch
+        decoded = fetch("4CUP")
+
 
 if __name__ == '__main__':
     unittest.main()
