@@ -6,7 +6,7 @@ except:
     import urllib.request as urllib2
     from io import BytesIO as StringIO
 
-import msgpack
+import msgpack,sys
 from mmtf.codecs import decode_array,encode_array
 from mmtf import decoder_utils
 COORD_DIVIDER = 1000.0
@@ -64,8 +64,8 @@ class MMTFDecoder():
         else:
             self.seq_res_group_list = []
         # Get the number of chains per model
-        self.chains_per_model = input_data[b"chainsPerModel"]
-        self.groups_per_chain = input_data[b"groupsPerChain"]
+        self.chains_per_model = int(input_data[b"chainsPerModel"])
+        self.groups_per_chain = int(input_data[b"groupsPerChain"])
         # Get the internal and public facing chain ids
         if b"chainNameList" in input_data:
             self.public_chain_ids = decode_array(input_data[b"chainNameList"])
@@ -75,9 +75,14 @@ class MMTFDecoder():
         self.space_group = input_data[b"spaceGroup"]
         self.inter_group_bond_indices = decode_array(input_data[b"bondAtomList"])
         self.inter_group_bond_orders = decode_array(input_data[b"bondOrderList"])
-        self.mmtf_version = input_data[b"mmtfVersion"]
-        self.mmtf_producer = input_data[b"mmtfProducer"]
-        self.structure_id = input_data[b"structureId"]
+        if sys.version_info[0] < 3:
+            self.mmtf_version = input_data[b"mmtfVersion"]
+            self.mmtf_producer = input_data[b"mmtfProducer"]
+            self.structure_id = input_data[b"structureId"]
+        else:
+            self.mmtf_version = input_data[b"mmtfVersion"].decode('ascii')
+            self.mmtf_producer = input_data[b"mmtfProducer"].decode('ascii')
+            self.structure_id = input_data[b"structureId"].decode('ascii')
         # Now get the header data
         # Optional fields
         if b"entityList" in input_data:
