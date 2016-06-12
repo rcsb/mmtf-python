@@ -1,32 +1,10 @@
 from __future__ import division
 import struct
 import mmtf
-
-
-def combine_integers(small_array, big_array):
-    """Combine integer arrays.  The first is an array purely of integers to be added.
-	 The second contains integers in pairs. The first in the pair is to be added.
-	 The second in the pair is the number of integers to read from the first array.
-	 :param an array of integers
-	 :param an array of integers in pairs. The first in the pair
-	 is to be added to the output array. The second in the pair is the number of
-	 integers to read from the first array.
-	 :return the integer array output """
-    tot_count = len(big_array)//2
-    start = 0
-    out_array = []
-    
-    for in_int in range(tot_count):
-        out_array.append(big_array[in_int*2])
-        count = big_array[in_int*2+1]
-        for small_int in range(start, start+count):
-            out_array.append(small_array[small_int])
-        start+=count
-    return out_array
-
+import math
 
 def convert_bytes_to_ints(in_bytes, num):
-    """Convert a byte array into an integer arrays. The number of bytes forming an integer
+    """Convert a byte array into an integer array. The number of bytes forming an integer
     is defined by num
     :param the input bytes
     :param the number of bytes per int
@@ -38,6 +16,17 @@ def convert_bytes_to_ints(in_bytes, num):
         out_arr.append(unpacked[0])
     return out_arr
 
+def convert_ints_to_bytes(in_ints, num):
+    """Convert an integer array into a byte arrays. The number of bytes forming an integer
+    is defined by num
+    :param the input integers
+    :param the number of bytes per int
+    :return the integer array"""
+    out_bytes= b""
+    for val in in_ints:
+        out_bytes+=struct.pack(mmtf.NUM_DICT[num],val)
+    return out_bytes
+
 def decode_chain_list(in_bytes):
     """Convert a list of bytes to a list of strings. Each string is of length
     mmtf.CHAIN_LEN
@@ -47,8 +36,20 @@ def decode_chain_list(in_bytes):
     out_strings = []
     for i in range(tot_strings):
         out_s = in_bytes[i * mmtf.CHAIN_LEN:i * mmtf.CHAIN_LEN + mmtf.CHAIN_LEN]
-        out_strings.append(out_s.decode("utf-8").strip(mmtf.NULL_BYTE))
+        out_strings.append(out_s.decode("ascii").strip(mmtf.NULL_BYTE))
     return out_strings
+
+def encode_chain_list(in_strings):
+    """Convert a list of strings to a list of byte arrays.
+    :param the input strings
+    :return the encoded list of byte arrays"""
+    out_bytes = b""
+    for in_s in in_strings:
+        out_bytes+=in_s.encode('ascii')
+        for i in range(mmtf.CHAIN_LEN-len(in_s)):
+            out_bytes+=mmtf.NULL_BYTE.encode('ascii')
+    return out_bytes
+
 
 def convert_ints_to_floats(in_ints, divider):
     """Conver integers to floats by division.
@@ -66,51 +67,65 @@ def convert_ints_to_chars(in_ints):
     :return the character array converted"""
     out_chars = []
     for in_int in in_ints:
-        out_chars.append(chr(in_int))
+        out_chars.append(str(chr(in_int)))
     return out_chars
 
-
-def split_integers(int_array):
-    small_array = []
-    big_array = []
-    # The first number is always in the big array
-    big_array.append(int_array[0])
-    counter = 0
-    for in_int in int_array[1:]:
-        if in_int >= mmtf.MAX_SHORT:
-            big_array.append(in_int)
-            big_array.append(counter)
+def recursive_index_encode(int_array, max=32767, min=-32768):
+    """Pack an integer array using recursive indexing
+    :param int_array the input array of integers
+    :param max the maximum integer size
+    :param min the minimum integer size
+    :return the array of integers after recursive index encoding"""
+    out_arr = []
+    for curr in int_array:
+        if curr >= 0 :
+            while curr >= max:
+                out_arr.append(max)
+                curr -=  max
         else:
-            small_array.append(in_int)
-            counter+=1
+            while curr <= min:
+                out_arr.append(min)
+                curr += int(math.fabs(min))
+        out_arr.append(curr)
+    return out_arr
 
 
-def convert_ints_to_bytes(in_ints, num):
-    out_str = ""
-    for in_int in in_ints:
-        out_str+=struct.pack(mmtf.NUM_DICT[num], in_int)
-    return out_str
+def recursive_index_decode(int_array, max=32767, min=-32768):
+    """Unpack an array of integers using recursive indexing.
+    :param int_array the input array of integers
+    :param max the maximum integer size
+    :param min the minimum integer size
+    :return the array of integers after recursive index decoding"""
+    out_arr = []
+    encoded_ind = 0
+    while encoded_ind < len(int_array):
+        decoded_val = 0
+        while int_array[encoded_ind]==max or int_array[encoded_ind]==min:
+            decoded_val += int_array[encoded_ind]
+            encoded_ind+=1
+            if int_array[encoded_ind]==0:
+                break
+        decoded_val += int_array[encoded_ind]
+        encoded_ind+=1
+        out_arr.append(decoded_val)
+    return out_arr
 
-
-def encode_chain_list(in_chains):
-    out_s = ""
-    for chain in in_chains:
-        out_s += chain
-        for i in range(mmtf.CHAIN_LEN-len(chain)):
-            out_s+= mmtf.NULL_BYTE
-    return out_s
-
-
-def convert_floats_to_ints(in_ints, multiplier):
-    ### THIS CAN BE OPTIMISED BY USING A GENERATOR AND NOT AN ITERATOR????
-    out_floats = []
-    for in_int in in_ints:
-        out_floats.append(int(in_int * multiplier))
-    return out_floats
+def convert_floats_to_ints(in_floats, multiplier):
+    """Convert floating points to integers using a multiplier.
+    :param in_floats the input floats
+    :param multiplier the multiplier to be used for conversion. Corresponds to the precisison.
+    :return the array of integers encoded"""
+    out_ints = []
+    for in_float in in_floats:
+        out_ints.append(int(in_float * multiplier))
+    return out_ints
 
 
 def convert_chars_to_ints(in_chars):
+    """Convert an array of chars to an array of ints.
+    :param in_chars the input characters
+    :return the array of integers"""
     out_ints = []
     for in_char in in_chars:
-        out_ints.append(int(in_char))
+        out_ints.append(ord(in_char))
     return out_ints
