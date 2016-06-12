@@ -7,21 +7,15 @@ from mmtf import converters,decoders,encoders
 from mmtf import codecs
 from mmtf import MMTFDecoder
 
-# 10: DeltaRecursiveFloat,
-# 9: RunLengthFloat,
-# 8: RunLengthDeltaInt,
-# 6: RunLengthChar,
-# 5: EncodeString,
-# 4: ByteToInt,
-# 2: FourByteToInt}
 
-
-def run_all(unit_test, data_one, data_two, param, codec_id):
-    unit_test.assertEqual(codecs.codec_dict[codec_id].decode(data_one, param), data_two)
-    unit_test.assertEqual(codecs.codec_dict[codec_id].encode(data_two, param), data_one)
-    unit_test.assertEqual(codecs.codec_dict[codec_id].encode(codecs.codec_dict[codec_id].decode(data_one, param),
-                                                             param),data_one)
-
+def run_all(unit_test, encoded_data, decoded_data, param, codec_id):
+    """Test that a given codec can work in the forward backward and round trip both ways."""
+    unit_test.assertEqual(codecs.codec_dict[codec_id].decode(encoded_data, param), decoded_data)
+    unit_test.assertEqual(codecs.codec_dict[codec_id].encode(decoded_data, param), encoded_data)
+    unit_test.assertEqual(codecs.codec_dict[codec_id].encode(codecs.codec_dict[codec_id].decode(encoded_data, param),
+                                                             param), encoded_data)
+    unit_test.assertEqual(codecs.codec_dict[codec_id].decode(codecs.codec_dict[codec_id].encode(decoded_data, param),
+                                                         param), decoded_data)
 
 class CodecTest(unittest.TestCase):
     def test_delt_rec_float(self):
@@ -185,12 +179,8 @@ class ConverterTests(unittest.TestCase):
     def test_round_trip(self):
         newDecoder = MMTFDecoder()
         newDecoder.decode_data(msgpack.unpackb(open("mmtf/tests/testdatastore/4CUP.mmtf","rb").read()))
-        data = newDecoder.get_msgpack()
-        out_f = open("4cup.py.mmtf", "wb")
-        out_f.write(data)
-        newDecoder.decode_data(msgpack.unpackb(open("4cup.py.mmtf", "rb").read()))
-
-
+        packed = newDecoder.get_msgpack()
+        newDecoder.decode_data(msgpack.unpackb(packed))
 
     def test_gzip_open(self):
         from mmtf import ungzip_data

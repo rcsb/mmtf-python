@@ -1,5 +1,4 @@
 import gzip
-import time
 try:
     import urllib2
     from StringIO import StringIO
@@ -125,14 +124,7 @@ class MMTFDecoder():
         self.num_models = input_data[b"numModels"]
         self.num_atoms = input_data[b"numAtoms"]
         self.num_groups = input_data[b"numGroups"]
-    #
-    # {10: DeltaRecursiveFloat,
-    #  9: RunLengthFloat,
-    #  8: RunLengthDeltaInt,
-    #  6: RunLengthChar,
-    #  5: EncodeString,
-    #  4: ByteToInt,
-    #  2: FourByteToInt}
+
     def encode_data(self):
         output_data = {}
         output_data[b"groupTypeList"] = encode_array(self.group_list,2,0)
@@ -191,31 +183,23 @@ class MMTFDecoder():
 
     def pass_data_on(self, data_setters):
         """Write the data from the getters to the setters
+        :param data_setters a series of functions that can fill a chemical
+        data structure
         :type data_setters: DataTransferInterface
         """
         data_setters.init_structure(self.num_bonds, len(self.cartnX), len(self.group_list),
                                    len(self.chain_list), len(self.chains_per_model), self.structure_id)
-        # Set the entity information
         decoder_utils.add_entity_info(self, data_setters)
-        # First add the atomic data
         decoder_utils.add_atomic_information(self, data_setters)
-        # Set the header info
         decoder_utils.add_header_info(self, data_setters)
-        # Set the xtalographic info
         decoder_utils.add_xtalographic_info(self, data_setters)
-        # Set the bioassembly info
         decoder_utils.generate_bio_assembly(self, data_setters)
-        # Set the intergroup bonds
         decoder_utils.add_inter_group_bonds(self, data_setters)
-        # Finally call the finalize function
         data_setters.finalize_structure()
-
 
     def get_msgpack(self):
         """Get the msgpack of the encoded data"""
         return msgpack.packb(self.encode_data())
-
-
 
 def get_raw_data_from_url(pdb_id):
     """" Get the msgpack unpacked data given a PDB id.
