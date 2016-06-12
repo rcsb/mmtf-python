@@ -129,6 +129,17 @@ def add_entity_info( data_api, struct_inflator):
                                         entity[b"description"],
                                         entity[b"type"])
 
+def decode_entity_list(input_data):
+    """Convert byte strings to strings in the entity list.
+    :param input_data the list of entities
+    :return the decoded entity list"""
+    if sys.version_info[0] < 3:
+        return input_data
+    out_data = []
+    for entry in input_data:
+        out_data.append(convert_entity(entry))
+    return out_data
+
 def decode_group_map(input_data):
     """Convert byte strings to strings in the group map.
     :param input_data the list of groups
@@ -146,10 +157,22 @@ def convert_group(input_group):
     :return the decoded group"""
     output_group = {}
     for key in input_group:
-        if key in [b'elementList',b'atomNameList',]:
+        if key in [b'elementList',b'atomNameList']:
             output_group[key.decode('ascii')] = [x.decode('ascii') for x in input_group[key]]
         elif key in [b'chemCompType',b'groupName',b'singleLetterCode']:
             output_group[key.decode('ascii')] = input_group[key].decode('ascii')
         else:
             output_group[key.decode('ascii')] = input_group[key]
     return output_group
+
+def convert_entity(input_entity):
+    """Convert an individual entity from byte strings to regular strings
+    :param input_entity the entity to decode
+    :return the decoded entity"""
+    output_entity  = {}
+    for key in input_entity:
+        if key in [ b'description', b'type', b'sequence']:
+            output_entity[key.decode('ascii')] = input_entity[key].decode('ascii')
+        else:
+            output_entity[key.decode('ascii')] = input_entity[key]
+    return output_entity
