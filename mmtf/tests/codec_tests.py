@@ -4,7 +4,7 @@ import msgpack
 
 from mmtf import converters,decoders,encoders
 
-from mmtf import codecs
+from mmtf import codecs,fetch,parse,parse_gzip
 from mmtf import MMTFDecoder
 
 
@@ -168,28 +168,26 @@ class ConverterTests(unittest.TestCase):
         self.assertEqual(int_array, converters.convert_chars_to_ints(out_array_test))
 
     def test_encoder(self):
-        newDecoder = MMTFDecoder()
-        newDecoder.decode_data(msgpack.unpackb(open("mmtf/tests/testdatastore/4CUP.mmtf", "rb").read()))
-        newDecoder.encode_data()
+        decoded = parse("mmtf/tests/testdatastore/4CUP.mmtf")
+        decoded.encode_data()
 
     def test_decoder(self):
-        newDecoder = MMTFDecoder()
-        newDecoder.decode_data(msgpack.unpackb(open("mmtf/tests/testdatastore/4CUP.mmtf","rb").read()))
+        decoded = parse("mmtf/tests/testdatastore/4CUP.mmtf")
+
+    def test_gz_decoder(self):
+        decoded = parse_gzip("mmtf/tests/testdatastore/4CUP.mmtf.gz")
 
     def test_round_trip(self):
-        newDecoder = MMTFDecoder()
-        newDecoder.decode_data(msgpack.unpackb(open("mmtf/tests/testdatastore/4CUP.mmtf","rb").read()))
-        packed = newDecoder.get_msgpack()
-        newDecoder.decode_data(msgpack.unpackb(packed))
+        decoded = parse("mmtf/tests/testdatastore/4CUP.mmtf")
+        packed = decoded.get_msgpack()
+        decoded.decode_data(msgpack.unpackb(packed))
 
     def test_gzip_open(self):
         from mmtf import ungzip_data
         ungzip_data(open("mmtf/tests/testdatastore/4CUP.mmtf.gz","rb").read())
 
     def test_fetch(self):
-        from mmtf import fetch
         decoded = fetch("4CUP")
-
 
 if __name__ == '__main__':
     unittest.main()

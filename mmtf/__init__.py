@@ -210,24 +210,42 @@ def get_raw_data_from_url(pdb_id):
     response = urllib2.urlopen(request)
     if response.info().get('Content-Encoding') == 'gzip':
         data = ungzip_data(response.read())
-    out_data = msgpack.unpackb(data)
+    return _unpack(data)
+
+
+def _unpack(data):
+    out_data = msgpack.unpackb(data.read())
     return out_data
 
 
 def fetch(pdb_id):
     """Return a decoded API to the data from a PDB id
-    :param the input PDB id
+    :param pdb_id the input PDB id
     :return an API to decoded data """
     decoder = MMTFDecoder()
     decoder.decode_data(get_raw_data_from_url(pdb_id))
     return decoder
 
+def parse(file_path):
+    """Return a decoded API to the data from a file path.
+    :param file_path the input file path. Data is not entropy compressed (e.g. gzip)"""
+    newDecoder = MMTFDecoder()
+    newDecoder.decode_data(msgpack.unpackb(open(file_path, "rb").read()))
+    return newDecoder
+
+
+def parse_gzip(file_path):
+    """Return a decoded API to the data from a file path. File is gzip compressed.
+    :param file_path the input file path. Data is gzip compressed."""
+    newDecoder = MMTFDecoder()
+    newDecoder.decode_data(msgpack.unpackb(gzip.open(file_path, "rb").read()))
+    return newDecoder
+
 
 def ungzip_data(input_data):
     """Retrun a string of data after gzip decoding
-    :param the input GZIPed data
-    :return  the GZIP decoded data"""
+    :param the input gziped data
+    :return  the gzip decoded data"""
     buf = StringIO(input_data)
     f = gzip.GzipFile(fileobj=buf)
-    data = f.read()
-    return data
+    return f
