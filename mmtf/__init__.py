@@ -26,55 +26,46 @@ class MMTFDecoder():
     group_counter = 0
     atom_counter = 0
     def decode_data(self, input_data):
-        self.group_list = decode_array(input_data[b"groupTypeList"])
-        # Decode the coordinate  and B-factor arrays.
-        self.cartnX = decode_array(input_data[b"xCoordList"])
-        self.cartnY = decode_array(input_data[b"yCoordList"])
-        self.cartnZ = decode_array(input_data[b"zCoordList"])
-        # Run length decode the occupancy array
+        self.group_type_list = decode_array(input_data[b"groupTypeList"])
+        self.x_coord_list = decode_array(input_data[b"xCoordList"])
+        self.y_coord_list = decode_array(input_data[b"yCoordList"])
+        self.z_coord_list = decode_array(input_data[b"zCoordList"])
         if b"bFactorList" in input_data:
-            self.b_factor = decode_array(input_data[b"bFactorList"])
+            self.b_factor_list = decode_array(input_data[b"bFactorList"])
         else:
-            self.b_factor = []
+            self.b_factor_list = []
         if b"occupancyList" in input_data:
-            self.occupancy = decode_array(input_data[b"occupancyList"])
+            self.occupancy_list = decode_array(input_data[b"occupancyList"])
         else:
-            self.occupancy = []
-        # Run length and delta
+            self.occupancy_list = []
         if b"atomIdList" in input_data:
-            self.atom_id = decode_array(input_data[b"atomIdList"])
+            self.atom_id_list = decode_array(input_data[b"atomIdList"])
         else:
-            self.atom_id = []
-        # Run length encoded
+            self.atom_id_list = []
         if b"altLocList" in input_data:
-            self.alt_id = decode_array(input_data[b"altLocList"])
+            self.alt_loc_list = decode_array(input_data[b"altLocList"])
         else:
-            self.alt_id = []
+            self.alt_loc_list = []
         if b"insCodeList" in input_data:
-            self.insertion_code_list = decode_array(input_data[b"insCodeList"])
+            self.ins_code_list = decode_array(input_data[b"insCodeList"])
         else:
-            self.insertion_code_list = []
-        # Get the group_number
-        self.group_num = decode_array(input_data[b"groupIdList"])
-        # Get the group map (all the unique groups in the structure).
-        self.group_map = decoder_utils.decode_group_map(input_data[b"groupList"])
-        # Get the seq_res groups
+            self.ins_code_list = []
+        self.group_id_list = decode_array(input_data[b"groupIdList"])
+        self.group_list = decoder_utils.decode_group_map(input_data[b"groupList"])
         if b"sequenceIndexList" in input_data:
-            self.seq_res_group_list = decode_array(input_data[b"sequenceIndexList"])
+            self.sequence_index_list = decode_array(input_data[b"sequenceIndexList"])
         else:
-            self.seq_res_group_list = []
-        # Get the number of chains per model
+            self.sequence_index_list = []
         self.chains_per_model = input_data[b"chainsPerModel"]
         self.groups_per_chain = input_data[b"groupsPerChain"]
-        # Get the internal and public facing chain ids
         if b"chainNameList" in input_data:
-            self.public_chain_ids = decode_array(input_data[b"chainNameList"])
+            self.chain_name_list = decode_array(input_data[b"chainNameList"])
         else:
-            self.public_chain_ids = []
-        self.chain_list = decode_array(input_data[b"chainIdList"])
+            self.chain_name_list = []
+        self.chain_id_list = decode_array(input_data[b"chainIdList"])
         self.space_group = input_data[b"spaceGroup"]
-        self.inter_group_bond_indices = decode_array(input_data[b"bondAtomList"])
-        self.inter_group_bond_orders = decode_array(input_data[b"bondOrderList"])
+        self.bond_atom_list = decode_array(input_data[b"bondAtomList"])
+        self.bond_order_list = decode_array(input_data[b"bondOrderList"])
         if sys.version_info[0] < 3:
             self.mmtf_version = input_data[b"mmtfVersion"]
             self.mmtf_producer = input_data[b"mmtfProducer"]
@@ -96,7 +87,6 @@ class MMTFDecoder():
                 self.experimental_methods = input_data[b"experimentalMethods"]
         else:
             self.experimental_methods = None
-        # Now get the relase information
         if b"depositionDate" in input_data:
             if sys.version_info[0] < 3:
                 self.deposition_date = input_data[b"depositionDate"]
@@ -111,9 +101,6 @@ class MMTFDecoder():
                 self.release_date = input_data[b"releaseDate"].decode('ascii')
         else:
             self.release_date = None
-
-        # Now get the header data
-        # Optional fields
         if b"entityList" in input_data:
             self.entity_list = decoder_utils.decode_entity_list(input_data[b"entityList"])
         else:
@@ -136,7 +123,7 @@ class MMTFDecoder():
             self.unit_cell = input_data[b"unitCell"]
         else:
             self.unit_cell = None
-        self.sec_struct_info = decode_array(input_data[b"secStructList"])
+        self.sec_struct_list = decode_array(input_data[b"secStructList"])
         self.num_bonds = int(input_data[b"numBonds"])
         self.num_chains = int(input_data[b"numChains"])
         self.num_models = int(input_data[b"numModels"])
@@ -145,41 +132,29 @@ class MMTFDecoder():
 
     def encode_data(self):
         output_data = {}
-        output_data[b"groupTypeList"] = encode_array(self.group_list,2,0)
-        # Decode the coordinate  and B-factor arrays.
-        output_data[b"xCoordList"] = encode_array(self.cartnX,10,1000)
-        output_data[b"yCoordList"] = encode_array(self.cartnY, 10, 1000)
-        output_data[b"zCoordList"] = encode_array(self.cartnZ, 10, 1000)
-        # Run length decode the occupancy array
-        output_data[b"bFactorList"] = encode_array(self.b_factor, 10, 100)
-        # Run length float
-        output_data[b"occupancyList"] = encode_array(self.occupancy,9,100)
-        # Run length delta
-        output_data[b"atomIdList"] = encode_array(self.atom_id,8,0)
-        # Run length encoded
-        output_data[b"altLocList"] = encode_array(self.alt_id,6,0)
-        output_data[b"insCodeList"] = encode_array(self.insertion_code_list,6,0)
-        # Get the group_number
-        output_data[b"groupIdList"] = encode_array(self.group_num,4,0)
-        # Get the group map (all the unique groups in the structure).
-        output_data[b"groupList"] = self.group_map
-        # Get the seq_res groups
-        output_data[b"sequenceIndexList"] = encode_array(self.seq_res_group_list,8,0)
-        # Get the internal and public facing chain ids
-        output_data[b"chainNameList"] = encode_array(self.public_chain_ids,5,0)
-        output_data[b"chainIdList"] = encode_array(self.chain_list,5,0)
-        output_data[b"bondAtomList"] = encode_array(self.inter_group_bond_indices,4,0)
-        output_data[b"bondOrderList"] =  encode_array(self.inter_group_bond_orders,2,0)
-        output_data[b"secStructList"] = encode_array(self.sec_struct_info,2,0)
-        # Get the number of chains per model
+        output_data[b"groupTypeList"] = encode_array(self.group_type_list, 2, 0)
+        output_data[b"xCoordList"] = encode_array(self.x_coord_list, 10, 1000)
+        output_data[b"yCoordList"] = encode_array(self.y_coord_list, 10, 1000)
+        output_data[b"zCoordList"] = encode_array(self.z_coord_list, 10, 1000)
+        output_data[b"bFactorList"] = encode_array(self.b_factor_list, 10, 100)
+        output_data[b"occupancyList"] = encode_array(self.occupancy_list, 9, 100)
+        output_data[b"atomIdList"] = encode_array(self.atom_id_list, 8, 0)
+        output_data[b"altLocList"] = encode_array(self.alt_loc_list, 6, 0)
+        output_data[b"insCodeList"] = encode_array(self.ins_code_list, 6, 0)
+        output_data[b"groupIdList"] = encode_array(self.group_id_list, 4, 0)
+        output_data[b"groupList"] = self.group_list
+        output_data[b"sequenceIndexList"] = encode_array(self.sequence_index_list, 8, 0)
+        output_data[b"chainNameList"] = encode_array(self.chain_name_list, 5, 0)
+        output_data[b"chainIdList"] = encode_array(self.chain_id_list, 5, 0)
+        output_data[b"bondAtomList"] = encode_array(self.bond_atom_list, 4, 0)
+        output_data[b"bondOrderList"] =  encode_array(self.bond_order_list, 2, 0)
+        output_data[b"secStructList"] = encode_array(self.sec_struct_list, 2, 0)
         output_data[b"chainsPerModel"] = self.chains_per_model
         output_data[b"groupsPerChain"] = self.groups_per_chain
         output_data[b"spaceGroup"] = self.space_group
         output_data[b"mmtfVersion"] = self.mmtf_version
         output_data[b"mmtfProducer"] = self.mmtf_producer
         output_data[b"structureId"] = self.structure_id
-        # Now get the header data
-        # Optional fields
         output_data[b"entityList"] = self.entity_list
         output_data[b"bioAssemblyList"] = self.bio_assembly
         output_data[b"rFree"] = self.r_free
@@ -187,7 +162,6 @@ class MMTFDecoder():
         output_data[b"resolution"] = self.resolution
         output_data[b"title"] = self.title
         output_data[b"experimentalMethods"] = self.experimental_methods
-        # Now get the relase information
         output_data[b"depositionDate"] = self.deposition_date
         output_data[b"releaseDate"] = self.release_date
         output_data[b"unitCell"] = self.unit_cell
@@ -205,8 +179,8 @@ class MMTFDecoder():
         data structure
         :type data_setters: DataTransferInterface
         """
-        data_setters.init_structure(self.num_bonds, len(self.cartnX), len(self.group_list),
-                                   len(self.chain_list), len(self.chains_per_model), self.structure_id)
+        data_setters.init_structure(self.num_bonds, len(self.x_coord_list), len(self.group_type_list),
+                                    len(self.chain_id_list), len(self.chains_per_model), self.structure_id)
         decoder_utils.add_entity_info(self, data_setters)
         decoder_utils.add_atomic_information(self, data_setters)
         decoder_utils.add_header_info(self, data_setters)
