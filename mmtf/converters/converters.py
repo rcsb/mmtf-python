@@ -58,19 +58,27 @@ def convert_ints_to_floats(in_ints, divider):
     :param the integer array
     :param the divider
     :return the array of floats produced"""
-    out_floats = []
-    for in_int in in_ints:
-        out_floats.append(in_int/divider)
-    return out_floats
+    return [x for x in in_ints]
 
 def convert_ints_to_chars(in_ints):
     """Convert integers to chars.
     :param the input integers
     :return the character array converted"""
-    out_chars = []
-    for in_int in in_ints:
-        out_chars.append(str(chr(in_int)))
-    return out_chars
+    return [chr(x) for x in in_ints]
+
+def convert_floats_to_ints(in_floats, multiplier):
+    """Convert floating points to integers using a multiplier.
+    :param in_floats the input floats
+    :param multiplier the multiplier to be used for conversion. Corresponds to the precisison.
+    :return the array of integers encoded"""
+    return [int(x * multiplier) for x in in_floats]
+
+
+def convert_chars_to_ints(in_chars):
+    """Convert an array of chars to an array of ints.
+    :param in_chars the input characters
+    :return the array of integers"""
+    return [ord(x) for x in in_chars]
 
 def recursive_index_encode(int_array, max=32767, min=-32768):
     """Pack an integer array using recursive indexing
@@ -110,23 +118,3 @@ def recursive_index_decode(int_array, max=32767, min=-32768):
         encoded_ind+=1
         out_arr.append(decoded_val)
     return out_arr
-
-def convert_floats_to_ints(in_floats, multiplier):
-    """Convert floating points to integers using a multiplier.
-    :param in_floats the input floats
-    :param multiplier the multiplier to be used for conversion. Corresponds to the precisison.
-    :return the array of integers encoded"""
-    out_ints = []
-    for in_float in in_floats:
-        out_ints.append(int(in_float * multiplier))
-    return out_ints
-
-
-def convert_chars_to_ints(in_chars):
-    """Convert an array of chars to an array of ints.
-    :param in_chars the input characters
-    :return the array of integers"""
-    out_ints = []
-    for in_char in in_chars:
-        out_ints.append(ord(in_char))
-    return out_ints
