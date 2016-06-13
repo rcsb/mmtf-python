@@ -27,11 +27,9 @@ class MMTFDecoder():
     atom_counter = 0
     def decode_data(self, input_data):
         self.group_type_list = decode_array(input_data[b"groupTypeList"])
-        # Decode the coordinate  and B-factor arrays.
         self.x_coord_list = decode_array(input_data[b"xCoordList"])
         self.y_coord_list = decode_array(input_data[b"yCoordList"])
         self.z_coord_list = decode_array(input_data[b"zCoordList"])
-        # Run length decode the occupancy array
         if b"bFactorList" in input_data:
             self.b_factor_list = decode_array(input_data[b"bFactorList"])
         else:
@@ -40,12 +38,10 @@ class MMTFDecoder():
             self.occupancy_list = decode_array(input_data[b"occupancyList"])
         else:
             self.occupancy_list = []
-        # Run length and delta
         if b"atomIdList" in input_data:
             self.atom_id_list = decode_array(input_data[b"atomIdList"])
         else:
             self.atom_id_list = []
-        # Run length encoded
         if b"altLocList" in input_data:
             self.alt_loc_list = decode_array(input_data[b"altLocList"])
         else:
@@ -54,19 +50,14 @@ class MMTFDecoder():
             self.ins_code_list = decode_array(input_data[b"insCodeList"])
         else:
             self.ins_code_list = []
-        # Get the group_number
         self.group_id_list = decode_array(input_data[b"groupIdList"])
-        # Get the group map (all the unique groups in the structure).
         self.group_list = decoder_utils.decode_group_map(input_data[b"groupList"])
-        # Get the seq_res groups
         if b"sequenceIndexList" in input_data:
             self.sequence_index_list = decode_array(input_data[b"sequenceIndexList"])
         else:
             self.sequence_index_list = []
-        # Get the number of chains per model
         self.chains_per_model = input_data[b"chainsPerModel"]
         self.groups_per_chain = input_data[b"groupsPerChain"]
-        # Get the internal and public facing chain ids
         if b"chainNameList" in input_data:
             self.chain_name_list = decode_array(input_data[b"chainNameList"])
         else:
@@ -96,7 +87,6 @@ class MMTFDecoder():
                 self.experimental_methods = input_data[b"experimentalMethods"]
         else:
             self.experimental_methods = None
-        # Now get the relase information
         if b"depositionDate" in input_data:
             if sys.version_info[0] < 3:
                 self.deposition_date = input_data[b"depositionDate"]
@@ -111,9 +101,6 @@ class MMTFDecoder():
                 self.release_date = input_data[b"releaseDate"].decode('ascii')
         else:
             self.release_date = None
-
-        # Now get the header data
-        # Optional fields
         if b"entityList" in input_data:
             self.entity_list = decoder_utils.decode_entity_list(input_data[b"entityList"])
         else:
@@ -146,40 +133,28 @@ class MMTFDecoder():
     def encode_data(self):
         output_data = {}
         output_data[b"groupTypeList"] = encode_array(self.group_type_list, 2, 0)
-        # Decode the coordinate  and B-factor arrays.
         output_data[b"xCoordList"] = encode_array(self.x_coord_list, 10, 1000)
         output_data[b"yCoordList"] = encode_array(self.y_coord_list, 10, 1000)
         output_data[b"zCoordList"] = encode_array(self.z_coord_list, 10, 1000)
-        # Run length decode the occupancy array
         output_data[b"bFactorList"] = encode_array(self.b_factor_list, 10, 100)
-        # Run length float
         output_data[b"occupancyList"] = encode_array(self.occupancy_list, 9, 100)
-        # Run length delta
         output_data[b"atomIdList"] = encode_array(self.atom_id_list, 8, 0)
-        # Run length encoded
         output_data[b"altLocList"] = encode_array(self.alt_loc_list, 6, 0)
         output_data[b"insCodeList"] = encode_array(self.ins_code_list, 6, 0)
-        # Get the group_number
         output_data[b"groupIdList"] = encode_array(self.group_id_list, 4, 0)
-        # Get the group map (all the unique groups in the structure).
         output_data[b"groupList"] = self.group_list
-        # Get the seq_res groups
         output_data[b"sequenceIndexList"] = encode_array(self.sequence_index_list, 8, 0)
-        # Get the internal and public facing chain ids
         output_data[b"chainNameList"] = encode_array(self.chain_name_list, 5, 0)
         output_data[b"chainIdList"] = encode_array(self.chain_id_list, 5, 0)
         output_data[b"bondAtomList"] = encode_array(self.bond_atom_list, 4, 0)
         output_data[b"bondOrderList"] =  encode_array(self.bond_order_list, 2, 0)
         output_data[b"secStructList"] = encode_array(self.sec_struct_list, 2, 0)
-        # Get the number of chains per model
         output_data[b"chainsPerModel"] = self.chains_per_model
         output_data[b"groupsPerChain"] = self.groups_per_chain
         output_data[b"spaceGroup"] = self.space_group
         output_data[b"mmtfVersion"] = self.mmtf_version
         output_data[b"mmtfProducer"] = self.mmtf_producer
         output_data[b"structureId"] = self.structure_id
-        # Now get the header data
-        # Optional fields
         output_data[b"entityList"] = self.entity_list
         output_data[b"bioAssemblyList"] = self.bio_assembly
         output_data[b"rFree"] = self.r_free
@@ -187,7 +162,6 @@ class MMTFDecoder():
         output_data[b"resolution"] = self.resolution
         output_data[b"title"] = self.title
         output_data[b"experimentalMethods"] = self.experimental_methods
-        # Now get the relase information
         output_data[b"depositionDate"] = self.deposition_date
         output_data[b"releaseDate"] = self.release_date
         output_data[b"unitCell"] = self.unit_cell

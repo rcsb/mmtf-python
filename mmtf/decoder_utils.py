@@ -1,7 +1,12 @@
 import sys
-def add_atom_data(data_api, data_setters, atom_names, element_names, atom_charges, atom_counter, group_atom_ind):
+def add_atom_data(data_api, data_setters, atom_names, element_names, atom_charges, group_atom_ind):
     """Add the atomic data to the DataTransferInterface.
-    :param """
+    :param data_api the data api from where to get the data
+    :param data_setters the class to push the data to
+    :param atom_nams the list of atom names for the group
+    :param element_names the list of element names for this group
+    :param atom_charges the list formal atomic charges for this group
+    :param group_atom_ind the index of this atom in the group"""
     atom_name = atom_names[group_atom_ind]
     element = element_names[group_atom_ind]
     charge = atom_charges[group_atom_ind]
@@ -17,28 +22,37 @@ def add_atom_data(data_api, data_setters, atom_names, element_names, atom_charge
 
 
 def add_group_bonds(data_setters, bond_indices, bond_orders):
+    """Add the bonds for this group.
+    :param data_setters the class to push the data to
+    :param bond_indices the indices of the atoms in the group that
+    are bonded (in pairs)
+    :param bond_orders the orders of the bonds"""
     for bond_index in range(len(bond_orders)):
         data_setters.set_group_bond(bond_indices[bond_index*2],bond_indices[bond_index*2+1],bond_orders[bond_index])
 
 
-def add_group(data_api, data_setters, group_ind):
-    group_type_ind = data_api.group_list[group_ind]
+def add_group(data_api, data_setters, group_index):
+    """Add the data for a whole group.
+    :param data_api the data api from where to get the data
+    :param data_setters the class to push the data to
+    :param group_index the index for this group"""
+    group_type_ind = data_api.group_list[group_index]
     atom_count = len(data_api.group_map[group_type_ind]["atomNameList"])
-    current_group_number = data_api.group_list[group_ind]
-    insertion_code = data_api.insertion_code_list[group_ind]
+    current_group_number = data_api.group_list[group_index]
+    insertion_code = data_api.insertion_code_list[group_index]
     data_setters.set_group_info(data_api.group_map[group_type_ind]["groupName"],
-                                data_api.group_num[group_ind], insertion_code,
+                                data_api.group_num[group_index], insertion_code,
                                 data_api.group_map[group_type_ind]["chemCompType"],
                                 atom_count, data_api.num_bonds,
                                 data_api.group_map[group_type_ind]["singleLetterCode"],
-                                data_api.seq_res_group_list[group_ind],
-                                data_api.sec_struct_info[group_ind])
+                                data_api.seq_res_group_list[group_index],
+                                data_api.sec_struct_info[group_index])
     for group_atom_ind in range(atom_count):
         add_atom_data(data_api, data_setters,
                       data_api.group_map[group_type_ind]["atomNameList"],
                       data_api.group_map[group_type_ind]["elementList"],
                       data_api.group_map[group_type_ind]["formalChargeList"],
-                      data_api.atom_counter, group_atom_ind)
+                      group_atom_ind)
         data_api.atom_counter +=1
     add_group_bonds(data_setters,
                     data_api.group_map[group_type_ind]["bondAtomList"],
@@ -47,6 +61,10 @@ def add_group(data_api, data_setters, group_ind):
 
 
 def add_chain_info(data_api, data_setters, chain_index):
+    """Add the data for a whole chain.
+    :param data_api the data api from where to get the data
+    :param data_setters the class to push the data to
+    :param chain_index the index for this chain"""
     chain_id = data_api.chain_list[chain_index]
     chain_name = data_api.public_chain_ids[chain_index]
     num_groups = data_api.groups_per_chain[chain_index]
@@ -60,6 +78,9 @@ def add_chain_info(data_api, data_setters, chain_index):
 
 
 def add_atomic_information(data_api, data_setters):
+    """Add all the structural information.
+    :param data_api the data api from where to get the data
+    :param data_setters the class to push the data to"""
     for model_chains in data_api.chains_per_model:
         data_setters.set_model_info(data_api.model_counter, model_chains)
         tot_chains_this_model = data_api.chain_counter + model_chains
