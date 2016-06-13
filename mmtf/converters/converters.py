@@ -2,6 +2,8 @@ from __future__ import division
 import struct
 import mmtf
 import math
+
+
 def convert_bytes_to_ints(in_bytes, num):
     """Convert a byte array into an integer array. The number of bytes forming an integer
     is defined by num
@@ -50,6 +52,7 @@ def encode_chain_list(in_strings):
             out_bytes+=mmtf.NULL_BYTE.encode('ascii')
     return out_bytes
 
+
 def convert_ints_to_floats(in_ints, divider):
     """Conver integers to floats by division.
     :param the integer array
@@ -87,7 +90,6 @@ def recursive_index_encode(int_array, max=32767, min=-32768):
                 curr += int(math.fabs(min))
         out_arr.append(curr)
     return out_arr
-
 
 def recursive_index_decode(int_array, max=32767, min=-32768):
     """Unpack an array of integers using recursive indexing.

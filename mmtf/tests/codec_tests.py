@@ -1,6 +1,6 @@
 import unittest
 
-import msgpack
+import msgpack,numpy
 
 from mmtf import converters,decoders,encoders
 
@@ -10,46 +10,56 @@ from mmtf import MMTFDecoder
 
 def run_all(unit_test, encoded_data, decoded_data, param, codec_id):
     """Test that a given codec can work in the forward backward and round trip both ways."""
-    unit_test.assertEqual(codecs.codec_dict[codec_id].decode(encoded_data, param), decoded_data)
+    try:
+        unit_test.assertEqual(codecs.codec_dict[codec_id].decode(encoded_data, param).tolist(), decoded_data.tolist())
+    except:
+        unit_test.assertEqual(codecs.codec_dict[codec_id].decode(encoded_data, param), decoded_data.tolist())
+    try:
+        unit_test.assertEqual(
+            codecs.codec_dict[codec_id].decode(codecs.codec_dict[codec_id].encode(decoded_data, param),
+                                               param).tolist(), decoded_data.tolist())
+    except:
+        unit_test.assertEqual(codecs.codec_dict[codec_id].decode(codecs.codec_dict[codec_id].encode(decoded_data, param),
+                                               param), decoded_data.tolist())
     unit_test.assertEqual(codecs.codec_dict[codec_id].encode(decoded_data, param), encoded_data)
     unit_test.assertEqual(codecs.codec_dict[codec_id].encode(codecs.codec_dict[codec_id].decode(encoded_data, param),
                                                              param), encoded_data)
-    unit_test.assertEqual(codecs.codec_dict[codec_id].decode(codecs.codec_dict[codec_id].encode(decoded_data, param),
-                                                         param), decoded_data)
+
 
 class CodecTest(unittest.TestCase):
     def test_delt_rec_float(self):
         test_data = b'\x7f\xffD\xab\x01\x8f\xff\xca'
-        output_data = [50.346, 50.745, 50.691]
+        output_data = numpy.array([50.346, 50.745, 50.691])
         run_all(self, test_data, output_data, 1000, 10)
+
     def test_run_len_float(self):
         test_data = b'\x00\x00\x00d\x00\x00\x00\x03'
-        output_data = [1.00,1.00,1.00]
+        output_data = numpy.array([1.00,1.00,1.00])
         run_all(self, test_data, output_data, 100, 9)
 
     def test_run_len_delta_int(self):
         test_data = b'\x00\x00\x00\x01\x00\x00\x00\x07'
-        output_data = [1,2,3,4,5,6,7]
+        output_data = numpy.array([1,2,3,4,5,6,7])
         run_all(self, test_data, output_data, 0, 8)
 
     def test_run_len_char(self):
         test_data = b'\x00\x00\x00\x41\x00\x00\x00\x04'
-        output_data = ["A","A","A","A"]
+        output_data = numpy.array(["A","A","A","A"])
         run_all(self, test_data, output_data, 0, 6)
 
     def test_enc_str(self):
         test_data = b'B\x00\x00\x00A\x00\x00\x00C\x00\x00\x00A\x00\x00\x00A\x00\x00\x00A\x00\x00\x00'
-        output_data =  ["B","A","C","A","A","A"]
+        output_data =  numpy.array(["B","A","C","A","A","A"])
         run_all(self, test_data, output_data, 0, 5)
 
     def test_byte_to_int(self):
         test_data =  b'\x07\x06\x06\x07\x07'
-        output_data = [7,6,6,7,7]
+        output_data = numpy.array([7,6,6,7,7])
         run_all(self, test_data, output_data, 0, 2)
 
     def test_four_byte_int(self):
         test_data = b'\x00\x00\x00\x01\x00\x02\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02'
-        output_data = [1, 131073, 0, 2]
+        output_data = numpy.array([1, 131073, 0, 2])
         run_all(self, test_data, output_data, 0, 4)
 
 class DecoderTests(unittest.TestCase):
@@ -70,13 +80,13 @@ class DecoderTests(unittest.TestCase):
         input_data = [15,3,100,-1,11,4]
         output_data_test = [15,18,118,117,128,132]
         output_data = decoders.delta_decode(input_data)
-        self.assertEqual(output_data, output_data_test)
+        self.assertEqual(output_data.tolist(), output_data_test)
 
     def test_empty_delta_decode(self):
         input_data = []
         output_data_test = []
         output_data = decoders.delta_decode(input_data)
-        self.assertEqual(output_data, output_data_test)
+        self.assertEqual(output_data.tolist(), output_data_test)
 
 class EncoderTests(unittest.TestCase):
     def test_run_length_encode(self):
@@ -97,7 +107,7 @@ class EncoderTests(unittest.TestCase):
         output_data = encoders.delta_encode(input_data)
         self.assertEqual(output_data, output_data_test)
 
-    def test_empty_delta_decode(self):
+    def test_empty_delta_encode(self):
         input_data = []
         output_data_test = []
         output_data = encoders.delta_encode(input_data)
@@ -115,7 +125,7 @@ class ConverterTests(unittest.TestCase):
     def test_convert_int_to_float(self):
         in_array = [10001,100203,124542]
         out_array_test = [10.001,100.203,124.542]
-        self.assertEqual(out_array_test, converters.convert_ints_to_floats(in_array, 1000.0))
+        self.assertEqual(out_array_test, converters.convert_ints_to_floats(in_array, 1000.0).tolist())
         self.assertEqual(in_array, converters.convert_floats_to_ints(out_array_test, 1000.0))
 
     def test_recursive_enc(self):
@@ -135,14 +145,14 @@ class ConverterTests(unittest.TestCase):
     def test_convert_one_byte_int(self):
         in_bytes = b'\x07\x06\x06\x07\x07'
         out_array_test = [7,6,6,7,7]
-        self.assertEqual(out_array_test, converters.convert_bytes_to_ints(in_bytes,1))
+        self.assertEqual(out_array_test, converters.convert_bytes_to_ints(in_bytes,1).tolist())
         self.assertEqual(in_bytes, converters.convert_ints_to_bytes(out_array_test,1))
         self.assertEqual(in_bytes,converters.convert_ints_to_bytes(converters.convert_bytes_to_ints(in_bytes,1),1))
 
     def test_convert_two_byte_int(self):
         in_bytes = b'\x00\x00\x00\x01\x00\x02\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02'
         out_array_test = [0,1,2,1,0,0,0,2]
-        self.assertEqual(out_array_test, converters.convert_bytes_to_ints(in_bytes,2))
+        self.assertEqual(out_array_test, converters.convert_bytes_to_ints(in_bytes,2).tolist())
         self.assertEqual(in_bytes, converters.convert_ints_to_bytes(out_array_test, 2))
         self.assertEqual(in_bytes,converters.convert_ints_to_bytes(converters.convert_bytes_to_ints(in_bytes,2),2))
 
@@ -150,7 +160,7 @@ class ConverterTests(unittest.TestCase):
     def test_convert_four_byte_int(self):
         in_bytes = b'\x00\x00\x00\x01\x00\x02\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02'
         out_array_test = [1, 131073, 0, 2]
-        self.assertEqual(out_array_test, converters.convert_bytes_to_ints(in_bytes,4))
+        self.assertEqual(out_array_test, converters.convert_bytes_to_ints(in_bytes,4).tolist())
         self.assertEqual(in_bytes, converters.convert_ints_to_bytes(out_array_test,4))
         self.assertEqual(in_bytes,converters.convert_ints_to_bytes(converters.convert_bytes_to_ints(in_bytes,4),4))
 
