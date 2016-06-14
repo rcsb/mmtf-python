@@ -1,1 +1,1 @@
-from mmtf.codecs.codecs import codec_dict,decode_array,encode_array
+from .default_codec import decode_array,encode_array

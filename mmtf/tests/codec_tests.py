@@ -1,26 +1,30 @@
 import unittest
 
-import msgpack,numpy
-from mmtf.decoders import numpy_decoders as decoders
-from mmtf import codecs,fetch,parse,parse_gzip,encoders,converters
-from mmtf.codecs.codecs import parse_header
-from mmtf.api.default import ungzip_data
+import msgpack
+import numpy
+
+from mmtf import codecs,fetch,parse,parse_gzip, converters
+from mmtf.api.default_api import ungzip_data
+from mmtf.codecs import encoders
+from mmtf.utils.codec_utils import parse_header
+from mmtf.codecs.default_codec import codec_dict
+from mmtf.codecs.decoders import numpy_decoders as decoders
 
 def run_all(unit_test, encoded_data, decoded_data, param, codec_id):
     """Test that a given codec can work in the forward backward and round trip both ways."""
     try:
-        unit_test.assertEqual(codecs.codec_dict[codec_id].decode(encoded_data, param).tolist(), decoded_data.tolist())
+        unit_test.assertEqual(codec_dict[codec_id].decode(encoded_data, param).tolist(), decoded_data.tolist())
     except:
-        unit_test.assertEqual(codecs.codec_dict[codec_id].decode(encoded_data, param), decoded_data.tolist())
+        unit_test.assertEqual(codec_dict[codec_id].decode(encoded_data, param), decoded_data.tolist())
     try:
         unit_test.assertEqual(
-            codecs.codec_dict[codec_id].decode(codecs.codec_dict[codec_id].encode(decoded_data, param),
+            codec_dict[codec_id].decode(codec_dict[codec_id].encode(decoded_data, param),
                                                param).tolist(), decoded_data.tolist())
     except:
-        unit_test.assertEqual(codecs.codec_dict[codec_id].decode(codecs.codec_dict[codec_id].encode(decoded_data, param),
+        unit_test.assertEqual(codec_dict[codec_id].decode(codec_dict[codec_id].encode(decoded_data, param),
                                                param), decoded_data.tolist())
-    unit_test.assertEqual(codecs.codec_dict[codec_id].encode(decoded_data, param), encoded_data)
-    unit_test.assertEqual(codecs.codec_dict[codec_id].encode(codecs.codec_dict[codec_id].decode(encoded_data, param),
+    unit_test.assertEqual(codec_dict[codec_id].encode(decoded_data, param), encoded_data)
+    unit_test.assertEqual(codec_dict[codec_id].encode(codec_dict[codec_id].decode(encoded_data, param),
                                                              param), encoded_data)
 
 class CodecTest(unittest.TestCase):

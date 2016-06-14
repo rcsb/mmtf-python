@@ -1,1 +1,0 @@
-from mmtf.encoders.encoders import run_length_encode,delta_encode

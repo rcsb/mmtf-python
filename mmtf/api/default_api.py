@@ -1,4 +1,6 @@
 import gzip
+
+from mmtf.utils.constants import BASE_URL
 try:
     import urllib2
     from StringIO import StringIO
@@ -9,7 +11,6 @@ import msgpack,sys
 from mmtf.codecs import decode_array, encode_array
 from mmtf.utils import decoder_utils
 
-BASE_URL = "http://mmtf.rcsb.org/v0.2/full/"
 
 class MMTFDecoder():
     """Class to decode raw mmtf data into a parsed data model that can be fed into
