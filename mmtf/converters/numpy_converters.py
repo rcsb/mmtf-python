@@ -34,15 +34,13 @@ def recursive_index_decode(int_array, max=32767, min=-32768):
     :param min the minimum integer size
     :return the array of integers after recursive index decoding"""
     out_arr = []
-    encoded_ind = 0
-    while encoded_ind < len(int_array):
-        decoded_val = 0
-        while int_array[encoded_ind]==max or int_array[encoded_ind]==min:
-            decoded_val += int_array[encoded_ind]
-            encoded_ind+=1
-            if int_array[encoded_ind]==0:
-                break
-        decoded_val += int_array[encoded_ind]
-        encoded_ind+=1
-        out_arr.append(decoded_val)
-    return out_arr
+    decoded_val = 0
+    for item in numpy.nditer(int_array):
+        if item==max or item==min:
+            decoded_val += item
+        else:
+            decoded_val += item
+            out_arr.append(decoded_val)
+            decoded_val = 0
+    return numpy.asarray(out_arr,dtype=numpy.int32)
+

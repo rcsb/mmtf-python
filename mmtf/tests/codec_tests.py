@@ -1,11 +1,8 @@
 import unittest
 
 import msgpack,numpy
-
-from mmtf import converters,decoders,encoders
-
-from mmtf import codecs,fetch,parse,parse_gzip
-from mmtf import MMTFDecoder
+from mmtf.decoders import numpy_decoders as decoders
+from mmtf import codecs,fetch,parse,parse_gzip,encoders,converters
 
 
 def run_all(unit_test, encoded_data, decoded_data, param, codec_id):
@@ -66,27 +63,27 @@ class DecoderTests(unittest.TestCase):
     def test_run_length_decode(self):
         input_data = [15,3,100,2,111,4,10000,6]
         output_data_test = [15,15,15,100,100,111,111,111,111,10000,10000,10000,10000,10000,10000]
-        output_data = decoders.run_length_decode(input_data)
+        output_data = decoders.run_length_decode(input_data).tolist()
         self.assertEqual(output_data, output_data_test)
 
     def test_empty_run_length_decode(self):
         input_data = []
         output_data_test = []
-        output_data = decoders.run_length_decode(input_data)
+        output_data = decoders.run_length_decode(input_data).tolist()
         self.assertEqual(output_data, output_data_test)
 
 
     def test_delta_decode(self):
-        input_data = [15,3,100,-1,11,4]
+        input_data = numpy.asarray([15,3,100,-1,11,4],dtype=numpy.int32)
         output_data_test = [15,18,118,117,128,132]
-        output_data = decoders.delta_decode(input_data)
-        self.assertEqual(output_data.tolist(), output_data_test)
+        output_data = decoders.delta_decode(input_data).tolist()
+        self.assertEqual(output_data, output_data_test)
 
     def test_empty_delta_decode(self):
-        input_data = []
+        input_data = numpy.asarray([],dtype=numpy.int32)
         output_data_test = []
-        output_data = decoders.delta_decode(input_data)
-        self.assertEqual(output_data.tolist(), output_data_test)
+        output_data = decoders.delta_decode(input_data).tolist()
+        self.assertEqual(output_data, output_data_test)
 
 class EncoderTests(unittest.TestCase):
     def test_run_length_encode(self):
@@ -134,13 +131,9 @@ class ConverterTests(unittest.TestCase):
         self.assertEqual(out_array_test, converters.recursive_index_encode(in_arr))
 
     def test_recursive_dec(self):
-        in_arr = [1,420,32767,0,120,-32768,0,32767,2000]
+        in_arr = numpy.asarray([1,420,32767,0,120,-32768,0,32767,2000],dtype=numpy.int32)
         out_array_test = [1,420,32767,120,-32768,34767]
-        self.assertEqual(out_array_test, converters.recursive_index_decode(in_arr))
-
-    def test_recursive_round(self):
-        in_arr = [1,420,32767,120,-32768,34767]
-        self.assertEqual(in_arr, converters.recursive_index_decode(converters.recursive_index_encode(in_arr)))
+        self.assertEqual(out_array_test, converters.recursive_index_decode(in_arr).tolist())
 
     def test_convert_one_byte_int(self):
         in_bytes = b'\x07\x06\x06\x07\x07'
