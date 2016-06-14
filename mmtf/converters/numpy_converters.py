@@ -25,7 +25,7 @@ def convert_ints_to_floats(in_ints, divider):
     :param the integer array
     :param the divider
     :return the array of floats produced"""
-    return (numpy.asfarray(in_ints) / divider)
+    return (in_ints.astype(dtype=numpy.float64) / divider)
 
 def recursive_index_decode(int_array, max=32767, min=-32768):
     """Unpack an array of integers using recursive indexing.
@@ -35,8 +35,7 @@ def recursive_index_decode(int_array, max=32767, min=-32768):
     :return the array of integers after recursive index decoding"""
     out_arr = []
     decoded_val = 0
-    int_array = int_array.tolist()
-    for item in int_array:
+    for item in int_array.tolist():
         if item==max or item==min:
             decoded_val += item
         else:

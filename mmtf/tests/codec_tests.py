@@ -61,13 +61,13 @@ class CodecTest(unittest.TestCase):
 
 class DecoderTests(unittest.TestCase):
     def test_run_length_decode(self):
-        input_data = [15,3,100,2,111,4,10000,6]
+        input_data = numpy.array([15,3,100,2,111,4,10000,6])
         output_data_test = [15,15,15,100,100,111,111,111,111,10000,10000,10000,10000,10000,10000]
         output_data = decoders.run_length_decode(input_data).tolist()
         self.assertEqual(output_data, output_data_test)
 
     def test_empty_run_length_decode(self):
-        input_data = []
+        input_data = numpy.array([])
         output_data_test = []
         output_data = decoders.run_length_decode(input_data).tolist()
         self.assertEqual(output_data, output_data_test)
@@ -120,10 +120,12 @@ class ConverterTests(unittest.TestCase):
         self.assertEqual(in_bytes, converters.encode_chain_list(out_strings_test))
 
     def test_convert_int_to_float(self):
-        in_array = [10001,100203,124542]
+        in_array = numpy.asarray([10001,100203,124542])
         out_array_test = [10.001,100.203,124.542]
-        self.assertEqual(out_array_test, converters.convert_ints_to_floats(in_array, 1000.0).tolist())
-        self.assertEqual(in_array, converters.convert_floats_to_ints(out_array_test, 1000.0))
+        converted = converters.convert_ints_to_floats(in_array, 1000.0).tolist()
+        for i in range(len(out_array_test)):
+            self.assertAlmostEqual(out_array_test[i], converted[i],places=3)
+        self.assertEqual(in_array.tolist(), converters.convert_floats_to_ints(out_array_test, 1000.0))
 
     def test_recursive_enc(self):
         in_arr = [1,420,32767,120,-32768,34767]
