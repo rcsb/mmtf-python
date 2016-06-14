@@ -3,6 +3,8 @@ import struct
 import mmtf
 import math
 
+import mmtf.utils.constants
+
 
 def convert_bytes_to_ints(in_bytes, num):
     """Convert a byte array into an integer array. The number of bytes forming an integer
@@ -13,7 +15,7 @@ def convert_bytes_to_ints(in_bytes, num):
     out_arr = []
     for i in range(len(in_bytes)//num):
         val = in_bytes[i * num:i * num + num]
-        unpacked = struct.unpack(mmtf.NUM_DICT[num], val)
+        unpacked = struct.unpack(mmtf.utils.constants.NUM_DICT[num], val)
         out_arr.append(unpacked[0])
     return out_arr
 
@@ -25,7 +27,7 @@ def convert_ints_to_bytes(in_ints, num):
     :return the integer array"""
     out_bytes= b""
     for val in in_ints:
-        out_bytes+=struct.pack(mmtf.NUM_DICT[num],val)
+        out_bytes+=struct.pack(mmtf.utils.constants.NUM_DICT[num], val)
     return out_bytes
 
 def decode_chain_list(in_bytes):
@@ -33,11 +35,11 @@ def decode_chain_list(in_bytes):
     mmtf.CHAIN_LEN
     :param the input bytes
     :return the decoded list of strings"""
-    tot_strings = len(in_bytes) // mmtf.CHAIN_LEN
+    tot_strings = len(in_bytes) // mmtf.utils.constants.CHAIN_LEN
     out_strings = []
     for i in range(tot_strings):
-        out_s = in_bytes[i * mmtf.CHAIN_LEN:i * mmtf.CHAIN_LEN + mmtf.CHAIN_LEN]
-        out_strings.append(out_s.decode("ascii").strip(mmtf.NULL_BYTE))
+        out_s = in_bytes[i * mmtf.utils.constants.CHAIN_LEN:i * mmtf.utils.constants.CHAIN_LEN + mmtf.utils.constants.CHAIN_LEN]
+        out_strings.append(out_s.decode("ascii").strip(mmtf.utils.constants.NULL_BYTE))
     return out_strings
 
 
@@ -48,8 +50,8 @@ def encode_chain_list(in_strings):
     out_bytes = b""
     for in_s in in_strings:
         out_bytes+=in_s.encode('ascii')
-        for i in range(mmtf.CHAIN_LEN-len(in_s)):
-            out_bytes+=mmtf.NULL_BYTE.encode('ascii')
+        for i in range(mmtf.utils.constants.CHAIN_LEN -len(in_s)):
+            out_bytes+= mmtf.utils.constants.NULL_BYTE.encode('ascii')
     return out_bytes
 
 

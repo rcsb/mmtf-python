@@ -1,6 +1,7 @@
 from __future__ import division
 import numpy
 import mmtf
+import mmtf.utils.constants
 
 
 def convert_bytes_to_ints(in_bytes, num):
@@ -17,8 +18,8 @@ def decode_chain_list(in_bytes):
     mmtf.CHAIN_LEN
     :param the input bytes
     :return the decoded list of strings"""
-    bstrings = numpy.frombuffer(in_bytes, numpy.dtype('S' + str(mmtf.CHAIN_LEN)))
-    return [s.decode("ascii").strip(mmtf.NULL_BYTE) for s in bstrings]
+    bstrings = numpy.frombuffer(in_bytes, numpy.dtype('S' + str(mmtf.utils.constants.CHAIN_LEN)))
+    return [s.decode("ascii").strip(mmtf.utils.constants.NULL_BYTE) for s in bstrings]
 
 def convert_ints_to_floats(in_ints, divider):
     """Conver integers to floats by division.
