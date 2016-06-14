@@ -13,6 +13,7 @@ def run_length_decode(in_array):
     :return the decoded array"""
     switch=False
     out_array=[]
+    in_array = in_array.tolist()
     for item in in_array:
         if switch==False:
             this_item = item
