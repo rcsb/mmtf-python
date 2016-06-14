@@ -3,7 +3,8 @@ import unittest
 import msgpack,numpy
 from mmtf.decoders import numpy_decoders as decoders
 from mmtf import codecs,fetch,parse,parse_gzip,encoders,converters
-
+from mmtf.codecs.codecs import parse_header
+from mmtf.api.default import ungzip_data
 
 def run_all(unit_test, encoded_data, decoded_data, param, codec_id):
     """Test that a given codec can work in the forward backward and round trip both ways."""
@@ -160,7 +161,7 @@ class ConverterTests(unittest.TestCase):
 
     def test_parse_header(self):
         in_bytes = b'\x00\x00\x00\x01\x00\x02\x00\x01\x00\x00\x00\x00\x00\x00\x00\x02'
-        codec,length,param, bytearray = codecs.parse_header(in_bytes)
+        codec,length,param, bytearray = parse_header(in_bytes)
         self.assertEqual(length,131073)
         self.assertEqual(param,0)
         self.assertEqual(len(bytearray),4)
@@ -187,7 +188,6 @@ class ConverterTests(unittest.TestCase):
         decoded.decode_data(msgpack.unpackb(packed))
 
     def test_gzip_open(self):
-        from mmtf import ungzip_data
         ungzip_data(open("mmtf/tests/testdatastore/4CUP.mmtf.gz","rb").read())
 
     def test_fetch(self):
