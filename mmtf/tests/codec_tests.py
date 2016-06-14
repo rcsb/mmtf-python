@@ -22,7 +22,6 @@ def run_all(unit_test, encoded_data, decoded_data, param, codec_id):
     unit_test.assertEqual(codecs.codec_dict[codec_id].encode(codecs.codec_dict[codec_id].decode(encoded_data, param),
                                                              param), encoded_data)
 
-
 class CodecTest(unittest.TestCase):
     def test_delt_rec_float(self):
         test_data = b'\x7f\xffD\xab\x01\x8f\xff\xca'
