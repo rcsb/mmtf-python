@@ -8,9 +8,9 @@ The **m**acro**m**olecular **t**ransmission **f**ormat (MMTF) is a binary encodi
 
 This repository holds the Python 2 and 3 compatible API, encoding and decoding libraries. 
 
-The alpha release is available from pip:
+The beta release is available from pip:
 ```
-pip install mmtf-python
+pip install --pre mmtf-python
 ```
 
 Quick getting started.
