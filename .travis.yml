@@ -12,6 +12,7 @@ matrix:
     include:
         # Use generic language for osx
         - os: osx
+          python: 3.5
           language: generic
 # Perform the manual steps on osx to install python3 and activate venv
 before_install:
