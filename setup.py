@@ -32,7 +32,7 @@ setup(
     author_email='anthony.bradley@rcsb.org',
 
     # Choose your license
-    license='MIT',
+    license='Apache 2.0',
 
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
