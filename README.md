@@ -10,7 +10,7 @@ This repository holds the Python 2 and 3 compatible API, encoding and decoding l
 
 The beta release is available from pip:
 ```
-pip install --pre mmtf-python
+pip install mmtf-python
 ```
 
 Quick getting started.

@@ -1,15 +1,17 @@
 import numpy
 
 def delta_decode(in_array):
-    """A function to delta decode an int array
-    :param the input array of integers
+    """A function to delta decode an int array.
+
+    :param in_array: the input array of integers
     :return the decoded array"""
     return in_array.cumsum()
 
 
 def run_length_decode(in_array):
-    """A function to run length decode an int array
-    :param the input array of integers
+    """A function to run length decode an int array.
+
+    :param in_array: the input array of integers
     :return the decoded array"""
     switch=False
     out_array=[]

@@ -7,32 +7,34 @@ import mmtf.utils.constants
 def convert_bytes_to_ints(in_bytes, num):
     """Convert a byte array into an integer array. The number of bytes forming an integer
     is defined by num
-    :param the input bytes
-    :param the number of bytes per int
+
+    :param in_bytes: the input bytes
+    :param num: the number of bytes per int
     :return the integer array"""
     dt = numpy.dtype('>i' + str(num))
     return numpy.frombuffer(in_bytes, dt)
 
 def decode_chain_list(in_bytes):
-    """Convert a list of bytes to a list of strings. Each string is of length
-    mmtf.CHAIN_LEN
-    :param the input bytes
+    """Convert a list of bytes to a list of strings. Each string is of length mmtf.CHAIN_LEN
+
+    :param in_bytes: the input bytes
     :return the decoded list of strings"""
     bstrings = numpy.frombuffer(in_bytes, numpy.dtype('S' + str(mmtf.utils.constants.CHAIN_LEN)))
     return [s.decode("ascii").strip(mmtf.utils.constants.NULL_BYTE) for s in bstrings]
 
 def convert_ints_to_floats(in_ints, divider):
-    """Conver integers to floats by division.
-    :param the integer array
-    :param the divider
+    """Convert integers to floats by division.
+    :param in_ints: the integer array
+    :param divider: the divider
     :return the array of floats produced"""
     return (in_ints.astype(dtype=numpy.float64) / divider)
 
 def recursive_index_decode(int_array, max=32767, min=-32768):
     """Unpack an array of integers using recursive indexing.
-    :param int_array the input array of integers
-    :param max the maximum integer size
-    :param min the minimum integer size
+
+    :param int_array: the input array of integers
+    :param max: the maximum integer size
+    :param min: the minimum integer size
     :return the array of integers after recursive index decoding"""
     out_arr = []
     decoded_val = 0

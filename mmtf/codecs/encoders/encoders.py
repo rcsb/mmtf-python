@@ -1,6 +1,7 @@
 def run_length_encode(in_array):
-    """A function to run length decode an int array
-    :param in_array the inptut array of integers
+    """A function to run length decode an int array.
+
+    :param in_array: the inptut array of integers
     :return the encoded integer array"""
     if(len(in_array)==0):
         return []
@@ -21,7 +22,8 @@ def run_length_encode(in_array):
 
 def delta_encode(in_array):
     """A function to delta decode an int array.
-    :param in_array the inut array to be delta encoded
+
+    :param in_array: the inut array to be delta encoded
     :return the encoded integer array"""
     if(len(in_array)==0):
         return []

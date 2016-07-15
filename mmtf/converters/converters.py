@@ -9,8 +9,8 @@ import mmtf.utils.constants
 def convert_bytes_to_ints(in_bytes, num):
     """Convert a byte array into an integer array. The number of bytes forming an integer
     is defined by num
-    :param the input bytes
-    :param the number of bytes per int
+    :param in_bytes: the input bytes
+    :param num: the number of bytes per int
     :return the integer array"""
     out_arr = []
     for i in range(len(in_bytes)//num):
@@ -22,8 +22,9 @@ def convert_bytes_to_ints(in_bytes, num):
 def convert_ints_to_bytes(in_ints, num):
     """Convert an integer array into a byte arrays. The number of bytes forming an integer
     is defined by num
-    :param the input integers
-    :param the number of bytes per int
+
+    :param in_ints: the input integers
+    :param num: the number of bytes per int
     :return the integer array"""
     out_bytes= b""
     for val in in_ints:
@@ -31,9 +32,9 @@ def convert_ints_to_bytes(in_ints, num):
     return out_bytes
 
 def decode_chain_list(in_bytes):
-    """Convert a list of bytes to a list of strings. Each string is of length
-    mmtf.CHAIN_LEN
-    :param the input bytes
+    """Convert a list of bytes to a list of strings. Each string is of length mmtf.CHAIN_LEN
+
+    :param in_bytes: the input bytes
     :return the decoded list of strings"""
     tot_strings = len(in_bytes) // mmtf.utils.constants.CHAIN_LEN
     out_strings = []
@@ -45,7 +46,8 @@ def decode_chain_list(in_bytes):
 
 def encode_chain_list(in_strings):
     """Convert a list of strings to a list of byte arrays.
-    :param the input strings
+
+    :param in_strings: the input strings
     :return the encoded list of byte arrays"""
     out_bytes = b""
     for in_s in in_strings:
@@ -54,39 +56,43 @@ def encode_chain_list(in_strings):
             out_bytes+= mmtf.utils.constants.NULL_BYTE.encode('ascii')
     return out_bytes
 
-
 def convert_ints_to_floats(in_ints, divider):
-    """Conver integers to floats by division.
-    :param the integer array
-    :param the divider
+    """Convert integers to floats by division.
+
+    :param in_ints: the integer array
+    :param divider: the divider
     :return the array of floats produced"""
-    return [x for x in in_ints]
+    return [x/divider for x in in_ints]
 
 def convert_ints_to_chars(in_ints):
     """Convert integers to chars.
-    :param the input integers
+
+    :param in_ints: input integers
     :return the character array converted"""
     return [chr(x) for x in in_ints]
 
 def convert_floats_to_ints(in_floats, multiplier):
     """Convert floating points to integers using a multiplier.
-    :param in_floats the input floats
-    :param multiplier the multiplier to be used for conversion. Corresponds to the precisison.
+
+    :param in_floats: the input floats
+    :param multiplier: the multiplier to be used for conversion. Corresponds to the precisison.
     :return the array of integers encoded"""
     return [int(x * multiplier) for x in in_floats]
 
 
 def convert_chars_to_ints(in_chars):
     """Convert an array of chars to an array of ints.
-    :param in_chars the input characters
+
+    :param in_chars: the input characters
     :return the array of integers"""
     return [ord(x) for x in in_chars]
 
 def recursive_index_encode(int_array, max=32767, min=-32768):
-    """Pack an integer array using recursive indexing
-    :param int_array the input array of integers
-    :param max the maximum integer size
-    :param min the minimum integer size
+    """Pack an integer array using recursive indexing.
+
+    :param int_array: the input array of integers
+    :param max: the maximum integer size
+    :param min: the minimum integer size
     :return the array of integers after recursive index encoding"""
     out_arr = []
     for curr in int_array:
@@ -103,9 +109,9 @@ def recursive_index_encode(int_array, max=32767, min=-32768):
 
 def recursive_index_decode(int_array, max=32767, min=-32768):
     """Unpack an array of integers using recursive indexing.
-    :param int_array the input array of integers
-    :param max the maximum integer size
-    :param min the minimum integer size
+    :param int_array: the input array of integers
+    :param max: the maximum integer size
+    :param min: the minimum integer size
     :return the array of integers after recursive index decoding"""
     out_arr = []
     encoded_ind = 0
