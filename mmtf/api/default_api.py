@@ -13,13 +13,15 @@ from mmtf.utils import decoder_utils
 
 
 class MMTFDecoder():
-    """Class to decode raw mmtf data into a parsed data model that can be fed into
-    other data model"""
+    """Class to decode raw mmtf data into a parsed data model that can be fed into other data model"""
     model_counter = 0
     chain_counter = 0
     group_counter = 0
     atom_counter = 0
     def decode_data(self, input_data):
+        """Function to decode the input data and place it onto the class.
+
+        :param input_data: the input data as a dict"""
         self.group_type_list = decode_array(input_data[b"groupTypeList"])
         self.x_coord_list = decode_array(input_data[b"xCoordList"])
         self.y_coord_list = decode_array(input_data[b"yCoordList"])
@@ -125,6 +127,7 @@ class MMTFDecoder():
         self.num_groups = int(input_data[b"numGroups"])
 
     def encode_data(self):
+        """Encode the data back into a dict."""
         output_data = {}
         output_data[b"groupTypeList"] = encode_array(self.group_type_list, 2, 0)
         output_data[b"xCoordList"] = encode_array(self.x_coord_list, 10, 1000)
@@ -168,8 +171,9 @@ class MMTFDecoder():
 
 
     def pass_data_on(self, data_setters):
-        """Write the data from the getters to the setters
-        :param data_setters a series of functions that can fill a chemical
+        """Write the data from the getters to the setters.
+
+        :param data_setters: a series of functions that can fill a chemical
         data structure
         :type data_setters: DataTransferInterface
         """
@@ -184,12 +188,13 @@ class MMTFDecoder():
         data_setters.finalize_structure()
 
     def get_msgpack(self):
-        """Get the msgpack of the encoded data"""
+        """Get the msgpack of the encoded data."""
         return msgpack.packb(self.encode_data())
 
 def get_raw_data_from_url(pdb_id):
     """" Get the msgpack unpacked data given a PDB id.
-    :param the input PDB id
+
+    :param pdb_id: the input PDB id
     :return the unpacked data (a dict) """
     url = BASE_URL + pdb_id
     request = urllib2.Request(url)
@@ -206,8 +211,9 @@ def _unpack(data):
 
 
 def fetch(pdb_id):
-    """Return a decoded API to the data from a PDB id
-    :param pdb_id the input PDB id
+    """Return a decoded API to the data from a PDB id.
+
+    :param pdb_id: the input PDB id
     :return an API to decoded data """
     decoder = MMTFDecoder()
     decoder.decode_data(get_raw_data_from_url(pdb_id))
@@ -215,7 +221,9 @@ def fetch(pdb_id):
 
 def parse(file_path):
     """Return a decoded API to the data from a file path.
-    :param file_path the input file path. Data is not entropy compressed (e.g. gzip)"""
+
+    :param file_path: the input file path. Data is not entropy compressed (e.g. gzip)
+    :return an API to decoded data """
     newDecoder = MMTFDecoder()
     newDecoder.decode_data(msgpack.unpackb(open(file_path, "rb").read()))
     return newDecoder
@@ -223,7 +231,8 @@ def parse(file_path):
 
 def parse_gzip(file_path):
     """Return a decoded API to the data from a file path. File is gzip compressed.
-    :param file_path the input file path. Data is gzip compressed."""
+    :param file_path: the input file path. Data is gzip compressed.
+    :return an API to decoded data"""
     newDecoder = MMTFDecoder()
     newDecoder.decode_data(msgpack.unpackb(gzip.open(file_path, "rb").read()))
     return newDecoder
@@ -231,6 +240,7 @@ def parse_gzip(file_path):
 
 def ungzip_data(input_data):
     """Retrun a string of data after gzip decoding
+
     :param the input gziped data
     :return  the gzip decoded data"""
     buf = StringIO(input_data)
