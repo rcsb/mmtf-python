@@ -196,7 +196,7 @@ def get_raw_data_from_url(pdb_id):
 
     :param pdb_id: the input PDB id
     :return the unpacked data (a dict) """
-    url = BASE_URL + pdb_id
+    url = get_url(pdb_id)
     request = urllib2.Request(url)
     request.add_header('Accept-encoding', 'gzip')
     response = urllib2.urlopen(request)
@@ -204,6 +204,13 @@ def get_raw_data_from_url(pdb_id):
         data = ungzip_data(response.read())
     return _unpack(data)
 
+
+def get_url(pdb_id):
+    """Get the URL for the data for a given PDB id.
+
+    :param pdb_id: the input PDB id
+    :return the URL for this PDB id"""
+    return BASE_URL + pdb_id
 
 def _unpack(data):
     out_data = msgpack.unpackb(data.read())
