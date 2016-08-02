@@ -44,11 +44,156 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="mmtf-api-default-api-module">
-<h2>mmtf.api.default_api module<a class="headerlink" href="#mmtf-api-default-api-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-mmtf.api.default_api">
+<span id="mmtf-api-default-api-module"></span><h2>mmtf.api.default_api module<a class="headerlink" href="#module-mmtf.api.default_api" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="mmtf.api.default_api.MMTFDecoder">
+<em class="property">class </em><code class="descclassname">mmtf.api.default_api.</code><code class="descname">MMTFDecoder</code><a class="headerlink" href="#mmtf.api.default_api.MMTFDecoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class to decode raw mmtf data into a parsed data model that can be fed into other data model</p>
+<dl class="attribute">
+<dt id="mmtf.api.default_api.MMTFDecoder.atom_counter">
+<code class="descname">atom_counter</code><em class="property"> = 0</em><a class="headerlink" href="#mmtf.api.default_api.MMTFDecoder.atom_counter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmtf.api.default_api.MMTFDecoder.chain_counter">
+<code class="descname">chain_counter</code><em class="property"> = 0</em><a class="headerlink" href="#mmtf.api.default_api.MMTFDecoder.chain_counter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmtf.api.default_api.MMTFDecoder.decode_data">
+<code class="descname">decode_data</code><span class="sig-paren">(</span><em>input_data</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.api.default_api.MMTFDecoder.decode_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to decode the input data and place it onto the class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>input_data</strong> &#8211; the input data as a dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmtf.api.default_api.MMTFDecoder.encode_data">
+<code class="descname">encode_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.api.default_api.MMTFDecoder.encode_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encode the data back into a dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmtf.api.default_api.MMTFDecoder.get_msgpack">
+<code class="descname">get_msgpack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.api.default_api.MMTFDecoder.get_msgpack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the msgpack of the encoded data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="mmtf.api.default_api.MMTFDecoder.group_counter">
+<code class="descname">group_counter</code><em class="property"> = 0</em><a class="headerlink" href="#mmtf.api.default_api.MMTFDecoder.group_counter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmtf.api.default_api.MMTFDecoder.model_counter">
+<code class="descname">model_counter</code><em class="property"> = 0</em><a class="headerlink" href="#mmtf.api.default_api.MMTFDecoder.model_counter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmtf.api.default_api.MMTFDecoder.pass_data_on">
+<code class="descname">pass_data_on</code><span class="sig-paren">(</span><em>data_setters</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.api.default_api.MMTFDecoder.pass_data_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the data from the getters to the setters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data_setters</strong> &#8211; a series of functions that can fill a chemical</td>
+</tr>
+</tbody>
+</table>
+<p>data structure
+:type data_setters: DataTransferInterface</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmtf.api.default_api.fetch">
+<code class="descclassname">mmtf.api.default_api.</code><code class="descname">fetch</code><span class="sig-paren">(</span><em>pdb_id</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.api.default_api.fetch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a decoded API to the data from a PDB id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pdb_id</strong> &#8211; the input PDB id</td>
+</tr>
+</tbody>
+</table>
+<p>:return an API to decoded data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmtf.api.default_api.get_raw_data_from_url">
+<code class="descclassname">mmtf.api.default_api.</code><code class="descname">get_raw_data_from_url</code><span class="sig-paren">(</span><em>pdb_id</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.api.default_api.get_raw_data_from_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#8221; Get the msgpack unpacked data given a PDB id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pdb_id</strong> &#8211; the input PDB id</td>
+</tr>
+</tbody>
+</table>
+<p>:return the unpacked data (a dict)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmtf.api.default_api.get_url">
+<code class="descclassname">mmtf.api.default_api.</code><code class="descname">get_url</code><span class="sig-paren">(</span><em>pdb_id</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.api.default_api.get_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the URL for the data for a given PDB id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pdb_id</strong> &#8211; the input PDB id</td>
+</tr>
+</tbody>
+</table>
+<p>:return the URL for this PDB id</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmtf.api.default_api.parse">
+<code class="descclassname">mmtf.api.default_api.</code><code class="descname">parse</code><span class="sig-paren">(</span><em>file_path</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.api.default_api.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a decoded API to the data from a file path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_path</strong> &#8211; the input file path. Data is not entropy compressed (e.g. gzip)</td>
+</tr>
+</tbody>
+</table>
+<p>:return an API to decoded data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmtf.api.default_api.parse_gzip">
+<code class="descclassname">mmtf.api.default_api.</code><code class="descname">parse_gzip</code><span class="sig-paren">(</span><em>file_path</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.api.default_api.parse_gzip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a decoded API to the data from a file path. File is gzip compressed.
+:param file_path: the input file path. Data is gzip compressed.
+:return an API to decoded data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmtf.api.default_api.ungzip_data">
+<code class="descclassname">mmtf.api.default_api.</code><code class="descname">ungzip_data</code><span class="sig-paren">(</span><em>input_data</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.api.default_api.ungzip_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrun a string of data after gzip decoding</p>
+<p>:param the input gziped data
+:return  the gzip decoded data</p>
+</dd></dl>
+
 </div>
-<div class="section" id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-mmtf.api">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mmtf.api" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -62,8 +207,8 @@
   <ul>
 <li><a class="reference internal" href="#">mmtf.api package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#mmtf-api-default-api-module">mmtf.api.default_api module</a></li>
-<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li><a class="reference internal" href="#module-mmtf.api.default_api">mmtf.api.default_api module</a></li>
+<li><a class="reference internal" href="#module-mmtf.api">Module contents</a></li>
 </ul>
 </li>
 </ul>
