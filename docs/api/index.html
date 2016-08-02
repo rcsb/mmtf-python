@@ -41,35 +41,9 @@
             
   <div class="section" id="welcome-to-mmtf-python-s-documentation">
 <h1>Welcome to mmtf-python&#8217;s documentation!<a class="headerlink" href="#welcome-to-mmtf-python-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>The <strong>m</strong>acro<strong>m</strong>olecular <strong>t</strong>ransmission <strong>f</strong>ormat (MMTF)
-is a binary encoding of biological structures.</p>
-<p>This repository holds the Python 2 and 3 compatible API, encoding and
-decoding libraries.</p>
-<p>The MMTF python API is available from pip:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">mmtf</span><span class="o">-</span><span class="n">python</span>
-</pre></div>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
 </div>
-<p>Quick getting started.</p>
-<ol class="arabic">
-<li><p class="first">Get the data for a PDB structure and print the number of chains:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mmtf</span> <span class="k">import</span> <span class="n">fetch</span>
-<span class="c1"># Get the data for 4CUP</span>
-<span class="n">decoded_data</span> <span class="o">=</span> <span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;4CUP&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PDB Code: &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">decoded_data</span><span class="o">.</span><span class="n">structure_id</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; has &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">decoded_data</span><span class="o">.</span><span class="n">num_chains</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; chains&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Show the charge information for the first group:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Group name:&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">decoded_data</span><span class="o">.</span><span class="n">group_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;groupName&quot;</span><span class="p">])</span><span class="o">+</span><span class="s2">&quot;has the following atomic charges: &quot;</span><span class="o">+</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">decoded_data</span><span class="o">.</span><span class="n">group_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;formalChargeList&quot;</span><span class="p">]]))</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Show how many bioassemblies it has:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PDB Code:&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">decoded_data</span><span class="o">.</span><span class="n">structure_id</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; has&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">decoded_data</span><span class="o">.</span><span class="n">bio_assembly</span><span class="p">))</span><span class="o">+</span><span class="s2">&quot; bioassemblies&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-</ol>
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>

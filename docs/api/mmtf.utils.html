@@ -44,158 +44,17 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-mmtf.utils.codec_utils">
-<span id="mmtf-utils-codec-utils-module"></span><h2>mmtf.utils.codec_utils module<a class="headerlink" href="#module-mmtf.utils.codec_utils" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="mmtf.utils.codec_utils.add_header">
-<code class="descclassname">mmtf.utils.codec_utils.</code><code class="descname">add_header</code><span class="sig-paren">(</span><em>input_array</em>, <em>codec</em>, <em>length</em>, <em>param</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.codec_utils.add_header" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add the header to the appropriate array.
-:param the encoded array to add the header to
-:param the codec being used
-:param the length of the decoded array
-:param the parameter to add to the header
-:return the prepended encoded byte array</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.codec_utils.parse_header">
-<code class="descclassname">mmtf.utils.codec_utils.</code><code class="descname">parse_header</code><span class="sig-paren">(</span><em>input_array</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.codec_utils.parse_header" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse the header and return it along with the input array minus the header.
-:param input_array the array to parse
-:return the codec, the length of the decoded array, the parameter and the remainder
-of the array</p>
-</dd></dl>
-
+<div class="section" id="mmtf-utils-codec-utils-module">
+<h2>mmtf.utils.codec_utils module<a class="headerlink" href="#mmtf-utils-codec-utils-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-mmtf.utils.constants">
-<span id="mmtf-utils-constants-module"></span><h2>mmtf.utils.constants module<a class="headerlink" href="#module-mmtf.utils.constants" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mmtf-utils-constants-module">
+<h2>mmtf.utils.constants module<a class="headerlink" href="#mmtf-utils-constants-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-mmtf.utils.decoder_utils">
-<span id="mmtf-utils-decoder-utils-module"></span><h2>mmtf.utils.decoder_utils module<a class="headerlink" href="#module-mmtf.utils.decoder_utils" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.add_atom_data">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">add_atom_data</code><span class="sig-paren">(</span><em>data_api</em>, <em>data_setters</em>, <em>atom_names</em>, <em>element_names</em>, <em>atom_charges</em>, <em>group_atom_ind</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.add_atom_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add the atomic data to the DataTransferInterface.
-:param data_api the data api from where to get the data
-:param data_setters the class to push the data to
-:param atom_nams the list of atom names for the group
-:param element_names the list of element names for this group
-:param atom_charges the list formal atomic charges for this group
-:param group_atom_ind the index of this atom in the group</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.add_atomic_information">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">add_atomic_information</code><span class="sig-paren">(</span><em>data_api</em>, <em>data_setters</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.add_atomic_information" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add all the structural information.
-:param data_api the data api from where to get the data
-:param data_setters the class to push the data to</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.add_chain_info">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">add_chain_info</code><span class="sig-paren">(</span><em>data_api</em>, <em>data_setters</em>, <em>chain_index</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.add_chain_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add the data for a whole chain.
-:param data_api the data api from where to get the data
-:param data_setters the class to push the data to
-:param chain_index the index for this chain</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.add_entity_info">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">add_entity_info</code><span class="sig-paren">(</span><em>data_api</em>, <em>struct_inflator</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.add_entity_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add the entity info to the structure.
-:param data_api the interface to the decoded data
-:param struct_inflator the interface to put the data into the client object</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.add_group">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">add_group</code><span class="sig-paren">(</span><em>data_api</em>, <em>data_setters</em>, <em>group_index</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.add_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add the data for a whole group.
-:param data_api the data api from where to get the data
-:param data_setters the class to push the data to
-:param group_index the index for this group</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.add_group_bonds">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">add_group_bonds</code><span class="sig-paren">(</span><em>data_setters</em>, <em>bond_indices</em>, <em>bond_orders</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.add_group_bonds" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add the bonds for this group.
-:param data_setters the class to push the data to
-:param bond_indices the indices of the atoms in the group that
-are bonded (in pairs)
-:param bond_orders the orders of the bonds</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.add_header_info">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">add_header_info</code><span class="sig-paren">(</span><em>data_api</em>, <em>struct_inflator</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.add_header_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add ancilliary header information to the structure.
-:param data_api the interface to the decoded data
-:param struct_inflator the interface to put the data into the client object</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.add_inter_group_bonds">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">add_inter_group_bonds</code><span class="sig-paren">(</span><em>data_api</em>, <em>struct_inflator</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.add_inter_group_bonds" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate inter group bonds.
-Bond indices are specified within the whole structure and start at 0.
-:param data_api the interface to the decoded data
-:param struct_inflator the interface to put the data into the client object</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.add_xtalographic_info">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">add_xtalographic_info</code><span class="sig-paren">(</span><em>data_api</em>, <em>struct_inflator</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.add_xtalographic_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add the crystallographic data to the structure.
-:param data_api the interface to the decoded data
-:param struct_inflator the interface to put the data into the client object</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.convert_entity">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">convert_entity</code><span class="sig-paren">(</span><em>input_entity</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.convert_entity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert an individual entity from byte strings to regular strings
-:param input_entity the entity to decode
-:return the decoded entity</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.convert_group">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">convert_group</code><span class="sig-paren">(</span><em>input_group</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.convert_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert an individual group from byte strings to regula strings.
-:param input_group the input group
-:return the decoded group</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.decode_entity_list">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">decode_entity_list</code><span class="sig-paren">(</span><em>input_data</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.decode_entity_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert byte strings to strings in the entity list.
-:param input_data the list of entities
-:return the decoded entity list</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.decode_group_map">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">decode_group_map</code><span class="sig-paren">(</span><em>input_data</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.decode_group_map" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert byte strings to strings in the group map.
-:param input_data the list of groups
-:return the decoded group list</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="mmtf.utils.decoder_utils.generate_bio_assembly">
-<code class="descclassname">mmtf.utils.decoder_utils.</code><code class="descname">generate_bio_assembly</code><span class="sig-paren">(</span><em>data_api</em>, <em>struct_inflator</em><span class="sig-paren">)</span><a class="headerlink" href="#mmtf.utils.decoder_utils.generate_bio_assembly" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate the bioassembly data.
-:param data_api the interface to the decoded data
-:param struct_inflator the interface to put the data into the client object</p>
-</dd></dl>
-
+<div class="section" id="mmtf-utils-decoder-utils-module">
+<h2>mmtf.utils.decoder_utils module<a class="headerlink" href="#mmtf-utils-decoder-utils-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-mmtf.utils">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mmtf.utils" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -209,10 +68,10 @@ Bond indices are specified within the whole structure and start at 0.
   <ul>
 <li><a class="reference internal" href="#">mmtf.utils package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-mmtf.utils.codec_utils">mmtf.utils.codec_utils module</a></li>
-<li><a class="reference internal" href="#module-mmtf.utils.constants">mmtf.utils.constants module</a></li>
-<li><a class="reference internal" href="#module-mmtf.utils.decoder_utils">mmtf.utils.decoder_utils module</a></li>
-<li><a class="reference internal" href="#module-mmtf.utils">Module contents</a></li>
+<li><a class="reference internal" href="#mmtf-utils-codec-utils-module">mmtf.utils.codec_utils module</a></li>
+<li><a class="reference internal" href="#mmtf-utils-constants-module">mmtf.utils.constants module</a></li>
+<li><a class="reference internal" href="#mmtf-utils-decoder-utils-module">mmtf.utils.decoder_utils module</a></li>
+<li><a class="reference internal" href="#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
