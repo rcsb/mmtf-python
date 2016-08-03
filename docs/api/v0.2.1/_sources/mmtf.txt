@@ -1,0 +1,21 @@
+mmtf package
+============
+
+Subpackages
+-----------
+
+.. toctree::
+
+    mmtf.api
+    mmtf.codecs
+    mmtf.converters
+    mmtf.tests
+    mmtf.utils
+
+Module contents
+---------------
+
+.. automodule:: mmtf
+    :members:
+    :undoc-members:
+    :show-inheritance:

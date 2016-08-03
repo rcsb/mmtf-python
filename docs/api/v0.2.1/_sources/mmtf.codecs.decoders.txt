@@ -1,0 +1,30 @@
+mmtf.codecs.decoders package
+============================
+
+Submodules
+----------
+
+mmtf.codecs.decoders.decoders module
+------------------------------------
+
+.. automodule:: mmtf.codecs.decoders.decoders
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mmtf.codecs.decoders.numpy_decoders module
+------------------------------------------
+
+.. automodule:: mmtf.codecs.decoders.numpy_decoders
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: mmtf.codecs.decoders
+    :members:
+    :undoc-members:
+    :show-inheritance:

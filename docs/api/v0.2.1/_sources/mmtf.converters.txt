@@ -1,0 +1,30 @@
+mmtf.converters package
+=======================
+
+Submodules
+----------
+
+mmtf.converters.converters module
+---------------------------------
+
+.. automodule:: mmtf.converters.converters
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mmtf.converters.numpy_converters module
+---------------------------------------
+
+.. automodule:: mmtf.converters.numpy_converters
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: mmtf.converters
+    :members:
+    :undoc-members:
+    :show-inheritance:

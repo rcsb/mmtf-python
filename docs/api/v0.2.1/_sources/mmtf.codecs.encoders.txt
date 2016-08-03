@@ -1,0 +1,22 @@
+mmtf.codecs.encoders package
+============================
+
+Submodules
+----------
+
+mmtf.codecs.encoders.encoders module
+------------------------------------
+
+.. automodule:: mmtf.codecs.encoders.encoders
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: mmtf.codecs.encoders
+    :members:
+    :undoc-members:
+    :show-inheritance:

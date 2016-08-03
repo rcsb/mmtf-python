@@ -1,0 +1,8 @@
+mmtf-python
+===========
+
+.. toctree::
+   :maxdepth: 4
+
+   mmtf
+   setup

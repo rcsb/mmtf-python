@@ -1,0 +1,52 @@
+.. mmtf-python documentation master file, created by
+   sphinx-quickstart on Tue Aug  2 14:56:40 2016.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to mmtf-python's documentation!
+=======================================
+
+The **m**\ acro\ **m**\ olecular **t**\ ransmission **f**\ ormat (MMTF)
+is a binary encoding of biological structures.
+
+This repository holds the Python 2 and 3 compatible API, encoding and
+decoding libraries.
+
+The MMTF python API is available from pip:
+
+::
+
+    pip install mmtf-python
+
+Quick getting started.
+
+1) Get the data for a PDB structure and print the number of chains:
+
+   .. code:: python
+
+       from mmtf import fetch
+       # Get the data for 4CUP
+       decoded_data = fetch("4CUP")
+       print("PDB Code: "+str(decoded_data.structure_id)+" has "+str(decoded_data.num_chains)+" chains")
+
+2) Show the charge information for the first group:
+
+   .. code:: python
+
+       print("Group name:"+str(decoded_data.group_list[0]["groupName"])+"has the following atomic charges: "+",".join([str(x) for x in decoded_data.group_list[0]["formalChargeList"]]))
+
+3) Show how many bioassemblies it has:
+
+   .. code:: python
+
+       print("PDB Code:"+str(decoded_data.structure_id)+" has "+str(len(decoded_data.bio_assembly))+" bioassemblies")
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+

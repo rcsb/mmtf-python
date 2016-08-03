@@ -1,0 +1,22 @@
+mmtf.api package
+================
+
+Submodules
+----------
+
+mmtf.api.default_api module
+---------------------------
+
+.. automodule:: mmtf.api.default_api
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: mmtf.api
+    :members:
+    :undoc-members:
+    :show-inheritance:

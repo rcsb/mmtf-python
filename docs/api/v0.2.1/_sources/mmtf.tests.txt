@@ -1,0 +1,22 @@
+mmtf.tests package
+==================
+
+Submodules
+----------
+
+mmtf.tests.codec_tests module
+-----------------------------
+
+.. automodule:: mmtf.tests.codec_tests
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: mmtf.tests
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,38 @@
+mmtf.codecs package
+===================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    mmtf.codecs.decoders
+    mmtf.codecs.encoders
+
+Submodules
+----------
+
+mmtf.codecs.codecs module
+-------------------------
+
+.. automodule:: mmtf.codecs.codecs
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mmtf.codecs.default_codec module
+--------------------------------
+
+.. automodule:: mmtf.codecs.default_codec
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: mmtf.codecs
+    :members:
+    :undoc-members:
+    :show-inheritance:

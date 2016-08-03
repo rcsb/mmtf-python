@@ -1,0 +1,38 @@
+mmtf.utils package
+==================
+
+Submodules
+----------
+
+mmtf.utils.codec_utils module
+-----------------------------
+
+.. automodule:: mmtf.utils.codec_utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mmtf.utils.constants module
+---------------------------
+
+.. automodule:: mmtf.utils.constants
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+mmtf.utils.decoder_utils module
+-------------------------------
+
+.. automodule:: mmtf.utils.decoder_utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: mmtf.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
