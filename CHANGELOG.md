@@ -8,3 +8,7 @@ All notable changes to this project will be documented in this file, following t
 ## v0.2.1 - 2016-08-03
 ### Added
 - API function (get_url) to get the URL of the data
+
+## v0.2.2 - 2016-08-10
+### Changed
+- convert_ints_to_floats for old versions of numpy
