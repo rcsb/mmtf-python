@@ -5,4 +5,4 @@ MIN_SHORT = -32768
 NULL_BYTE = '\x00'
 CHAIN_LEN = 4
 NUM_DICT = {1:'b',2:'>h',4:'>i'}
-BASE_URL = "http://mmtf.rcsb.org/v0.2/full/"
+BASE_URL = "http://mmtf.rcsb.org/v1.0/full/"
