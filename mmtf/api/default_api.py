@@ -59,7 +59,10 @@ class MMTFDecoder():
         else:
             self.chain_name_list = []
         self.chain_id_list = decode_array(input_data[b"chainIdList"])
-        self.space_group = input_data[b"spaceGroup"]
+        if b"spaceGroup" in input_data:
+            self.space_group = input_data[b"spaceGroup"]
+        else:
+            self.space_group = None
         self.bond_atom_list = decode_array(input_data[b"bondAtomList"])
         self.bond_order_list = decode_array(input_data[b"bondOrderList"])
         if sys.version_info[0] < 3:
