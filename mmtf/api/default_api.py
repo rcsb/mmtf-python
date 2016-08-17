@@ -234,7 +234,6 @@ def get_raw_data_from_url(pdb_id):
         data = response.read()
     return _unpack(data)
 
-
 def get_url(pdb_id):
     """Get the URL for the data for a given PDB id.
 

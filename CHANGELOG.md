@@ -20,3 +20,4 @@ All notable changes to this project will be documented in this file, following t
 ## v1.0.1 - WIP
 ### Changed
 - Improved handling of missing values
+- Handle non-gzipped data from URL
