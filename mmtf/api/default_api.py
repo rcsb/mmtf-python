@@ -230,6 +230,8 @@ def get_raw_data_from_url(pdb_id):
     response = urllib2.urlopen(request)
     if response.info().get('Content-Encoding') == 'gzip':
         data = ungzip_data(response.read())
+    else:
+        data = response.read()
     return _unpack(data)
 
 
