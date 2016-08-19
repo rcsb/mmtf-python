@@ -16,3 +16,8 @@ All notable changes to this project will be documented in this file, following t
 ## v1.0.0 - 2016-08-15
 ### Changed
 - updated URL to new v1.0 data stores
+
+## v1.0.1 - WIP
+### Changed
+- Improved handling of missing values
+- Handle non-gzipped data from URL

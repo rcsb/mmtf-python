@@ -59,18 +59,44 @@ class MMTFDecoder():
         else:
             self.chain_name_list = []
         self.chain_id_list = decode_array(input_data[b"chainIdList"])
-        self.space_group = input_data[b"spaceGroup"]
-        self.bond_atom_list = decode_array(input_data[b"bondAtomList"])
-        self.bond_order_list = decode_array(input_data[b"bondOrderList"])
-        if sys.version_info[0] < 3:
-            self.mmtf_version = input_data[b"mmtfVersion"]
-            self.mmtf_producer = input_data[b"mmtfProducer"]
-            self.structure_id = input_data[b"structureId"]
+        if b"spaceGroup" in input_data:
+            self.space_group = input_data[b"spaceGroup"]
         else:
-            self.mmtf_version = input_data[b"mmtfVersion"].decode('ascii')
-            self.mmtf_producer = input_data[b"mmtfProducer"].decode('ascii')
-            self.structure_id = input_data[b"structureId"].decode('ascii')
-
+            self.space_group = None
+        if b"bondAtomList" in input_data:
+            self.bond_atom_list = decode_array(input_data[b"bondAtomList"])
+        else:
+            self.bond_atom_list = None
+        if b"bondOrderList" in input_data:
+            self.bond_order_list = decode_array(input_data[b"bondOrderList"])
+        else:
+            self.bond_order_list = None
+        if sys.version_info[0] < 3:
+            if b"mmtfVersion" in input_data:
+                self.mmtf_version = input_data[b"mmtfVersion"]
+            else:
+                self.mmtf_version = None
+            if b"mmtfProducer" in input_data:
+                self.mmtf_producer = input_data[b"mmtfProducer"]
+            else:
+                self.mmtf_producer = None
+            if b"structureId" in input_data:
+                self.structure_id = input_data[b"structureId"]
+            else:
+                self.structure_id = None
+        else:
+            if b"mmtfVersion" in input_data:
+                self.mmtf_version = input_data[b"mmtfVersion"].decode('ascii')
+            else:
+                self.mmtf_version = None
+            if b"mmtfProducer" in input_data:
+                self.mmtf_producer = input_data[b"mmtfProducer"].decode('ascii')
+            else:
+                self.mmtf_producer = None
+            if b"structureId" in input_data:
+                self.structure_id = input_data[b"structureId"].decode('ascii')
+            else:
+                self.structure_id = None
         if b"title" in input_data:
             if sys.version_info[0] < 3:
                 self.title = input_data[b"title"]
@@ -119,7 +145,9 @@ class MMTFDecoder():
             self.unit_cell = input_data[b"unitCell"]
         else:
             self.unit_cell = None
-        self.sec_struct_list = decode_array(input_data[b"secStructList"])
+        if b"secStructList" in input_data:
+            self.sec_struct_list = decode_array(input_data[b"secStructList"])
+        # Now all the numbers to defien the
         self.num_bonds = int(input_data[b"numBonds"])
         self.num_chains = int(input_data[b"numChains"])
         self.num_models = int(input_data[b"numModels"])
@@ -202,8 +230,9 @@ def get_raw_data_from_url(pdb_id):
     response = urllib2.urlopen(request)
     if response.info().get('Content-Encoding') == 'gzip':
         data = ungzip_data(response.read())
+    else:
+        data = response.read()
     return _unpack(data)
-
 
 def get_url(pdb_id):
     """Get the URL for the data for a given PDB id.
