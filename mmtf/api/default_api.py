@@ -141,6 +141,8 @@ class MMTFDecoder():
             self.r_work = None
         if b"resolution" in input_data:
             self.resolution = input_data[b"resolution"]
+        else:
+            self.resolution = None
         if b"unitCell" in input_data:
             self.unit_cell = input_data[b"unitCell"]
         else:
