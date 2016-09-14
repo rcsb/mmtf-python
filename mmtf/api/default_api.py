@@ -171,8 +171,8 @@ class MMTFDecoder():
         output_data[b"groupIdList"] = encode_array(self.group_id_list, 4, 0)
         output_data[b"groupList"] = self.group_list
         output_data[b"sequenceIndexList"] = encode_array(self.sequence_index_list, 8, 0)
-        output_data[b"chainNameList"] = encode_array(self.chain_name_list, 5, 0)
-        output_data[b"chainIdList"] = encode_array(self.chain_id_list, 5, 0)
+        output_data[b"chainNameList"] = encode_array(self.chain_name_list, 5, 4)
+        output_data[b"chainIdList"] = encode_array(self.chain_id_list, 5, 4)
         output_data[b"bondAtomList"] = encode_array(self.bond_atom_list, 4, 0)
         output_data[b"bondOrderList"] =  encode_array(self.bond_order_list, 2, 0)
         output_data[b"secStructList"] = encode_array(self.sec_struct_list, 2, 0)

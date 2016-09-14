@@ -219,8 +219,6 @@ class ConverterTests(unittest.TestCase):
         for i in range(len_one):
             self.assertDictEqual(list_one[i],list_two[i])
 
-
-
     def check_equal(self, data_one, data_two):
         self.assertTrue(self.array_eq(data_one.x_coord_list,data_two.x_coord_list))
         self.assertTrue(self.array_eq(data_one.y_coord_list,data_two.y_coord_list))
@@ -266,6 +264,63 @@ class ConverterTests(unittest.TestCase):
         data_in.write_file("test.mmtf")
         data_rt = parse("test.mmtf")
         self.check_equal(data_in, data_rt)
+
+    def round_trip(self,pdb_id):
+        data_in = fetch(pdb_id)
+        data_in.write_file(pdb_id+".mmtf")
+        data_rt = parse(pdb_id+".mmtf")
+        self.check_equal(data_in, data_rt)
+
+    def test_round_trip_list(self):
+        id_list = [
+            # // Just added to check
+            "9pti",
+            # // An entity that has no chain
+            "2ja5",
+            # // A couple of examples of multiple disulpgide bonds being formed.
+            "3zxw",
+            "1nty",
+            # // A weird residue case
+            "2eax",
+            # // A Deuterated Structure
+            "4pdj",
+            # // Weird bioassembly
+            "4a1i",
+            # // Multi model structure
+            "1cdr",
+            # // Another weird structure (jose's suggestion)
+            "3zyb",
+            # //Standard structure
+            "4cup",
+            # // Weird NMR structure
+            "1o2f",
+            # // B-DNA structure
+            "1bna",
+            # // DNA structure
+            "4y60",
+            # // Sugar structure
+            "1skm",
+            # // Calpha atom is missing (not marked as calpha)
+            "1lpv",
+            # // NMR structure with multiple models - one of which has chain missing
+            "1msh",
+            # // No ATOM records just HETATM records (in PDB). Opposite true for MMCif. It's a D-Peptide.
+            "1r9v",
+            # // Biosynthetic protein
+            "5emg",
+            # // Micro heterogenity
+            "4ck4",
+            # // Ribosome
+            "4v5a",
+            # // Negative residue numbers
+            "5esw",
+            # // A tiny example case
+            "3njw",
+            # // A GFP example with weird seqres records
+            "1ema"]
+        for pdb_id in id_list:
+            self.round_trip(pdb_id)
+
 
 
 if __name__ == '__main__':

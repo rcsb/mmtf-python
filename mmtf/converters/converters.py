@@ -77,7 +77,7 @@ def convert_floats_to_ints(in_floats, multiplier):
     :param in_floats: the input floats
     :param multiplier: the multiplier to be used for conversion. Corresponds to the precisison.
     :return the array of integers encoded"""
-    return [int(x * multiplier) for x in in_floats]
+    return [int(round(x * multiplier)) for x in in_floats]
 
 
 def convert_chars_to_ints(in_chars):
