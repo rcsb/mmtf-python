@@ -18,9 +18,9 @@ class MMTFDecoder():
     chain_counter = 0
     group_counter = 0
     atom_counter = 0
+
     def decode_data(self, input_data):
         """Function to decode the input data and place it onto the class.
-
         :param input_data: the input data as a dict"""
         self.group_type_list = decode_array(input_data[b"groupTypeList"])
         self.x_coord_list = decode_array(input_data[b"xCoordList"])
@@ -220,6 +220,10 @@ class MMTFDecoder():
     def get_msgpack(self):
         """Get the msgpack of the encoded data."""
         return msgpack.packb(self.encode_data())
+
+    def write_file(self, file_path):
+        out_f = open(file_path,"wb")
+        out_f.write(self.get_msgpack())
 
 def get_raw_data_from_url(pdb_id):
     """" Get the msgpack unpacked data given a PDB id.
