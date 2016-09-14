@@ -217,7 +217,7 @@ class ConverterTests(unittest.TestCase):
         if len_one != len(list_two):
             self.assertTrue(False,"Lists of different lengths")
         for i in range(len_one):
-            self.assertDictEqual(list_one[i],list_two[i])
+            self.assertTrue(list_one[i]==list_two[i])
 
     def check_equal(self, data_one, data_two):
         self.assertTrue(self.array_eq(data_one.x_coord_list,data_two.x_coord_list))
