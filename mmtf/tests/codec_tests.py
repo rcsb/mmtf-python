@@ -267,8 +267,8 @@ class ConverterTests(unittest.TestCase):
 
     def round_trip(self,pdb_id):
         data_in = fetch(pdb_id)
-        data_in.write_file("/Users/anthony/mmtf-python/test_dir/"+pdb_id+".mmtf")
-        data_rt = parse("/Users/anthony/mmtf-python/test_dir/"+pdb_id+".mmtf")
+        data_in.write_file(pdb_id+".mmtf")
+        data_rt = parse(pdb_id+".mmtf")
         self.check_equal(data_in, data_rt)
 
     def test_round_trip_list(self):
