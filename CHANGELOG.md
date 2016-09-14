@@ -25,3 +25,8 @@ All notable changes to this project will be documented in this file, following t
 ## v1.0.2 - 2016-09-10
 ### Changed
 - Bug fix for handling of null values
+
+## v1.0.3 - WIP
+### Added
+- API function to write out MMTF files
+- Unit test of roundtripping data
