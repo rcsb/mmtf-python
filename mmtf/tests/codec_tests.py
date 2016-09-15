@@ -211,8 +211,8 @@ class ConverterTests(unittest.TestCase):
         return np.array_equal(array_one,array_two)
 
     def dict_list_equal(self,list_one,list_two):
-        list_one = sorted(list_one)
-        list_two = sorted(list_two)
+        list_one = sorted(list_one, key=lambda x:sorted(x.keys()))
+        list_two = sorted(list_two, key=lambda x:sorted(x.keys()))
         len_one = len(list_one)
         if len_one != len(list_two):
             self.assertTrue(False,"Lists of different lengths")
