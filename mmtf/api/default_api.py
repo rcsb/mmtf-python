@@ -17,13 +17,18 @@ def write_mmtf(file_path, input_data, input_function):
 
     :param file_path the path of the file to write
     :param input_data the input data in any user format
-    :param input_function a function to converte input_data to an output format. Must contain all methods in TemplateEncoder"""
+    :param input_function a function to converte input_data to an output format. Must contain all methods in TemplateEncoder
+    """
     mmtf_encoder = MMTFEncoder()
     pass_data_on(input_data, input_function, mmtf_encoder)
     mmtf_encoder.write_file(file_path)
 
 def pass_data_on(input_data, input_function, output_data):
-    """Helper to pass data from one data structure to another."""
+    """Helper to pass data from one data structure to another.
+
+    :param input_data the input data in any user format
+    :param input_function a function to converte input_data to an output format. Must contain all methods in TemplateEncoder.
+    :param output_data a data holder for the data to be put into."""
     input_function(input_data, output_data)
     return output_data
 
