@@ -4,7 +4,7 @@ import msgpack
 import numpy
 
 from mmtf import codecs,fetch,parse,parse_gzip, converters
-from mmtf.api.default_api import ungzip_data
+from mmtf.api.default_api import ungzip_data,write_mmtf,MMTFEncoder,MMTFDecoder
 from mmtf.codecs import encoders
 from mmtf.utils.codec_utils import parse_header
 from mmtf.codecs.default_codec import codec_dict
@@ -176,10 +176,6 @@ class ConverterTests(unittest.TestCase):
         self.assertEqual(out_array_test, converters.convert_ints_to_chars(int_array))
         self.assertEqual(int_array, converters.convert_chars_to_ints(out_array_test))
 
-    def test_encoder(self):
-        decoded = parse("mmtf/tests/testdatastore/4CUP.mmtf")
-        decoded.encode_data()
-
     def test_decoder(self):
         decoded = parse("mmtf/tests/testdatastore/4CUP.mmtf")
 
@@ -203,6 +199,13 @@ class ConverterTests(unittest.TestCase):
         if [x for x in np.isclose(array_one,array_two) if x]:
             return True
         else:
+            try:
+                if not array_one and not array_two:
+                    return True
+            except ValueError:
+                pass
+            print(array_one)
+            print(array_two)
             print("Arrays not equal")
             return False
 
@@ -217,14 +220,44 @@ class ConverterTests(unittest.TestCase):
         if len_one != len(list_two):
             self.assertTrue(False,"Lists of different lengths")
         for i in range(len_one):
+            if list_one[i]!=list_two[i]:
+                print(list_one[i])
+                print(list_two[i])
             self.assertTrue(list_one[i]==list_two[i])
+
+    def iterate(self, data_one, data_two):
+        chain_ind = 0
+        group_ind = 0
+        atom_ind_one = 0
+        atom_ind_two = 0
+        for model in data_one.chains_per_model:
+            for chain in range(model):
+                for group in range(data_one.groups_per_chain[chain_ind]):
+                    self.char_arr_eq(data_one.group_list[data_one.group_type_list[group_ind]]["atomNameList"],
+                                  data_two.group_list[data_two.group_type_list[group_ind]]["atomNameList"])
+                    self.char_arr_eq(data_one.group_list[data_one.group_type_list[group_ind]]["elementList"],
+                                     data_two.group_list[data_two.group_type_list[group_ind]]["elementList"])
+                    self.array_eq(data_one.group_list[data_one.group_type_list[group_ind]]["bondOrderList"],
+                                     data_two.group_list[data_two.group_type_list[group_ind]]["bondOrderList"])
+                    self.array_eq(data_one.group_list[data_one.group_type_list[group_ind]]["bondAtomList"],
+                                     data_two.group_list[data_two.group_type_list[group_ind]]["bondAtomList"])
+                    self.array_eq(data_one.group_list[data_one.group_type_list[group_ind]]["formalChargeList"],
+                                     data_two.group_list[data_two.group_type_list[group_ind]]["formalChargeList"])
+                    self.assertEqual(data_one.group_list[data_one.group_type_list[group_ind]]["groupName"],
+                                     data_two.group_list[data_two.group_type_list[group_ind]]["groupName"])
+                    self.assertEqual(data_one.group_list[data_one.group_type_list[group_ind]]["singleLetterCode"],
+                                     data_two.group_list[data_two.group_type_list[group_ind]]["singleLetterCode"])
+                    self.assertEqual(data_one.group_list[data_one.group_type_list[group_ind]]["chemCompType"],
+                                     data_two.group_list[data_two.group_type_list[group_ind]]["chemCompType"])
+                    group_ind+=1
+                chain_ind+=1
+        return True
 
     def check_equal(self, data_one, data_two):
         self.assertTrue(self.array_eq(data_one.x_coord_list,data_two.x_coord_list))
         self.assertTrue(self.array_eq(data_one.y_coord_list,data_two.y_coord_list))
         self.assertTrue(self.array_eq(data_one.z_coord_list,data_two.z_coord_list))
         self.assertTrue(self.array_eq(data_one.b_factor_list,data_two.b_factor_list))
-        self.assertTrue(self.array_eq(data_one.group_type_list,data_two.group_type_list))
         self.assertTrue(self.array_eq(data_one.occupancy_list,data_two.occupancy_list))
         self.assertTrue(self.array_eq(data_one.atom_id_list,data_two.atom_id_list))
         self.assertTrue(self.char_arr_eq(data_one.alt_loc_list,data_two.alt_loc_list))
@@ -232,7 +265,6 @@ class ConverterTests(unittest.TestCase):
         self.assertTrue(self.array_eq(data_one.group_id_list,data_two.group_id_list))
         self.dict_list_equal(data_one.entity_list,data_two.entity_list)
         self.dict_list_equal(data_one.bio_assembly,data_two.bio_assembly)
-        self.dict_list_equal(data_one.group_list,data_two.group_list)
         self.assertTrue(self.array_eq(data_one.sequence_index_list,data_two.sequence_index_list))
         self.assertEqual(data_one.chains_per_model, data_two.chains_per_model)
         self.assertEqual(data_one.groups_per_chain, data_two.groups_per_chain)
@@ -241,8 +273,6 @@ class ConverterTests(unittest.TestCase):
         self.assertEqual(data_one.space_group,data_two.space_group)
         self.assertTrue(self.array_eq(data_one.bond_atom_list,data_two.bond_atom_list))
         self.assertTrue(self.array_eq(data_one.bond_order_list,data_two.bond_order_list))
-        self.assertEqual(data_one.mmtf_version,data_two.mmtf_version)
-        self.assertEqual(data_one.mmtf_producer,data_two.mmtf_producer)
         self.assertEqual(data_one.structure_id,data_two.structure_id)
         self.assertEqual(data_one.title,data_two.title)
         self.assertTrue(self.char_arr_eq(data_one.experimental_methods,data_two.experimental_methods))
@@ -258,21 +288,24 @@ class ConverterTests(unittest.TestCase):
         self.assertEqual(data_one.num_models, data_two.num_models)
         self.assertEqual(data_one.num_atoms, data_two.num_atoms)
         self.assertEqual(data_one.num_groups, data_two.num_groups)
+        self.assertTrue(self.iterate(data_one, data_two))
 
     def test_round_trip(self):
         data_in = parse_gzip("mmtf/tests/testdatastore/4CUP.mmtf.gz")
-        data_in.write_file("test.mmtf")
+        write_mmtf("test.mmtf", data_in, MMTFDecoder.pass_data_on)
         data_rt = parse("test.mmtf")
         self.check_equal(data_in, data_rt)
 
     def round_trip(self,pdb_id):
         data_in = fetch(pdb_id)
-        data_in.write_file(pdb_id+".mmtf")
+        write_mmtf(pdb_id+".mmtf", data_in, MMTFDecoder.pass_data_on)
         data_rt = parse(pdb_id+".mmtf")
         self.check_equal(data_in, data_rt)
 
     def test_round_trip_list(self):
         id_list = [
+            #
+            "1a1q",
             # // Just added to check
             "9pti",
             # // An entity that has no chain
@@ -320,8 +353,6 @@ class ConverterTests(unittest.TestCase):
             "1ema"]
         for pdb_id in id_list:
             self.round_trip(pdb_id)
-
-
 
 if __name__ == '__main__':
     unittest.main()
