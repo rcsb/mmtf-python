@@ -9,7 +9,7 @@ except:
     from io import BytesIO as StringIO
 import msgpack
 from .mmtf_reader import MMTFDecoder
-from .mmtf_writer import MMTFEncoder
+from .mmtf_writer import MMTFEncoder,TemplateEncoder
 
 
 def write_mmtf(file_path, input_data, input_function):

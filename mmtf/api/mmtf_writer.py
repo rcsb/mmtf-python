@@ -66,6 +66,7 @@ def get_unique_groups(input_list):
 
 
 class TemplateEncoder():
+    """Template class to be used by third parties to pass data into other data structures."""
 
     def init_structure(self, total_num_bonds, total_num_atoms,
                        total_num_groups, total_num_chains, total_num_models,
