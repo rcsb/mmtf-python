@@ -1,1 +1,1 @@
-from .api import MMTFDecoder,parse,parse_gzip,fetch,get_url
+from .api import MMTFEncoder,TemplateEncoder,MMTFDecoder,parse,parse_gzip,fetch,get_url
