@@ -209,7 +209,7 @@ class MMTFEncoder(TemplateEncoder):
     def encode_data(self):
         """Encode the data back into a dict."""
         output_data = {}
-        output_data[b"groupTypeList"] = encode_array(self.group_type_list, 2, 0)
+        output_data[b"groupTypeList"] = encode_array(self.group_type_list, 4, 0)
         output_data[b"xCoordList"] = encode_array(self.x_coord_list, 10, 1000)
         output_data[b"yCoordList"] = encode_array(self.y_coord_list, 10, 1000)
         output_data[b"zCoordList"] = encode_array(self.z_coord_list, 10, 1000)
