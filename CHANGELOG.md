@@ -26,7 +26,17 @@ All notable changes to this project will be documented in this file, following t
 ### Changed
 - Bug fix for handling of null values
 
-## v1.0.3 - WIP
+## v1.0.3 - 2016-09-16
+### Changed
+- Refactored MMTFDecoder to seperate file
+
 ### Added
-- API function to write out MMTF files
+- API functions to write out MMTF files
+- Exposed TemplateEncoder, MMTFEncoder, write_mmtf and pass_data_on to API
 - Unit test of roundtripping data
+- Improved docs
+
+## v1.0.4 - 2016-09-16
+### Added
+- Added pass_data_on and write_mmtf to the mmtf API
+- Added API functions to MMTFDecoder to get coordinates and bonds as a single list. get_coords and get_bonds
