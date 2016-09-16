@@ -39,3 +39,4 @@ All notable changes to this project will be documented in this file, following t
 ## v1.0.4 - 2016-09-16
 ### Added
 - Added pass_data_on and write_mmtf to the mmtf API
+- Added API functions to MMTFDecoder to get coordinates and bonds as a single list. get_coords and get_bonds
