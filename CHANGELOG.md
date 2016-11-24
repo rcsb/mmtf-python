@@ -40,3 +40,11 @@ All notable changes to this project will be documented in this file, following t
 ### Added
 - Added pass_data_on and write_mmtf to the mmtf API
 - Added API functions to MMTFDecoder to get coordinates and bonds as a single list. get_coords and get_bonds
+
+
+## v1.0.5 - 2016-11-24
+### Added
+- Added files to manifest.in
+
+### Changed
+- Classes to new style
