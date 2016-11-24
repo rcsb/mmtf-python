@@ -10,7 +10,7 @@ def make_entity_dict(chain_indices,sequence,description,entity_type):
     out_d["sequence"] = sequence
     return out_d
 
-class Group():
+class Group(object):
 
     def __eq__(self, other):
         """Function to define equality"""
@@ -65,7 +65,7 @@ def get_unique_groups(input_list):
     return out_list
 
 
-class TemplateEncoder():
+class TemplateEncoder(object):
     """Template class to be used by third parties to pass data into other data structures."""
 
     def init_structure(self, total_num_bonds, total_num_atoms,
