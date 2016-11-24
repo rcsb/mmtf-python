@@ -3,7 +3,7 @@ from mmtf.utils import decoder_utils
 import sys
 
 
-class MMTFDecoder():
+class MMTFDecoder(object):
     """Class to decode raw mmtf data into a parsed data model that can be fed into other data model"""
     model_counter = 0
     chain_counter = 0
