@@ -12,6 +12,18 @@ from .mmtf_reader import MMTFDecoder
 from .mmtf_writer import MMTFEncoder,TemplateEncoder
 
 
+def _internet_on(address):
+    """
+    Check to see if the internet is on by pinging a set address.
+    :param address: the IP or address to hit
+    :return: a boolean - true if can be reached, false if not.
+    """
+    try:
+        urllib2.urlopen(address, timeout=1)
+        return True
+    except urllib2.URLError as err:
+        return False
+
 def write_mmtf(file_path, input_data, input_function):
     """API function to write data as MMTF to a file
 

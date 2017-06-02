@@ -3,6 +3,7 @@ import struct
 import mmtf
 import mmtf.utils.constants
 
+
 def parse_header(input_array):
     """Parse the header and return it along with the input array minus the header.
     :param input_array the array to parse
