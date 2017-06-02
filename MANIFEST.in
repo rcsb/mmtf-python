@@ -1,2 +1,3 @@
 include README.md CHANGELOG.md LICENSE.txt
 include setup.py
+include mmtf/tests/testdatastore/4CUP.mmtf.gz mmtf/tests/testdatastore/4CUP.mmtf
