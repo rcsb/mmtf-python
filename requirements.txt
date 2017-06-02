@@ -1,4 +1,4 @@
-ipython
+ipython==5.4.1
 numpy
 nose
 msgpack-python

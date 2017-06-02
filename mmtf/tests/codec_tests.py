@@ -3,12 +3,14 @@ import unittest
 import msgpack
 import numpy
 
-from mmtf import codecs,fetch,parse,parse_gzip, converters
-from mmtf.api.default_api import ungzip_data,write_mmtf,MMTFEncoder,MMTFDecoder
+from mmtf import fetch,parse,parse_gzip, converters
+from mmtf.api.default_api import ungzip_data,write_mmtf,MMTFDecoder,_internet_on
 from mmtf.codecs import encoders
 from mmtf.utils.codec_utils import parse_header
+from mmtf.utils.constants import BASE_URL
 from mmtf.codecs.default_codec import codec_dict
 from mmtf.codecs.decoders import numpy_decoders as decoders
+
 
 def run_all(unit_test, encoded_data, decoded_data, param, codec_id):
     """Test that a given codec can work in the forward backward and round trip both ways."""
@@ -191,7 +193,10 @@ class ConverterTests(unittest.TestCase):
         ungzip_data(open("mmtf/tests/testdatastore/4CUP.mmtf.gz","rb").read())
 
     def test_fetch(self):
-        decoded = fetch("4CUP")
+        if _internet_on(BASE_URL):
+            decoded = fetch("4CUP")
+        else:
+            print("Warning - cannot connect to "+BASE_URL)
 
 
     def array_eq(self,array_one, array_two):
@@ -297,10 +302,13 @@ class ConverterTests(unittest.TestCase):
         self.check_equal(data_in, data_rt)
 
     def round_trip(self,pdb_id):
-        data_in = fetch(pdb_id)
-        write_mmtf(pdb_id+".mmtf", data_in, MMTFDecoder.pass_data_on)
-        data_rt = parse(pdb_id+".mmtf")
-        self.check_equal(data_in, data_rt)
+        if _internet_on(BASE_URL):
+            data_in = fetch(pdb_id)
+            write_mmtf(pdb_id+".mmtf", data_in, MMTFDecoder.pass_data_on)
+            data_rt = parse(pdb_id+".mmtf")
+            self.check_equal(data_in, data_rt)
+        else:
+            print("Warning - cannot connect to "+BASE_URL)
 
     def test_round_trip_list(self):
         id_list = [
