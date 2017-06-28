@@ -48,3 +48,11 @@ All notable changes to this project will be documented in this file, following t
 
 ### Changed
 - Classes to new style
+
+## v1.0.6 - 2017-06-02
+### Fixed
+- Resolve #22 #22
+
+## v1.0.7 - 2017-06-28
+### Fixed
+- Resolve issue with get_coords
