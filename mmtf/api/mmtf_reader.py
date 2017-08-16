@@ -89,25 +89,25 @@ class MMTFDecoder(object):
                 self.structure_id = None
         else:
             if b"mmtfVersion" in input_data:
-                self.mmtf_version = input_data[b"mmtfVersion"].decode('ascii')
+                self.mmtf_version = input_data[b"mmtfVersion"].decode('utf8')
             else:
                 self.mmtf_version = None
             if b"mmtfProducer" in input_data:
-                self.mmtf_producer = input_data[b"mmtfProducer"].decode('ascii')
+                self.mmtf_producer = input_data[b"mmtfProducer"].decode('utf8')
             else:
                 self.mmtf_producer = None
             if b"structureId" in input_data:
-                self.structure_id = input_data[b"structureId"].decode('ascii')
+                self.structure_id = input_data[b"structureId"].decode('utf8')
             else:
                 self.structure_id = None
         if b"title" in input_data:
             if sys.version_info[0] < 3:
                 self.title = input_data[b"title"]
             else:
-                self.title = input_data[b"title"].decode('ascii')
+                self.title = input_data[b"title"].decode('utf8')
         if b"experimentalMethods" in input_data:
             if sys.version_info[0] < 3:
-                self.experimental_methods = [x.decode('ascii') for x in input_data[b"experimentalMethods"]]
+                self.experimental_methods = [x.decode('utf8') for x in input_data[b"experimentalMethods"]]
             else:
                 self.experimental_methods = input_data[b"experimentalMethods"]
         else:
@@ -116,14 +116,14 @@ class MMTFDecoder(object):
             if sys.version_info[0] < 3:
                 self.deposition_date = input_data[b"depositionDate"]
             else:
-                self.deposition_date = input_data[b"depositionDate"].decode('ascii')
+                self.deposition_date = input_data[b"depositionDate"].decode('utf8')
         else:
             self.deposition_date = None
         if b"releaseDate" in input_data:
             if sys.version_info[0] < 3:
                 self.release_date = input_data[b"releaseDate"]
             else:
-                self.release_date = input_data[b"releaseDate"].decode('ascii')
+                self.release_date = input_data[b"releaseDate"].decode('utf8')
         else:
             self.release_date = None
         if b"entityList" in input_data:
