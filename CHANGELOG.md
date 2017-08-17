@@ -56,3 +56,8 @@ All notable changes to this project will be documented in this file, following t
 ## v1.0.7 - 2017-06-28
 ### Fixed
 - Resolve issue with get_coords
+
+
+## v1.0.8 - 2017-08-17
+### Fixed
+- Changing ascii to utf8 #29
