@@ -218,7 +218,7 @@ class MMTFEncoder(TemplateEncoder):
         output_data[b"atomIdList"] = encode_array(self.atom_id_list, 8, 0)
         output_data[b"altLocList"] = encode_array(self.alt_loc_list, 6, 0)
         output_data[b"insCodeList"] = encode_array(self.ins_code_list, 6, 0)
-        output_data[b"groupIdList"] = encode_array(self.group_id_list, 4, 0)
+        output_data[b"groupIdList"] = encode_array(self.group_id_list, 8, 0)
         output_data[b"groupList"] = self.group_list
         output_data[b"sequenceIndexList"] = encode_array(self.sequence_index_list, 8, 0)
         output_data[b"chainNameList"] = encode_array(self.chain_name_list, 5, 4)
