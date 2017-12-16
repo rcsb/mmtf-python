@@ -61,3 +61,7 @@ All notable changes to this project will be documented in this file, following t
 ## v1.0.8 - 2017-08-17
 ### Fixed
 - Changing ascii to utf8 #29
+
+## v1.0.x - 20XX-XX-XX
+### Fixed
+- Don't leak open file handles #32
