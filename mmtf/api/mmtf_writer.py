@@ -256,8 +256,8 @@ class MMTFEncoder(TemplateEncoder):
 
 
     def write_file(self, file_path):
-        out_f = open(file_path, "wb")
-        out_f.write(self.get_msgpack())
+        with open(file_path, "wb") as out_f:
+            out_f.write(self.get_msgpack())
 
 
     def init_structure(self, total_num_bonds, total_num_atoms,

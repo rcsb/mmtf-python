@@ -87,7 +87,8 @@ def parse(file_path):
     :param file_path: the input file path. Data is not entropy compressed (e.g. gzip)
     :return an API to decoded data """
     newDecoder = MMTFDecoder()
-    newDecoder.decode_data(msgpack.unpackb(open(file_path, "rb").read()))
+    with open(file_path, "rb") as fh:
+        newDecoder.decode_data(msgpack.unpackb(fh.read()))
     return newDecoder
 
 

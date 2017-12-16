@@ -190,7 +190,8 @@ class ConverterTests(unittest.TestCase):
         decoded.decode_data(msgpack.unpackb(packed))
 
     def test_gzip_open(self):
-        ungzip_data(open("mmtf/tests/testdatastore/4CUP.mmtf.gz","rb").read())
+        with open("mmtf/tests/testdatastore/4CUP.mmtf.gz","rb") as fh:
+            ungzip_data(fh.read())
 
     def test_fetch(self):
         if _internet_on(BASE_URL):
