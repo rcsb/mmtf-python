@@ -57,11 +57,10 @@ All notable changes to this project will be documented in this file, following t
 ### Fixed
 - Resolve issue with get_coords
 
-
 ## v1.0.8 - 2017-08-17
 ### Fixed
 - Changing ascii to utf8 #29
 
-## v1.0.x - 20XX-XX-XX
+## v1.0.10 - 2018-01-03
 ### Fixed
 - Don't leak open file handles #32
