@@ -61,6 +61,10 @@ All notable changes to this project will be documented in this file, following t
 ### Fixed
 - Changing ascii to utf8 #29
 
-## v1.0.10 - 2018-01-03
+## v1.0.10 - 2018-03-01
 ### Fixed
 - Don't leak open file handles #32
+
+## v1.0.11 - 2018-02-26
+### Added
+- Add option to get reduced files from API #35

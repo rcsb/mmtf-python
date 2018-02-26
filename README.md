@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/rcsb/mmtf-python.svg?branch=master)](https://travis-ci.org/rcsb/mmtf-python)
 [![Code Health](https://landscape.io/github/rcsb/mmtf-python/master/landscape.svg?style=flat)](https://landscape.io/github/rcsb/mmtf-python/master)
-[![Version](http://img.shields.io/badge/version-1.0.10-blue.svg?style=flat)](https://github.com/rcsb/mmtf-python/)
+[![Version](http://img.shields.io/badge/version-1.0.11-blue.svg?style=flat)](https://github.com/rcsb/mmtf-python/)
 [![License](http://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](https://github.com/rcsb/mmtf-python/blob/master/LICENSE.txt)
 [![Changelog](https://img.shields.io/badge/changelog--lightgrey.svg?style=flat)](https://github.com/rcsb/mmtf-python/blob/master/CHANGELOG.md)
 
