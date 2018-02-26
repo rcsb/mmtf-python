@@ -45,12 +45,12 @@ def pass_data_on(input_data, input_function, output_data):
     return output_data
 
 
-def get_raw_data_from_url(pdb_id):
+def get_raw_data_from_url(pdb_id, reduced=False):
     """" Get the msgpack unpacked data given a PDB id.
 
     :param pdb_id: the input PDB id
     :return the unpacked data (a dict) """
-    url = get_url(pdb_id)
+    url = get_url(pdb_id,reduced)
     request = urllib2.Request(url)
     request.add_header('Accept-encoding', 'gzip')
     response = urllib2.urlopen(request)
@@ -60,12 +60,15 @@ def get_raw_data_from_url(pdb_id):
         data = response.read()
     return _unpack(data)
 
-def get_url(pdb_id):
+def get_url(pdb_id,reduced):
     """Get the URL for the data for a given PDB id.
 
     :param pdb_id: the input PDB id
     :return the URL for this PDB id"""
-    return BASE_URL + pdb_id
+    if reduced:
+        return BASE_URL_REDUCED + pdb_id
+    else:
+        return BASE_URL + pdb_id
 
 def _unpack(data):
     out_data = msgpack.unpackb(data.read())
