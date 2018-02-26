@@ -60,7 +60,7 @@ def get_raw_data_from_url(pdb_id, reduced=False):
         data = response.read()
     return _unpack(data)
 
-def get_url(pdb_id,reduced):
+def get_url(pdb_id,reduced=False):
     """Get the URL for the data for a given PDB id.
 
     :param pdb_id: the input PDB id
