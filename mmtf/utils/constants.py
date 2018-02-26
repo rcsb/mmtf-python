@@ -8,6 +8,7 @@ PRODUCER = "mmtf-python"
 MMTF_VERSION = "1.0.0"
 NUM_DICT = {1:'b',2:'>h',4:'>i'}
 BASE_URL = "https://mmtf.rcsb.org/v1.0/full/"
+BASE_URL_REDUCED = "https://mmtf.rcsb.org/v1.0/reduced/"
 UNKNOWN_SPACE_GROUP = ""
 UNKNOWN_UNIT_CELL = None
 UNKOWN_GROUP_NAME = "UNL"
