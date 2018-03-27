@@ -209,50 +209,50 @@ class MMTFEncoder(TemplateEncoder):
     def encode_data(self):
         """Encode the data back into a dict."""
         output_data = {}
-        output_data[b"groupTypeList"] = encode_array(self.group_type_list, 4, 0)
-        output_data[b"xCoordList"] = encode_array(self.x_coord_list, 10, 1000)
-        output_data[b"yCoordList"] = encode_array(self.y_coord_list, 10, 1000)
-        output_data[b"zCoordList"] = encode_array(self.z_coord_list, 10, 1000)
-        output_data[b"bFactorList"] = encode_array(self.b_factor_list, 10, 100)
-        output_data[b"occupancyList"] = encode_array(self.occupancy_list, 9, 100)
-        output_data[b"atomIdList"] = encode_array(self.atom_id_list, 8, 0)
-        output_data[b"altLocList"] = encode_array(self.alt_loc_list, 6, 0)
-        output_data[b"insCodeList"] = encode_array(self.ins_code_list, 6, 0)
-        output_data[b"groupIdList"] = encode_array(self.group_id_list, 8, 0)
-        output_data[b"groupList"] = self.group_list
-        output_data[b"sequenceIndexList"] = encode_array(self.sequence_index_list, 8, 0)
-        output_data[b"chainNameList"] = encode_array(self.chain_name_list, 5, 4)
-        output_data[b"chainIdList"] = encode_array(self.chain_id_list, 5, 4)
-        output_data[b"bondAtomList"] = encode_array(self.bond_atom_list, 4, 0)
-        output_data[b"bondOrderList"] = encode_array(self.bond_order_list, 2, 0)
-        output_data[b"secStructList"] = encode_array(self.sec_struct_list, 2, 0)
-        output_data[b"chainsPerModel"] = self.chains_per_model
-        output_data[b"groupsPerChain"] = self.groups_per_chain
-        output_data[b"spaceGroup"] = self.space_group
-        output_data[b"mmtfVersion"] = self.mmtf_version
-        output_data[b"mmtfProducer"] = self.mmtf_producer
-        output_data[b"structureId"] = self.structure_id
-        output_data[b"entityList"] = self.entity_list
-        output_data[b"bioAssemblyList"] = self.bio_assembly
-        output_data[b"rFree"] = self.r_free
-        output_data[b"rWork"] = self.r_work
-        output_data[b"resolution"] = self.resolution
-        output_data[b"title"] = self.title
-        output_data[b"experimentalMethods"] = self.experimental_methods
-        output_data[b"depositionDate"] = self.deposition_date
-        output_data[b"releaseDate"] = self.release_date
-        output_data[b"unitCell"] = self.unit_cell
-        output_data[b"numBonds"] = self.num_bonds
-        output_data[b"numChains"] = self.num_chains
-        output_data[b"numModels"] = self.num_models
-        output_data[b"numAtoms"] = self.num_atoms
-        output_data[b"numGroups"] = self.num_groups
+        output_data["groupTypeList"] = encode_array(self.group_type_list, 4, 0)
+        output_data["xCoordList"] = encode_array(self.x_coord_list, 10, 1000)
+        output_data["yCoordList"] = encode_array(self.y_coord_list, 10, 1000)
+        output_data["zCoordList"] = encode_array(self.z_coord_list, 10, 1000)
+        output_data["bFactorList"] = encode_array(self.b_factor_list, 10, 100)
+        output_data["occupancyList"] = encode_array(self.occupancy_list, 9, 100)
+        output_data["atomIdList"] = encode_array(self.atom_id_list, 8, 0)
+        output_data["altLocList"] = encode_array(self.alt_loc_list, 6, 0)
+        output_data["insCodeList"] = encode_array(self.ins_code_list, 6, 0)
+        output_data["groupIdList"] = encode_array(self.group_id_list, 8, 0)
+        output_data["groupList"] = self.group_list
+        output_data["sequenceIndexList"] = encode_array(self.sequence_index_list, 8, 0)
+        output_data["chainNameList"] = encode_array(self.chain_name_list, 5, 4)
+        output_data["chainIdList"] = encode_array(self.chain_id_list, 5, 4)
+        output_data["bondAtomList"] = encode_array(self.bond_atom_list, 4, 0)
+        output_data["bondOrderList"] = encode_array(self.bond_order_list, 2, 0)
+        output_data["secStructList"] = encode_array(self.sec_struct_list, 2, 0)
+        output_data["chainsPerModel"] = self.chains_per_model
+        output_data["groupsPerChain"] = self.groups_per_chain
+        output_data["spaceGroup"] = self.space_group
+        output_data["mmtfVersion"] = self.mmtf_version
+        output_data["mmtfProducer"] = self.mmtf_producer
+        output_data["structureId"] = self.structure_id
+        output_data["entityList"] = self.entity_list
+        output_data["bioAssemblyList"] = self.bio_assembly
+        output_data["rFree"] = self.r_free
+        output_data["rWork"] = self.r_work
+        output_data["resolution"] = self.resolution
+        output_data["title"] = self.title
+        output_data["experimentalMethods"] = self.experimental_methods
+        output_data["depositionDate"] = self.deposition_date
+        output_data["releaseDate"] = self.release_date
+        output_data["unitCell"] = self.unit_cell
+        output_data["numBonds"] = self.num_bonds
+        output_data["numChains"] = self.num_chains
+        output_data["numModels"] = self.num_models
+        output_data["numAtoms"] = self.num_atoms
+        output_data["numGroups"] = self.num_groups
         return output_data
 
 
     def get_msgpack(self):
         """Get the msgpack of the encoded data."""
-        return msgpack.packb(self.encode_data())
+        return msgpack.packb(self.encode_data(), use_bin_type=True)
 
 
     def write_file(self, file_path):
