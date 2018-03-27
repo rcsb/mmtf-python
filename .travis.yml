@@ -6,16 +6,6 @@ python:
 - '3.3'
 - '3.4'
 - '3.5'
-matrix:
-  include:
-  - os: osx
-    python: 3.5
-    language: generic
-before_install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install python3; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then virtualenv venv -p python3; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source venv/bin/activate; fi
 install:
 - pip install -r requirements.txt
 script: nosetests
@@ -27,6 +17,6 @@ deploy:
     branch: master
     tags: true
     repo: rcsb/mmtf-python
-    python: '3.5'
+    python: '3.5  '
   password:
     secure: K770zHNs79Bg+EE+1DcMRoB4QZpTZdTrJRmu8o6dnVjQgz3ZaPFkPZnkQdfOAa9UUCfLaCREjCkMSvUOxO9u9ep7HkM7zMnk88DEiKgVgddzoNEUG/RB0oYf1+hyc3FLcb2FTCLMTV9vtqPp6kRBMmpGzcQnGVsEDJjv59ZW9w4fXBIopoLEBcmAN6LBy19r3Hq4uBJRiW17jvtkfBhRTXRcgT/bYO3UD1THveUnYUoJw/HD8LSLO+svhHRclY0AAOV09ZVI7IA2+HXhCvbWVOFtDOzY/0m2qwII8GmtzGgvn1/JFLIf3dnth6er+eZwYcdhTUAVIkApq5p2zcJhKLg79FK4NhllsqKu/cOwREyrxXNQn8SyfDREfkhRRuLQ7iLDHiXdFmJD6wfNlVVrFQJlv5lEFogUsxBind0M2JPi7PD4GvyYl6ZESGfuhZSBKnzfecll1/vZB1u6x4M7rApC6t8b/KN2yjfyxaL6n8oDJdzEo0/JvmiGYVUG5GvNVYrIWdrJWVN4mVJ/Y8s+69c+a0puDK3bVLTwH+hLoInKtZvxh5sh9EE80cXGUK23Su5jTRoNrH6nV+qXNMe1F+9GNELffzbI0/Nk+fYys+M9xidEJ/BJQgZjmPEIg0pZR+H8Bwik0bI/0EDSSCbKLcigkEyRUy1tg8TSpWf4nDw=
