@@ -98,10 +98,10 @@ def generate_bio_assembly(data_api, struct_inflator):
     bioassembly_count = 0
     for bioassembly in data_api.bio_assembly:
         bioassembly_count += 1
-        for transform in bioassembly[b"transformList"]:
+        for transform in bioassembly["transformList"]:
             struct_inflator.set_bio_assembly_trans(bioassembly_count,
-                                                   transform[b"chainIndexList"],
-                                                   transform[b"matrix"])
+                                                   transform["chainIndexList"],
+                                                   transform["matrix"])
 
 def add_inter_group_bonds(data_api, struct_inflator):
     """	 Generate inter group bonds.
@@ -157,54 +157,6 @@ def add_entity_info( data_api, struct_inflator):
                                         entity["sequence"],
                                         entity["description"],
                                         entity["type"])
-
-def decode_entity_list(input_data):
-    """Convert byte strings to strings in the entity list.
-    :param input_data the list of entities
-    :return the decoded entity list"""
-    if sys.version_info[0] < 3:
-        return input_data
-    out_data = []
-    for entry in input_data:
-        out_data.append(convert_entity(entry))
-    return out_data
-
-def decode_group_map(input_data):
-    """Convert byte strings to strings in the group map.
-    :param input_data the list of groups
-    :return the decoded group list"""
-    if sys.version_info[0] < 3:
-        return input_data
-    out_data = []
-    for entry in input_data:
-        out_data.append(convert_group(entry))
-    return out_data
-
-def convert_group(input_group):
-    """Convert an individual group from byte strings to regula strings.
-    :param input_group the input group
-    :return the decoded group"""
-    output_group = {}
-    for key in input_group:
-        if key in [b'elementList',b'atomNameList']:
-            output_group[key.decode('ascii')] = [x.decode('ascii') for x in input_group[key]]
-        elif key in [b'chemCompType',b'groupName',b'singleLetterCode']:
-            output_group[key.decode('ascii')] = input_group[key].decode('ascii')
-        else:
-            output_group[key.decode('ascii')] = input_group[key]
-    return output_group
-
-def convert_entity(input_entity):
-    """Convert an individual entity from byte strings to regular strings
-    :param input_entity the entity to decode
-    :return the decoded entity"""
-    output_entity  = {}
-    for key in input_entity:
-        if key in [ b'description', b'type', b'sequence']:
-            output_entity[key.decode('ascii')] = input_entity[key].decode('ascii')
-        else:
-            output_entity[key.decode('ascii')] = input_entity[key]
-    return output_entity
 
 
 def get_bonds(input_group):

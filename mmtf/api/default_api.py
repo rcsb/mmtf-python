@@ -71,7 +71,7 @@ def get_url(pdb_id,reduced=False):
         return BASE_URL + pdb_id
 
 def _unpack(data):
-    out_data = msgpack.unpackb(data.read())
+    out_data = msgpack.unpackb(data.read(), raw=False)
     return out_data
 
 
@@ -91,7 +91,7 @@ def parse(file_path):
     :return an API to decoded data """
     newDecoder = MMTFDecoder()
     with open(file_path, "rb") as fh:
-        newDecoder.decode_data(msgpack.unpackb(fh.read()))
+        newDecoder.decode_data(_unpack(fh))
     return newDecoder
 
 
@@ -100,7 +100,7 @@ def parse_gzip(file_path):
     :param file_path: the input file path. Data is gzip compressed.
     :return an API to decoded data"""
     newDecoder = MMTFDecoder()
-    newDecoder.decode_data(msgpack.unpackb(gzip.open(file_path, "rb").read()))
+    newDecoder.decode_data(_unpack(gzip.open(file_path, "rb")))
     return newDecoder
 
 
