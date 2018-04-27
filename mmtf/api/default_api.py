@@ -1,6 +1,6 @@
 import gzip
 
-from mmtf.utils.constants import BASE_URL
+from mmtf.utils.constants import BASE_URL, BASE_URL_REDUCED
 try:
     import urllib2
     from StringIO import StringIO
