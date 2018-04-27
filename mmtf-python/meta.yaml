@@ -1,0 +1,51 @@
+{% set name = "mmtf-python" %}
+{% set version = "1.1.0" %}
+{% set file_ext = "tar.gz" %}
+{% set hash_type = "sha256" %}
+{% set hash_value = "003fe6dc090d958901d11a2fd83e87533fe7a726a95973d1cd038a60ef293c36" %}
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  fn: '{{ name }}-{{ version }}.{{ file_ext }}'
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ file_ext }}
+  '{{ hash_type }}': '{{ hash_value }}'
+
+build:
+  number: 0
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - msgpack-python
+  run:
+    - python
+    - msgpack-python
+
+test:
+  imports:
+    - mmtf
+    - mmtf.api
+    - mmtf.codecs
+    - mmtf.codecs.decoders
+    - mmtf.codecs.encoders
+    - mmtf.converters
+    - mmtf.tests
+    - mmtf.utils
+
+about:
+  home: https://github.com/rcsb/mmtf-python.git
+  license: MIT License
+  license_family: MIT
+  license_file: ''
+  summary: A decoding libary for the PDB mmtf format
+  description: ''
+  doc_url: ''
+  dev_url: ''
+
+extra:
+  recipe-maintainers: ''
