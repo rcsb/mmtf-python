@@ -1,7 +1,0 @@
-msgpack-python
-
-[dev]
-check-manifest
-
-[test]
-coverage
