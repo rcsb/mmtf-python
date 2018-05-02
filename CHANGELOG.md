@@ -1,10 +1,6 @@
 # Change Log
 All notable changes to this project will be documented in this file, following the suggestions of [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic Versioning](http://semver.org/).
 
-## v1.1.2 - 2018-05-01
-### Remove
-- All unnessasary build, dist and egg files
-
 ## v1.1.1 - 2018-04-27
 ### Fixed
 - Imported BASE_URL_REDUCED to download reduced files
