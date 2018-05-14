@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file, following the suggestions of [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic Versioning](http://semver.org/).
 
+## v1.1.1 - 2018-04-27
+### Fixed
+- Imported BASE_URL_REDUCED to download reduced files
+
 ## v1.1.0 - 2018-04-04
 ### Changed
 - Switch to msgpack-defaults for easier parsing #38
@@ -73,3 +77,4 @@ All notable changes to this project will be documented in this file, following t
 ## v0.2.0 - 2016-07-14
 ### Added
 - Initial release of mmtf-python
+
