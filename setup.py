@@ -59,6 +59,7 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.666666',
     ],
 
     # What does your project relate to?
@@ -76,7 +77,7 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['msgpack-python'],
+    install_requires=['msgpack>=0.5.6'],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
