@@ -1,5 +1,3 @@
-import sys
-
 from mmtf.utils import constants
 def add_atom_data(data_api, data_setters, atom_names, element_names, atom_charges, group_atom_ind):
     """Add the atomic data to the DataTransferInterface.

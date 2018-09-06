@@ -9,7 +9,7 @@ except:
     from io import BytesIO as StringIO
 import msgpack
 from .mmtf_reader import MMTFDecoder
-from .mmtf_writer import MMTFEncoder,TemplateEncoder
+from .mmtf_writer import MMTFEncoder
 
 
 def _internet_on(address):

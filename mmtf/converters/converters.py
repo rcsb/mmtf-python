@@ -1,8 +1,10 @@
 from __future__ import division
-import struct
-import mmtf
+
 import math
 
+import struct
+
+import mmtf
 import mmtf.utils.constants
 
 
