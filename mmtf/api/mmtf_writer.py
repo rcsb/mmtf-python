@@ -1,6 +1,8 @@
-from mmtf.codecs import encode_array
 import msgpack
+
+from mmtf.codecs import encode_array
 from mmtf.utils import constants
+
 
 def make_entity_dict(chain_indices,sequence,description,entity_type):
     out_d = {}
@@ -14,23 +16,25 @@ class Group(object):
 
     def __eq__(self, other):
         """Function to define equality"""
-        if self.atom_name_list != other.atom_name_list:
-            return False
-        if self.charge_list != other.charge_list:
-            return False
-        if self.element_list != other.element_list:
-            return False
-        if self.group_type != other.group_type:
-            return False
-        if self.group_name != other.group_name:
-            return False
-        if self.single_letter_code != other.single_letter_code:
-            return False
-        if self.bond_atom_list != other.bond_atom_list:
-            return False
-        if self.bond_order_list != other.bond_order_list:
-            return False
-        return True
+        return self.__hash__() == other.__hash()
+
+    def __ne__(self, other):
+        """
+        Function defining that something is not equal
+        """
+        return self.__hash__() != other.__hash()
+
+    def __hash__(self):
+        tot_list = [self.atom_name_list,
+                      self.charge_list,
+                      self.element_list,
+                      self.group_name,
+                      self.group_name,
+                      self.single_letter_code,
+                      self.bond_atom_list,
+                      self.bond_order_list]
+        tot_string = "__".join([str(x) for x in tot_list])
+        return hash(tot_string)
 
     def __init__(self):
         self.atom_name_list = []

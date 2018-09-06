@@ -1,15 +1,14 @@
-import unittest
-
 import msgpack
 import numpy
+import unittest
 
 from mmtf import fetch,parse,parse_gzip, converters
 from mmtf.api.default_api import ungzip_data,write_mmtf,MMTFDecoder,_internet_on
 from mmtf.codecs import encoders
+from mmtf.codecs.decoders import numpy_decoders as decoders
+from mmtf.codecs.default_codec import codec_dict
 from mmtf.utils.codec_utils import parse_header
 from mmtf.utils.constants import BASE_URL
-from mmtf.codecs.default_codec import codec_dict
-from mmtf.codecs.decoders import numpy_decoders as decoders
 
 
 def run_all(unit_test, encoded_data, decoded_data, param, codec_id):

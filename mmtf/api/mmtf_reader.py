@@ -1,6 +1,7 @@
+import sys
+
 from mmtf.codecs import decode_array
 from mmtf.utils import decoder_utils
-import sys
 
 
 class MMTFDecoder(object):
