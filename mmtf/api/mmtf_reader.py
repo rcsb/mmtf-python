@@ -74,37 +74,22 @@ class MMTFDecoder(object):
             self.bond_order_list = decode_array(input_data["bondOrderList"])
         else:
             self.bond_order_list = None
-        if sys.version_info[0] < 3:
-            if "mmtfVersion" in input_data:
-                self.mmtf_version = input_data["mmtfVersion"]
-            else:
-                self.mmtf_version = None
-            if "mmtfProducer" in input_data:
-                self.mmtf_producer = input_data["mmtfProducer"]
-            else:
-                self.mmtf_producer = None
-            if "structureId" in input_data:
-                self.structure_id = input_data["structureId"]
-            else:
-                self.structure_id = None
+        if "mmtfVersion" in input_data:
+            self.mmtf_version = input_data["mmtfVersion"]
         else:
-            if "mmtfVersion" in input_data:
-                self.mmtf_version = input_data["mmtfVersion"]
-            else:
-                self.mmtf_version = None
-            if "mmtfProducer" in input_data:
-                self.mmtf_producer = input_data["mmtfProducer"]
-            else:
-                self.mmtf_producer = None
-            if "structureId" in input_data:
-                self.structure_id = input_data["structureId"]
-            else:
-                self.structure_id = None
+            self.mmtf_version = None
+        if "mmtfProducer" in input_data:
+            self.mmtf_producer = input_data["mmtfProducer"]
+        else:
+            self.mmtf_producer = None
+        if "structureId" in input_data:
+            self.structure_id = input_data["structureId"]
+        else:
+            self.structure_id = None
         if "title" in input_data:
-            if sys.version_info[0] < 3:
-                self.title = input_data["title"]
-            else:
-                self.title = input_data["title"]
+            self.title = input_data["title"]
+        else:
+            self.title = None 
         if "experimentalMethods" in input_data:
             self.experimental_methods = input_data["experimentalMethods"]
         else:
