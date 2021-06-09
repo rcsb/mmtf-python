@@ -155,7 +155,7 @@ def add_entity_info( data_api, struct_inflator):
     for entity in data_api.entity_list:
         struct_inflator.set_entity_info(entity["chainIndexList"],
                                         entity["sequence"],
-                                        entity["description"],
+                                        entity.get("description", ""),
                                         entity["type"])
 
 
