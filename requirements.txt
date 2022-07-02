@@ -1,4 +1,4 @@
-ipython==5.4.1
+ipython==7.16.3
 numpy
 nose
 msgpack==0.5.6
