@@ -1,4 +1,3 @@
-ipython
 numpy
 nose
 msgpack>=1.0.0
